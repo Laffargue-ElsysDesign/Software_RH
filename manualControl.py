@@ -159,18 +159,18 @@ class IHM_Read(Thread):
             HUM.cmd_robot.speed_z=self.speed_z
 
 
-app=Create_App()
+#app=Create_App()
 if __name__ == '__main__':
     signal(SIGINT, handler)
 
     global overlay
-    overlay=Overlay("../bitstream/Test_3.bit", download=False)
+    overlay=Overlay("./holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
         overlay.download()
     
     print('Bring up uart....')
     
-    app.run(debug = True)
+#    app.run(debug = True)
 
     thread_holo = HUM.Holo_UART(overlay)
     thread_holo.start()

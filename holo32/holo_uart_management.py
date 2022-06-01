@@ -13,7 +13,7 @@ from pynq import MMIO
 from pynq import Overlay
 
 #====Custom import====#
-import lib.uart_driver
+import holo32.lib.uart_driver
 
 ADDRESS_0 = 0x00A0010000  # Address of the ip core  revision 80 et quelque 0xA0040000
 
@@ -233,7 +233,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
 
     global overlay
-    overlay=Overlay("../bitstream/Test_3.bit", download=False)
+    overlay=Overlay("./holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
         overlay.download()
     
