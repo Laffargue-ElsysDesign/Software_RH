@@ -41,22 +41,28 @@ class IMUDriver(DefaultIP):
     def Read_acc(self):
         raw_acc_x = self.read(OFFSET_READ_ACC_X)
         raw_acc_y = self.read(OFFSET_READ_ACC_Y) 
-        acc_x = (raw_acc_x & MASQUE) * (G/SENS_ACC)
-        acc_y = (raw_acc_y & MASQUE) * (G/SENS_ACC)
+        #print("Acc:", hex(raw_acc_x), hex(raw_acc_y))
+        acc_x = np.int16(raw_acc_x & MASQUE) * (G/SENS_ACC)
+        acc_y = np.int16(raw_acc_y & MASQUE) * (G/SENS_ACC)
         acc_z = -G
         return (acc_x, acc_y, acc_z)
         
     def Read_gyr(self):
         raw_gyr_z = self.read(OFFSET_READ_GYR_Z)
+        #print("Gyr:", hex(raw_gyr_z))
         gyr_x = 0
         gyr_y = 0
-        gyr_z = -(2*np.pi/360 * (raw_gyr_z & MASQUE) )/ SENS_GYRO - Z_GYRO_OFFSET
+        gyr_z = -(2*np.pi/360 * np.int16(raw_gyr_z & MASQUE) )/ SENS_GYRO - Z_GYRO_OFFSET
         return (gyr_x, gyr_y, gyr_z)
     
     def Read_mag(self):
-        mag_x = ((self.read(OFFSET_READ_MAG_X) & MASQUE) * 0.15)/1000000
-        mag_y = ((self.read(OFFSET_READ_MAG_Y) & MASQUE) * 0.15)/1000000
-        mag_z = ((self.read(OFFSET_READ_MAG_Z) & MASQUE) * 0.15)/1000000
+        raw_mag_x = (self.read(OFFSET_READ_MAG_X))
+        raw_mag_y = (self.read(OFFSET_READ_MAG_Y))
+        raw_mag_z = (self.read(OFFSET_READ_MAG_Z))
+        #print("Mag:", hex(raw_mag_x), hex(raw_mag_y), hex(raw_mag_z))
+        mag_x = (np.int16(raw_mag_x & MASQUE) * 0.15)/1000000
+        mag_y = (np.int16(raw_mag_y & MASQUE) * 0.15)/1000000
+        mag_z = (np.int16(raw_mag_z & MASQUE) * 0.15)/1000000
         return (mag_x, mag_y, mag_z)
 
     def Read_Data(self):

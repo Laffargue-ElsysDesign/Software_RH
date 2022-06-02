@@ -186,6 +186,7 @@ class IHM_Read(Thread):
 
     def run(self):
         while(True):
+            sleep(0.5)
             self.Wait_Start()
             mode.command.MUT.acquire()
             read_input=mode.command

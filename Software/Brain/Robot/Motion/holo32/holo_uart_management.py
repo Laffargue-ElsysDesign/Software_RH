@@ -184,14 +184,14 @@ class Holo_UART(Thread):
             
             
             try:
+                #I = input("Enter")
                 print(self.msg)
                 self.uart.writeByte(self.msg) 
             except:
                 print("Send timeout")
                 
             #readTrame_uart(self.uart)
-                
-            sleep(0.1)
+            sleep(0.5)
 
 def init():
     duree_tour=6.5 #duree d'un tour en seconde 
@@ -274,6 +274,7 @@ if __name__ == '__main__':
     global overlay
     overlay=Overlay("./Overlays/Bitstream/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
+        print("Loading Overlay ...")
         overlay.download()
     
     print('Bring up uart....')

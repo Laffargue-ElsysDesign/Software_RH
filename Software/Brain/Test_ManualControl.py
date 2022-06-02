@@ -18,8 +18,9 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
 
     global overlay
-    overlay=Overlay("./Robot/Motion/Overlays/IMUV1/BitStream/IMU.bit", download=False)
+    overlay=Overlay("./Robot/Motion/Overlays/IMUV2/BitStream/IMU.bit", download=False)
     if overlay.is_loaded()==False:
+        print("Loading Overlay...")
         overlay.download()
     
     print('Bring up uart....')

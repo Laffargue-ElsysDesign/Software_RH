@@ -36,7 +36,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/IMUV1/BitStream/IMU.bit")
+    overlay = Overlay("../Overlays/IMUV3/BitStream/IMU.bit")
     overlay.download()
     imu = IMU(overlay)
     while(1):
