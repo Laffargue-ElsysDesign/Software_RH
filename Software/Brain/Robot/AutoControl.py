@@ -16,15 +16,16 @@ class Auto_Control(Thread):
         self.Navigation = tn
         self.interrupt = False
 
-    def Set_Interrupt(self):
+    def Interrupt(self):
         self.interrupt = True
         self.mgt.Stop()
 
     def Wait_Start(self):
         print("End of Auto_Control")
-        while self.mgt.Check_Stop():
+        while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
             sleep(0.1)
+            print("Auto Waiting..")
         self.mgt.Is_Not_Waiting()
         return 1
 
@@ -79,9 +80,9 @@ class Auto_Control(Thread):
                     if self.Navigation.mgt.Check_Waiting():
                         self.Start_Navigation(cst.LOC_HOME)
                     alerts.Reset_Ronde_Alert()
-
-
-            self.End_Navigation() 
+                    
+            if not self.interrupt:
+                self.End_Navigation() 
 
 
 thread_auto_control = Auto_Control()

@@ -186,12 +186,12 @@ class Holo_UART(Thread):
             
             try:
                 #I = input("Enter")
-                #print(self.msg)
+                print(self.msg)
                 self.uart.writeByte(self.msg) 
             except:
                 print("Send timeout")
                 
-            readTrame_uart(self.uart)
+            #readTrame_uart(self.uart)
             print(odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
             sleep(0.5)
 

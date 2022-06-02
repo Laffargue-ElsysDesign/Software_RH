@@ -18,10 +18,10 @@ class Keyboard_Read(Thread):
         self.speed_y=0
         self.speed_z=0
         self.mgt = Mgt()
-        self.Interrupt = False
+        self.interrupt = False
 
-    def Set_Interrupt(self):
-        self.interupt = True
+    def Interrupt(self):
+        self.interrupt = True
         self.mgt.Stop()
 
     def set_speed(self, x, y, z):
@@ -84,7 +84,7 @@ class Keyboard_Read(Thread):
 
     def Wait_Start(self):
         print("End of Manual Control")
-        while self.mgt.Check_Stop() and not self.Interrupt:
+        while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
             
             if (mode.mode_wanted.mode == cst.AUTO) :
@@ -118,11 +118,11 @@ class Keyboard_Read(Thread):
         return
 
     def run(self):
-        while not self.Interrupt:
+        while not self.interrupt:
             self.Wait_Start()
             print("Start of Manual Control")
 
-            while not self.mgt.Check_Stop() and not self.Interrupt:
+            while not self.mgt.Check_Stop() and not self.interrupt:
                 #print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)

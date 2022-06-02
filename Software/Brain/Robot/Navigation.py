@@ -15,8 +15,8 @@ def handler(signal_received, frame):
 def Dijkstra(End):
     pass #TBD
 
-def Compute_Angle(point):
-    return 0 #TBD
+def Compute_Angle(point, old_point):
+    return 1, 3 #TBD
 
 def Rotate(Turn):
     if Turn:
@@ -45,25 +45,32 @@ class Navigation(Thread):
         self.path = [0, 0] #TBD
         self.mgt = Mgt()
         self.MUT = Lock()
-        self.Interrupt = False
+        self.interrupt = False
 
     def Set_Path(self, path):
         self.MUT.acquire()
         self.path = path
         self.MUT.release()
 
-    def Set_Interrupt(self):
-        self.Interrupt = True
+    def Interrupt(self):
+        self.interrupt = True
     
     def Check_NFC(self, point, old_point):
-        tag = alerts.Get_NFC_Tag()
-        if tag == point:
-            return True
-        elif tag == old_point:
-            return False
-        else:
-            self.mgt.Stop()
-            return True
+        output = False
+        if alerts.Get_NFC_Alert():
+            tag = alerts.Get_NFC_Tag()
+            if tag == point:
+                #print("point reached")
+                output = True
+            elif tag == old_point:
+                #print("still old point")
+                output = False
+            else:
+                #print("interrupting", point, old_point, tag)
+                self.mgt.Stop()
+                output = True
+            alerts.Reset_Tag_Alert()
+        return output
 
     def Get_to_Point(self, point, old_point):
         if point == old_point:
@@ -73,37 +80,40 @@ class Navigation(Thread):
             Turn, time = Compute_Angle(point, old_point)
             Rotate(Turn)
             sleep(time)
-            if self.mgt.Stop:
+            if self.mgt.Check_Stop():
                 return
             while not self.Check_NFC(point, old_point):
                 Froward()
-            if self.mgt.Stop:
+            if self.mgt.Check_Stop():
                 return
             #Correct()    
 
     def Wait_Start(self):
         print("End of navigation")
-        while self.mgt.Check_Stop():
+        while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
         self.mgt.Is_Not_Waiting()
         return
 
     def run(self):
-        while not self.Interrupt:
+        while not self.interrupt:
             self.Wait_Start()
             print("Start of Navigation")
             T = time()
-            while not self.mgt.Check_Stop() and not self.Interrupt:
+            #print("path:", self.path)
+            while not self.mgt.Check_Stop() and not self.interrupt:
                 #sleep(1)
                 #if time() > (T + 10):
                     #self.mgt.Stop()
                 old_point = self.path[0]
                 for i in self.path:
+                    print("Going to ", i)
                     self.Get_to_Point(i, old_point)
-                    if self.mgt.Stop or self.Interrupt:
+                    if self.mgt.Check_Stop() or self.interrupt:
+                        print("interupted")
                         break
                     old_point = i
-                
+                self.mgt.Stop()
                 #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
                     #Procedure()
                     #self.MUT.acquire()

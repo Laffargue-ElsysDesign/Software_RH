@@ -21,7 +21,7 @@ class Gestionnnaire_Mission(Thread):
         self.auto_control = tac
         self.interrupt = False
 
-    def Set_Interrupt(self):
+    def Interrupt(self):
         self.interrupt = True
 
     def init_sequence():
@@ -35,7 +35,7 @@ class Gestionnnaire_Mission(Thread):
         ##If Auto_Thread is on, wait for it to finish.
         if not self.auto_control.mgt.Check_Waiting():
             self.auto_control.mgt.Stop()
-            while not self.auto_control.mgt.Check_Waiting():
+            while not self.auto_control.mgt.Check_Waiting() and not self.interrupt:
                 sleep(0.1)
         ##If Manual thread is not on, start it 
         if self.manual_control.mgt.Check_Waiting():
@@ -45,7 +45,7 @@ class Gestionnnaire_Mission(Thread):
         ##If Manual Thread is on, wait for it to  finish
         if not self.manual_control.mgt.Check_Waiting():
             self.manual_control.mgt.Stop()
-            while not self.manual_control.mgt.Check_Waiting():
+            while not self.manual_control.mgt.Check_Waiting() and not self.interrupt:
                 sleep(0.1)
         
         ##If Auto Thread is not on, start it

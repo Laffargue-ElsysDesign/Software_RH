@@ -1,6 +1,7 @@
 from pynq import Overlay
 from signal import signal,SIGINT
-import lib.dijkstra_driver
+#import lib.dijkstra_driver
+import Robot.Motion.FPGA.lib.dijkstra_driver
 
 def handler(signal_received, frame):
     # Handle any cleanup here

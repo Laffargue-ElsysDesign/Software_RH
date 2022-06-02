@@ -14,14 +14,20 @@ def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
     #thread_detection.Set_Interrupt()
     #thread_detection.join()
-    thread_Navigation.Set_Interrupt()
+    print("Trying to exit")
+    thread_Navigation.Interrupt()
     thread_Navigation.join()
-    thread_manual_control.Set_Interrupt()
-    thread_manual_control.join()
-    thread_auto_control.Set_Interrupt()
+    print("Navigation stopped properly")
+    thread_auto_control.Interrupt()
     thread_auto_control.join()
-    thread_gestionnaire.Set_Interrupt()
+    print("AutoControl stopped properly")
+    thread_manual_control.Interrupt()
+    print("Press i and enter")
+    thread_manual_control.join()
+    print("ManualControl stopped properly")
+    thread_gestionnaire.Interrupt()
     thread_gestionnaire.join()
+    print("Gestionnaire stopped properly")
 
     #HUM.cmd_robot.speed_x=self.speed_x
     #HUM.cmd_robot.speed_y=self.speed_y

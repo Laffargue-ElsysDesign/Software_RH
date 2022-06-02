@@ -24,10 +24,10 @@ class DijkstraDriver(DefaultIP):
             raise ValueError("Read timeout")
         nb_nodes = (self.read(OFFSET_READ_REG) & MASK_READ)
         data = []
-        print(nb_nodes)
+        #print(nb_nodes)
         for i in range(nb_nodes):
             data.append((self.read((OFFSET_READ_REG)+((nb_nodes-i)*4)) & MASK_READ))
-        print(data)
+        #print(data)
         return data 
     
     def Disable(self):
