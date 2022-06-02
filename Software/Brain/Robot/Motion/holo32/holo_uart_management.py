@@ -13,7 +13,7 @@ from pynq import MMIO
 from pynq import Overlay
 
 #====Custom import====#
-import lib.uart_driver
+import Robot.Motion.holo32.lib.uart_driver
 
 ADDRESS_0 = 0x00A0010000  # Address of the ip core 0xA0040000
 
@@ -151,7 +151,7 @@ class Holo_UART(Thread):
             
             
             try:
-                #print(self.msg)
+                print(self.msg)
                 self.uart.writeByte(self.msg) 
             except:
                 print("Send timeout")
