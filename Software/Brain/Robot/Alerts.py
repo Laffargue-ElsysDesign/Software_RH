@@ -1,4 +1,3 @@
-from msilib.schema import Class
 from threading import Lock
 from Robot.Constants import NOWHERE
 

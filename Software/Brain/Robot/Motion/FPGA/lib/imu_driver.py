@@ -59,7 +59,7 @@ class IMUDriver(DefaultIP):
         mag_z = ((self.read(OFFSET_READ_MAG_Z) & MASQUE) * 0.15)/1000000
         return (mag_x, mag_y, mag_z)
 
-    def Read_data(self):
+    def Read_Data(self):
         (ax, ay, az) = self.Read_acc()
         (gx, gy, gz) = self.Read_gyr()
         (mx, my, mz) = self.Read_mag()

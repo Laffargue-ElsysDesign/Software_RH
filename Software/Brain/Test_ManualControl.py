@@ -18,7 +18,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
 
     global overlay
-    overlay=Overlay("./Robot/Motion/holo32/Overlays/Bitstream/UartComm.bit", download=False)
+    overlay=Overlay("./Robot/Motion/Overlays/IMUV1/BitStream/IMU.bit", download=False)
     if overlay.is_loaded()==False:
         overlay.download()
     
@@ -30,3 +30,5 @@ if __name__ == '__main__':
     thread_holo.start()
 
     thread_manual_control.start()
+    
+    thread_manual_control.mgt.Restart()
