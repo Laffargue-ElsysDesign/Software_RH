@@ -2,6 +2,7 @@ from signal import signal, SIGINT
 from pynq import Overlay
 #from Constants import DIJKSTRA_MATCH
 import lib.balise_driver
+from time import sleep
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -25,12 +26,9 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/TimerV1/BitStream/Timer.bit")
+    overlay = Overlay("../Overlays/IMUV1/BitStream/IMU.bit")
     overlay.download()
     balises = Balises(overlay)
     while(1):
-        New, Loc = balises.Check_Balise()
-        if New:
-            print(Loc)
-        else:
-            print("RAS")
+        print(balises.Check_Balise())
+        sleep(0.5)

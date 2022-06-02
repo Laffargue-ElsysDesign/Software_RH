@@ -1,5 +1,6 @@
 from pynq import DefaultIP
 from signal import signal, SIGINT
+from time import sleep
 
 import time
 
@@ -20,12 +21,12 @@ class BaliseDriver(DefaultIP):
         
     def Read_Loc(self, timeout = 1):
         Loc = self.read(OFFSET_READ_BALISE) & MASK_BALISE
-        print(Loc)
         return Loc 
     
     def Reset(self):
-        while (self.read(OFFSET_READ_STATE) & 1) != 0:
+        while self.Read_State():
             self.write(OFFSET_RESET, 1)
+            sleep(0.1)
         self.write(OFFSET_RESET, 0)
         return 1
 

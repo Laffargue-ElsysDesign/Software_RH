@@ -22,7 +22,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/TimerV1/BitStream/Timer.bit")
+    overlay = Overlay("../Overlays/IMUV1/BitStream/IMU.bit")
     overlay.download()
     ronde = Ronde(overlay)
     i=0
