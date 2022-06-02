@@ -21,7 +21,7 @@ class Class_Command:
         self.speed_z = 0
         self.MUT = Lock()
 
-    def set_speed(self, x, y, z):
+    def Set_Speed(self, x, y, z):
         self.MUT.acquire()
         self.speed_x = x
         self.speed_y = y

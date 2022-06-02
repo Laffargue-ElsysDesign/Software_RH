@@ -6,6 +6,7 @@ from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
 from Robot.Motion.Overlays.Overlay import overlay
+import Robot.Motion.holo32.holo_uart_management as HUM 
 
 #from Robot.Detection import thread_detection
 
@@ -29,9 +30,7 @@ def handler(signal_received, frame):
     thread_gestionnaire.join()
     print("Gestionnaire stopped properly")
 
-    #HUM.cmd_robot.speed_x=self.speed_x
-    #HUM.cmd_robot.speed_y=self.speed_y
-    #HUM.cmd_robot.speed_z=self.speed_z
+    #HUM.cmd_robot.Set_Speed(0, 0, 0)
     print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
     exit(0)
 
@@ -51,10 +50,11 @@ if __name__ == '__main__':
     #app.run(debug = True)
 
     #Start UART Comunication with robot
-    #thread_holo = HUM.Holo_UART(overlay)
-    #thread_holo.start()
+    thread_holo = HUM.Holo_UART(overlay)
 
     ################Start all threads###################
+    thread_holo.start()
+    
     thread_Navigation.start()
 
     thread_manual_control.start()

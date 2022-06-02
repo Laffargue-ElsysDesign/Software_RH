@@ -18,23 +18,23 @@ def Dijkstra(End):
 def Compute_Angle(point, old_point):
     return 1, 3 #TBD
 
-def Rotate(Turn):
+def Robot_Rotate(Turn):
     if Turn:
-        HUM.cmd_robot.speed_x = 0
-        HUM.cmd_robot.speed_y = 0
-        HUM.cmd_robot.speed_z = 0.3
+        HUM.cmd_robot.Set_Speed(0, 0, 0.3)
     else:
-        HUM.cmd_robot.speed_x = 0
-        HUM.cmd_robot.speed_y = 0
-        HUM.cmd_robot.speed_z = -0.3     
+        HUM.cmd_robot.Set_Speed(0, 0, -0.3) 
+    return 1
 
+def Robot_Stop():
+    HUM.cmd_robot.Set_Speed(0, 0, 0)
+    return 1
+        
 def Correct():
     pass #TBD
 
-def Froward():
-    HUM.cmd_robot.speed_x = 0.3
-    HUM.cmd_robot.speed_y = 0
-    HUM.cmd_robot.speed_z = 0
+def Robot_Froward():
+    HUM.cmd_robot.Set_Speed(0.3, 0, 0)
+    return 1
 
 def Procedure():
     pass #TBD:  Routine when ariving on a point
@@ -78,12 +78,14 @@ class Navigation(Thread):
             #End = Check_NFC(self.path, point, old_point)
         else:
             Turn, time = Compute_Angle(point, old_point)
-            Rotate(Turn)
+            Robot_Rotate(Turn)
             sleep(time)
+            Robot_Stop()
             if self.mgt.Check_Stop():
                 return
             while not self.Check_NFC(point, old_point):
-                Froward()
+                Robot_Froward()
+            Robot_Stop()
             if self.mgt.Check_Stop():
                 return
             #Correct()    
