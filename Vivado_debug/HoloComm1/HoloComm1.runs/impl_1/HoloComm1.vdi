@@ -1,0 +1,193 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Mon May 30 17:11:38 2022
+# Process ID: 17796
+# Current directory: D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/impl_1
+# Command line: vivado.exe -log HoloComm1.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source HoloComm1.tcl -notrace
+# Log file: D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/impl_1/HoloComm1.vdi
+# Journal file: D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/impl_1\vivado.jou
+#-----------------------------------------------------------
+source HoloComm1.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'd:/Digilent/vivado-library'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Xilinx/Vivado/2020.2/data/ip'.
+WARNING: [IP_Flow 19-1663] Duplicate IP found for 'digilentinc.com:ip:axi_dynclk:1.0'. The one found in IP location 'd:/Digilent/vivado-library/ip/axi_dynclk_v1_0' will take precedence over the same IP in location d:/Digilent/vivado-library/tmp/axi_dynclk_v1_0
+WARNING: [IP_Flow 19-1663] Duplicate IP found for 'digilentinc.com:ip:dvi2rgb:1.7'. The one found in IP location 'd:/Digilent/vivado-library/ip/dvi2rgb_v1_7' will take precedence over the same IP in location d:/Digilent/vivado-library/tmp/dvi2rgb_v1_7
+WARNING: [IP_Flow 19-1663] Duplicate IP found for 'digilentinc.com:ip:rgb2dvi:1.2'. The one found in IP location 'd:/Digilent/vivado-library/ip/rgb2dvi_v1_2' will take precedence over the same IP in location d:/Digilent/vivado-library/tmp/rgb2dvi_v1_2
+Command: link_design -top HoloComm1 -part xc7z020clg400-1
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Device 21-403] Loading part xc7z020clg400-1
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1144.203 ; gain = 0.000
+INFO: [Project 1-479] Netlist was created with Vivado 2020.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc]
+WARNING: [Vivado 12-584] No ports matched 'uart_rtl_rxd'. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:1]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:1]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'uart_rtl_txd'. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:2]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:2]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'uart_rtl_rxd'. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:3]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:3]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'uart_rtl_txd'. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:4]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc:4]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+Finished Parsing XDC File [D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.srcs/constrs_1/new/HoloComm1.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1144.203 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+8 Infos, 7 Warnings, 4 Critical Warnings and 0 Errors encountered.
+link_design completed successfully
+link_design: Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1144.203 ; gain = 0.000
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.539 . Memory (MB): peak = 1144.203 ; gain = 0.000
+
+Starting Cache Timing Information Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Cache Timing Information Task | Checksum: e480817d
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1583.105 ; gain = 438.902
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1794.594 ; gain = 0.000
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 0 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1794.594 ; gain = 0.000
+INFO: [Opt 31-389] Phase Constant propagation created 0 cells and removed 0 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1794.594 ; gain = 0.000
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 0 cells
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1794.594 ; gain = 0.000
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1794.594 ; gain = 0.000
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1794.594 ; gain = 0.000
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |               0  |               0  |                                              0  |
+|  Constant propagation         |               0  |               0  |                                              0  |
+|  Sweep                        |               0  |               0  |                                              0  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1794.594 ; gain = 0.000
+Ending Logic Optimization Task | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1794.594 ; gain = 0.000
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1810.406 ; gain = 15.812
+
+Starting Final Cleanup Task
+Ending Final Cleanup Task | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1810.406 ; gain = 0.000
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1810.406 ; gain = 0.000
+Ending Netlist Obfuscation Task | Checksum: e480817d
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1810.406 ; gain = 0.000
+INFO: [Common 17-83] Releasing license: Implementation
+25 Infos, 7 Warnings, 4 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1810.406 ; gain = 666.203
+INFO: [Timing 38-480] Writing timing data to binary archive.
+INFO: [Common 17-1381] The checkpoint 'D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/impl_1/HoloComm1_opt.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_drc -file HoloComm1_drc_opted.rpt -pb HoloComm1_drc_opted.pb -rpx HoloComm1_drc_opted.rpx
+Command: report_drc -file HoloComm1_drc_opted.rpt -pb HoloComm1_drc_opted.pb -rpx HoloComm1_drc_opted.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Coretcl 2-168] The results of DRC are in file D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/impl_1/HoloComm1_drc_opted.rpt.
+report_drc completed successfully
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020'
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 2 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1833.492 ; gain = 0.000
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 00000000
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1833.492 ; gain = 0.000
+Phase 1 Placer Initialization | Checksum: 00000000
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1833.492 ; gain = 0.000
+ERROR: [Place 30-494] The design is empty
+Resolution: Check if opt_design has removed all the leaf cells of your design.  Check whether you have instantiated and connected all of the top level ports.
+Ending Placer Task | Checksum: 00000000
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1833.492 ; gain = 0.000
+INFO: [Common 17-83] Releasing license: Implementation
+41 Infos, 7 Warnings, 4 Critical Warnings and 2 Errors encountered.
+place_design failed
+ERROR: [Common 17-69] Command failed: Placer could not place all instances
+INFO: [Common 17-206] Exiting Vivado at Mon May 30 17:12:02 2022...

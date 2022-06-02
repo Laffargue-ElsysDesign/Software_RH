@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Mon May 30 17:10:42 2022
+# Process ID: 5332
+# Current directory: D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/synth_1
+# Command line: vivado.exe -log HoloComm1.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source HoloComm1.tcl
+# Log file: D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/synth_1/HoloComm1.vds
+# Journal file: D:/Robot_Surveillance_V3/Software/Vivado_debug/HoloComm1/HoloComm1.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source HoloComm1.tcl -notrace
