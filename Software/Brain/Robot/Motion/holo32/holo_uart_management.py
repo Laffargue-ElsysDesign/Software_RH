@@ -228,19 +228,19 @@ def init():
     global init_done
     init_done=True
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
     
-#    signal(SIGINT, handler)
+    signal(SIGINT, handler)
 
-#    global overlay
-#    overlay=Overlay("../bitstream/Test_3.bit", download=False)
-#    if overlay.is_loaded()==False:
-#       overlay.download()
-#    
-#    print('Bring up uart....')
+    global overlay
+    overlay=Overlay("./Overlays/Bitstream/UartComm.bit", download=False)
+    if overlay.is_loaded()==False:
+        overlay.download()
     
-#    thread_holo = Holo_UART()
-#    thread_holo.start()
+    print('Bring up uart....')
+    
+    thread_holo = Holo_UART()
+    thread_holo.start()
    
     ##thread_imu = IMU_I2C()
     ##thread_imu.start()
