@@ -233,7 +233,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
 
     global overlay
-    overlay=Overlay("./holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
+    overlay=Overlay("./Overlays/Bitstream/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
         overlay.download()
     

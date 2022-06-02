@@ -53,15 +53,15 @@
                 "availableResources": {
                     "bramCount": "140",
                     "dspCount": "220",
-                    "lutCount": "52794",
-                    "registerCount": "105905"
+                    "lutCount": "52800",
+                    "registerCount": "105909"
                 }
             }
         }
     ],
     "files": [
         {
-            "name": "design_1_wrapper.bit",
+            "name": "HoloComm1.bit",
             "type": "FULL_BIT"
         }
     ],
@@ -82,11 +82,11 @@
     "generatedVersion": "2020.2",
     "generatedChangeList": "3064766",
     "generatedIpChangeList": "3064653",
-    "generatedTimestamp": "Thu Jun  2 12:10:49 2022",
+    "generatedTimestamp": "Fri Jun 10 11:34:32 2022",
     "resources": [
         {
             "type": "REG",
-            "count": "105905"
+            "count": "105909"
         }
     ]
 }
