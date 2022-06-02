@@ -20,6 +20,7 @@ class BaliseDriver(DefaultIP):
         
     def Read_Loc(self, timeout = 1):
         Loc = self.read(OFFSET_READ_BALISE) & MASK_BALISE
+        print(Loc)
         return Loc 
     
     def Reset(self):

@@ -1,5 +1,7 @@
 from pynq import Overlay
 from signal import signal,SIGINT
+import lib.ronde_driver
+from time import time, sleep
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -20,13 +22,16 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Wrappers/Dijkstra_V2/Files/Dijkstra.bit")
+    overlay = Overlay("../Overlays/TimerV1/BitStream/Timer.bit")
     overlay.download()
     ronde = Ronde(overlay)
-    
-    try :
-        if ronde.Get_New_Alert():
-            print("New Ronde")
-    except:
-        print("Ronde Lecture failed")
+    i=0
+    while(1):
+        sleep(1)
+        print(i)
+        i+=1
+        if ronde.Check():
+            print("New Ronde", time())
+        else:
+            print("No Ronde Asked")
 

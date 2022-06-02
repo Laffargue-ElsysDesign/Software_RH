@@ -1,5 +1,6 @@
 from pynq import Overlay
 from signal import signal,SIGINT
+import lib.dijkstra_driver
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -7,11 +8,11 @@ def handler(signal_received, frame):
     exit(0)  
 
 class Dijkstra():
-    def __init__(self):
+    def __init__(self, overlay):
         self.Dijkstra = overlay.Dijkstra_reg_0
     
     def Compute(self, Start, Stop):
-        self.Dijkstra.Write_Data(self.start, self.stop)
+        self.Dijkstra.Write_Data(Start, Stop)
         PATH = self.Dijkstra.Read_Data()
         self.Dijkstra.Disable()
         
@@ -21,7 +22,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Wrappers/Dijkstra_V2/Files/Dijkstra.bit")
+    overlay = Overlay("../Overlays/TimerV1/BitStream/Timer.bit")
     overlay.download()
     dijkstra = Dijkstra(overlay)
     
