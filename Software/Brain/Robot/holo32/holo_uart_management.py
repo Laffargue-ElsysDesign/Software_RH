@@ -13,6 +13,7 @@ from pynq import Overlay
 
 #====Custom import====#
 import Robot.holo32.lib.uart_driver
+import Robot.FPGA.lib.imu_driver
 
 class Class_Command:
     def __init__(self):
@@ -183,17 +184,16 @@ class Holo_UART(Thread):
             if (not math.isnan(self.speed_z)):
                 self.msg[7] = int(self.speed_z)            
             
-            
             try:
                 #I = input("Enter")
-                print(self.msg)
+                #print(self.msg)
                 self.uart.writeByte(self.msg) 
             except:
                 print("Send timeout")
                 
-            #readTrame_uart(self.uart)
-            print(odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
-            sleep(0.5)
+            readTrame_uart(self.uart)
+            #print(odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
+            sleep(0.3)
 
 def init():
     duree_tour=6.5 #duree d'un tour en seconde 

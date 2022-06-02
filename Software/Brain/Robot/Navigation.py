@@ -77,9 +77,9 @@ class Navigation(Thread):
             return 
             #End = Check_NFC(self.path, point, old_point)
         else:
-            Turn, time = Compute_Angle(point, old_point)
-            Robot_Rotate(Turn)
-            sleep(time)
+            #Turn, time = Compute_Angle(point, old_point)
+            #Robot_Rotate(Turn)
+            #sleep(time)
             Robot_Stop()
             if self.mgt.Check_Stop():
                 return

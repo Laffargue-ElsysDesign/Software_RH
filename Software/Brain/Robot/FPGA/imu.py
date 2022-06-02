@@ -1,8 +1,9 @@
 from curses import raw
 from pynq import Overlay
-import lib.imu_driver
+#import lib.imu_driver
 from signal import signal,SIGINT
 from time import sleep
+from Robot.Overlays.Overlay import overlay
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -10,8 +11,8 @@ def handler(signal_received, frame):
     exit(0)
 
 class IMU():
-    def __init__(self, overlay):
-        self.imu = overlay.IP_IMU_0
+    def __init__(self):
+        self.imu = overlay.IMU_v3_0
         self.X_ACC_OFFSET = 0
         self.Y_ACC_OFFSET = 0
         self.Z_GYRO_OFFSET = 0
@@ -35,10 +36,8 @@ class IMU():
 if __name__ == '__main__':
     signal(SIGINT, handler)
     
-    global overlay
-    overlay = Overlay("../Overlays/IMUV3/BitStream/IMU.bit")
     overlay.download()
-    imu = IMU(overlay)
+    imu = IMU()
     while(1):
         print(imu.Get_Raw_Data())
         sleep(0.3)

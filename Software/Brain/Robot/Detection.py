@@ -1,20 +1,26 @@
 from threading import Thread
 from Robot.Alerts import alerts, ultrasons
-from Robot.FPGA.balise import Balises
-from Robot.FPGA.battery import Battery
-from Robot.FPGA.ronde import Ronde
-from Robot.FPGA.ultrasons import Ultrasons
+#from Robot.FPGA.balise import Balises
+#from Robot.FPGA.battery import Battery
+#from Robot.FPGA.ronde import Ronde
+#from Robot.FPGA.ultrasons import Ultrasons
+from Robot.FPGA.imu import IMU
+from Robot.holo32.holo_uart_management import odometry
+from time import sleep
 
 class Detection_Alert(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.interrupt = False
-        self.balises = Balises()
-        self.battery = Battery()
-        self.ronde = Ronde()
-        self.ultrasons = Ultrasons()
+        #self.balises = Balises()
+        #self.battery = Battery()
+        #self.ronde = Ronde()
+        #self.ultrasons = Ultrasons()
+        
+        self.imu = IMU()
+        self.data = []
     
-    def Set_Interrupt(self):
+    def Interrupt(self):
         self.interrupt = True
 
     ##This updates the class_ultrasounds so all datas are ready to be used
@@ -40,25 +46,28 @@ class Detection_Alert(Thread):
         while(not self.interrupt):
             
             ##Update for Battery
-            if self.battery.Check():
-                alerts.Set_Battery_Alert()
-            else:
-                alerts.Reset_Battery_Alert()
+            #if self.battery.Check():
+            #    alerts.Set_Battery_Alert()
+            #else:
+            #    alerts.Reset_Battery_Alert()
             
             ##Update for balise
-            new, dot = self.balises.Check_Balise()
-            if new:
-                if not (dot == alerts.Get_Balise_Dot()):
-                    alerts.Set_Balise_Alert(dot)
+            #new, dot = self.balises.Check_Balise()
+            #if new:
+            #    if not (dot == alerts.Get_Balise_Dot()):
+            #        alerts.Set_Balise_Alert(dot)
             
             ##Update for Ronde
-            if self.ronde.Check():
-                alerts.Set_Ronde_Alert()
-            else:
-                alerts.Reset_Ronde_Alert()
+            #if self.ronde.Check():
+            #    alerts.Set_Ronde_Alert()
+            #else:
+            #    alerts.Reset_Ronde_Alert()
             
             ##Update for utrasounds
-            self.Manage_US()
+            #self.Manage_US()
+            self.data = self.imu.Get_Raw_Data()
+            print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
+            sleep(0.1)
 
 thread_detection = Detection_Alert()
             

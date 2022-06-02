@@ -6,15 +6,16 @@ from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
 from Robot.Overlays.Overlay import overlay
-import Robot.holo32.holo_uart_management as HUM 
+import Robot.holo32.holo_uart_management as HUM
+from Robot.Detection import thread_detection
 
 #from Robot.Detection import thread_detection
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
-    #thread_detection.Set_Interrupt()
-    #thread_detection.join()
+    thread_detection.Interrupt()
+    thread_detection.join()
     print("Trying to exit")
     thread_Navigation.Interrupt()
     thread_Navigation.join()
@@ -40,10 +41,10 @@ def handler(signal_received, frame):
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
-
-    if overlay.is_loaded()==False:
-        print("Loading Overlay..")
-        overlay.download()
+    overlay.download()
+    #if overlay.is_loaded()==False:
+    #    print("Loading Overlay..")
+    #    overlay.download()
     
     
     #Start IHM
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     
     thread_gestionnaire.start()
 
-    #thread_detection.start()
+    thread_detection.start()
 
 
     
