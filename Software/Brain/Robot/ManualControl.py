@@ -36,43 +36,43 @@ class Keyboard_Read(Thread):
 
         elif read_input=='z':
             #print("Avance")
-            self.Set_Speed(0.3, 0, 0)
+            self.Set_Speed(0.2, 0, 0)
 
         elif read_input=='d':
             #print("Droite")
-            self.Set_Speed(0, 0.3, 0)
+            self.Set_Speed(0, 0.2, 0)
 
         elif read_input=='q':
             #print("Gauche")
-            self.Set_Speed(0, -0.3, 0)
+            self.Set_Speed(0, -0.2, 0)
 
         elif read_input=='s':
             #print("Arriere")
-            self.Set_Speed(-0.3, 0, 0)
+            self.Set_Speed(-0.2, 0, 0)
 
         elif read_input=='e':
             #print("Nord-est")
-            self.Set_Speed(0.3, 0.3, 0)
+            self.Set_Speed(0.2, 0.2, 0)
 
         elif read_input=='a':
             #print("Nord-ouest")
-            self.Set_Speed(0.3, -0.3, 0)
+            self.Set_Speed(0.2, -0.2, 0)
 
         elif read_input=='w':
             #print("Sud-ouest")
-            self.Set_Speed(-0.3, -0.3, 0)
+            self.Set_Speed(-0.2, -0.2, 0)
 
         elif read_input=='x':
             #print("sud-est")
-            self.Set_Speed(-0.3, 0.3, 0)
+            self.Set_Speed(-0.2, 0.2, 0)
 
         elif read_input=='"':
             #print("pivot droite")
-            self.Set_Speed(0, 0, 0.3)
+            self.Set_Speed(0, 0, 0.1)
 
         elif read_input=='é':
             #print("pivot gauche")
-            self.Set_Speed(0, 0, -0.3)
+            self.Set_Speed(0, 0, -0.1)
 
         elif read_input == 'm':
             mode.mode_wanted.mode = cst.modes.AUTO
@@ -106,17 +106,17 @@ class Keyboard_Read(Thread):
                 elif read_input == 'r':
                     alerts.Set_Ronde_Alert()
                 elif read_input == '1':
-                    alerts.Set_NFC_Alert(1)
+                    alerts.Set_NFC_Alert(1, 1)
                 elif read_input == '2':
-                    alerts.Set_NFC_Alert(2)
+                    alerts.Set_NFC_Alert(2, 2)
                 elif read_input == '3':
-                    alerts.Set_NFC_Alert(3)
+                    alerts.Set_NFC_Alert(3, 3)
                 elif read_input == '4':
-                    alerts.Set_NFC_Alert(4)
+                    alerts.Set_NFC_Alert(4, 4)
                 elif read_input == '5':
-                    alerts.Set_NFC_Alert(5)
+                    alerts.Set_NFC_Alert(5, 5)
                 elif read_input == '6':
-                    alerts.Set_NFC_Alert(6)
+                    alerts.Set_NFC_Alert(6, 6)
         self.mgt.Is_Not_Waiting()
         self.speed_x=0
         self.speed_y=0
@@ -158,34 +158,34 @@ class IHM_Read(Thread):
 
     def Get_Trajectory(self, read_input):
         if mode.command == cst.orders.NORTH:
-            self.Set_Speed(0.3, 0, 0)
+            self.Set_Speed(0.2, 0, 0)
 
         elif mode.command == cst.orders.SOUTH:
-            self.Set_Speed(-0.3, 0, 0)
+            self.Set_Speed(-0.2, 0, 0)
 
         elif mode.command == cst.orders.EAST:
-            self.Set_Speed(0, 0.3, 0)
+            self.Set_Speed(0, 0.2, 0)
 
         elif mode.command == cst.orders.WEST:
-            self.Set_Speed(0, -0.3, 0)
+            self.Set_Speed(0, -0.2, 0)
 
         elif mode.command == cst.orders.NORTH_EAST:
-            self.Set_Speed(0.3, 0.3, 0)
+            self.Set_Speed(0.2, 0.2, 0)
 
         elif mode.command == cst.orders.NORTH_WEST:
-            self.Set_Speed(0.3, -0.3, 0)
+            self.Set_Speed(0.2, -0.2, 0)
 
         elif mode.command == cst.orders.SOUTH_EAST:
-            self.Set_Speed(-0.3, 0.3, 0)
+            self.Set_Speed(-0.2, 0.2, 0)
 
         elif mode.command == cst.orders.SOUTH_WEST:
-            self.Set_Speed(-0.3, -0.3, 0)
+            self.Set_Speed(-0.2, -0.2, 0)
 
         elif mode.command == cst.orders.ROTATE_RIGHT:
-            self.Set_Speed(0, 0, 0.3)
+            self.Set_Speed(0, 0, 0.1)
 
         elif mode.command == cst.orders.ROTATE_LEFT:
-            self.Set_Speed(0, 0, -0.3)
+            self.Set_Speed(0, 0, -0.1)
 
         elif mode.command == cst.orders.STOP:
             self.Set_Speed(0, 0, 0)
