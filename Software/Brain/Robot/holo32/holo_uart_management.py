@@ -89,6 +89,14 @@ class Class_Odom:
         self.dist_y = 0
         self.ang_z = 0
         self.MUT = Lock()
+        
+    def Read(self):
+        self.MUT.acquire()
+        Sx = self.speed_x
+        Sy = self.speed_y
+        Sz = self.speed_z
+        self.MUT.release()
+        return Sx, Sy, Sz
 
 cmd_robot = Class_Command()
 odometry = Class_Odom()

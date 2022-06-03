@@ -88,7 +88,7 @@ class Navigation(Thread):
 
         while ((not np.abs(angle) < 2) and (not self.mgt.Check_Stop())):
             Turn_Right = False
-            print(angle, np.abs(angle))
+            #print(angle, np.abs(angle))
             if angle < 0:
                 Turn_Right = True
             

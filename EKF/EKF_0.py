@@ -237,9 +237,9 @@ class Filter():
         #plt.plot(posY, range(100))
         #plt.plot(posTheta, range(100))
         return 0
-    
+thread_localisation = Filter()
 if __name__ == '__main__':
-    ekf = EKF()
+    ekf = Filter()
     
     ekf.run()
 

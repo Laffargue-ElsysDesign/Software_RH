@@ -8,6 +8,7 @@ from Robot.FPGA.imu import IMU
 from Robot.FPGA.rfid import RFID
 from Robot.holo32.holo_uart_management import odometry
 from Robot.Overlays.Overlay import overlay
+from Robot.EKF import imu_data
 from time import sleep
 
 class Detection_Alert(Thread):
@@ -21,7 +22,6 @@ class Detection_Alert(Thread):
         #self.ultrasons = Ultrasons(overlay)
         
         self.imu = IMU(overlay)
-        self.data = []
     
     def Interrupt(self):
         self.interrupt = True
@@ -79,7 +79,8 @@ class Detection_Alert(Thread):
             #self.Manage_US()
 
             #Update IMU
-            self.data = self.imu.Get_Raw_Data()
+            data = self.imu.Get_Raw_Data()
+            imu_data.Write(data[0], data[1], data[5])
             #print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
             
             sleep(0.1)
