@@ -1,15 +1,25 @@
+##########Classic imports#########
 from threading import Thread
-from Robot.Alerts import alerts, ultrasons
+from time import sleep
+
+#########Sensor imports###########
 from Robot.FPGA.balise import Balises
 #from Robot.FPGA.battery import Battery
 from Robot.FPGA.ronde import Ronde
 from Robot.FPGA.ultrasons import Ultrasons
 from Robot.FPGA.imu import IMU
 from Robot.FPGA.rfid import RFID
+
+######Overlay programmed en PL#####
 from Robot.Overlays.Overlay import overlay
+
+########Global variables#########
 from Robot.EKF import imu_data
-from time import sleep
+from Robot.Alerts import alerts, ultrasons
+
+############Function used#############
 from Robot.Localisation import Get_Dot_from_ID
+
 
 class Detection_Alert(Thread):
     def __init__(self):
@@ -60,6 +70,7 @@ class Detection_Alert(Thread):
             ##Update for balise
             new_balise, id = self.balises.Check_Balise()
             if new_balise:
+                print("New balise id:" ,id)
                 if not (id == alerts.Get_Balise_Dot()):
                     alerts.Set_Balise_Alert(Get_Dot_from_ID(id))
             

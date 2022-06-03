@@ -1,7 +1,6 @@
 from pynq import Overlay
 from signal import signal,SIGINT
 #import lib.dijkstra_driver
-import Robot.FPGA.lib.dijkstra_driver
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -23,19 +22,28 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/IMUV1/BitStream/IMU.bit")
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
     dijkstra = Dijkstra(overlay)
     
     PATH = dijkstra.Compute(0, 13)
+    print(PATH)
     try :
         
         PATH = dijkstra.Compute(0, 17)
     except:
         print("Too long Dijkstra failed")
     PATH = dijkstra.Compute(8, 1)
+    print(PATH)
     PATH = dijkstra.Compute(0, 16)
+    print(PATH)
     PATH = dijkstra.Compute(7, 4)
+    print(PATH)
     PATH = dijkstra.Compute(1, 2)
+    print(PATH)
     PATH = dijkstra.Compute(6, 12)
+    print(PATH)
     PATH = dijkstra.Compute(15, 9)
+    print(PATH)
+    PATH = dijkstra.Compute(0, 6)
+    print(PATH)

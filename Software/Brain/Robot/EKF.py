@@ -16,7 +16,7 @@ class Coordinate:
         self.x = 0
         self.y = 0
         self.angle = 0
-
+        
         self.MUT = Lock()
     
     def Write_Loc(self, X, Y, angle):
@@ -112,7 +112,7 @@ class Filter(Thread):
         vx = R_vx*0.89
         vy = R_vy*0.89
         vz = R_vz*0.62
-        print(R_vx, R_vy, R_ax, R_ay, R_gz, R_vz)
+        #print(R_vx, R_vy, R_ax, R_ay, R_gz, R_vz)
         return np.array([[vx], [vy], [vz]])
         
     def compute_X(self, X, Z):
@@ -136,7 +136,7 @@ class Filter(Thread):
     def run(self):     
         dt = 0.15
         counter = 0
-        X = self.initialize(0, 0, 0, 0, 0, 0, dt)
+        X = self.initialize(0, 0, 180, 0, 0, 0, dt)
         #print(A, B, C, X)
         
         while not self.interrupt:

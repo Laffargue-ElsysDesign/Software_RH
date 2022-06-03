@@ -19,17 +19,17 @@ def Dijkstra(End):
     pass #TBD
 
 def Compute_Angle(end_angle):
-    angle = coordinate.Get_Angle() - end_angle
+    angle = end_angle - coordinate.Get_Angle()
 
-    if angle < -180:
-        angle = -360 - angle
-    elif angle > 180:
-        angle = 360 - angle
+    if np.abs(angle) > 180:
+        angle = 360 - np.abs(angle)
 
     return angle
     
 
 def Robot_Rotate(Turn_Right):
+    
+    print("Rotate")
     if Turn_Right:
         HUM.cmd_robot.Set_Speed(0, 0, 0.1)
     else:
@@ -37,6 +37,7 @@ def Robot_Rotate(Turn_Right):
     return 1
 
 def Robot_Stop():
+    print("Stop")
     HUM.cmd_robot.Set_Speed(0, 0, 0)
     return 1
         
@@ -87,10 +88,11 @@ class Navigation(Thread):
         angle = Compute_Angle(angle_wanted)
 
         while ((not np.abs(angle) < 2) and (not self.mgt.Check_Stop())):
-            Turn_Right = False
+            print(angle)
+            Turn_Right = True
             #print(angle, np.abs(angle))
             if angle < 0:
-                Turn_Right = True
+                Turn_Right = False
             
             Robot_Rotate(Turn_Right)
 
@@ -113,7 +115,7 @@ class Navigation(Thread):
             Robot_Forward()
             alerts.Reset_Tag_Alert()
 
-            while not self.Check_NFC(point, old_point):
+            while not self.Check_NFC(point, old_point) and not self.interrupt:
                 Robot_Forward()
             
             Robot_Forward()

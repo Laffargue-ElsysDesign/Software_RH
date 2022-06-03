@@ -1,6 +1,6 @@
 from signal import signal, SIGINT
 from pynq import Overlay
-#ºimport lib.rfid_driver
+#import lib.rfid_driver
 from time import sleep
 
 def handler(signal_received, frame):
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/US1/BitStream/bitstream.bit")
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
     rfid = RFID(overlay)
     while(1):

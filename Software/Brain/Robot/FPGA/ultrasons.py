@@ -1,4 +1,5 @@
 from pynq import Overlay
+#import lib.ultrasons_driver
 from signal import signal,SIGINT
 
 def handler(signal_received, frame):
@@ -8,7 +9,7 @@ def handler(signal_received, frame):
 
 class Ultrasons():
     def __init__(self, overlay):
-        self.ultrasons = overlay.ultrasons_reg #TBD
+        self.ultrasons = overlay.Ultrasons_0 #TBD
 
     def Check_US_Detection(self): #TBD
         (W, NW, N, NE, E) = self.ultrasons.Read_ALL_Detection()
@@ -34,7 +35,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Wrappers/Dijkstra_V2/Files/Dijkstra.bit")
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
     ultrasons = Ultrasons(overlay)
     

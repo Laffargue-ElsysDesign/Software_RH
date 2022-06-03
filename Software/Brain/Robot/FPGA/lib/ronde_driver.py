@@ -31,8 +31,7 @@ class RondeDriver(DefaultIP):
         self.write(OFFSET_CONFIG_COUNT, count)
 
     def Config_Timer(self, seconds, count):
-        while ((self.read(OFFSET_READ_STATE) & 1) != 0):
-            self.write(OFFSET_RESET, 1)
+        self.write(OFFSET_RESET, 1)
 
         if seconds:
             self.Config_sec()

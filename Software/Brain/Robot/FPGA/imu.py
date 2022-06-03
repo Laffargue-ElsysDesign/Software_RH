@@ -34,9 +34,9 @@ class IMU():
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
-    
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
-    imu = IMU()
+    imu = IMU(overlay)
     while(1):
         print(imu.Get_Raw_Data())
         sleep(0.3)
