@@ -1,7 +1,7 @@
 from signal import signal, SIGINT
 from pynq import Overlay
 #from Constants import DIJKSTRA_MATCH
-import lib.rfid_driver
+#import lib.rfid_driver
 from time import sleep
 
 def handler(signal_received, frame):
@@ -11,24 +11,29 @@ def handler(signal_received, frame):
 
 class RFID():
     def __init__(self, overlay):
-        self.rfid = overlay.rfid_0
+        self.rfid = overlay.RFID_reader_0
 
     def Check_RFID(self):
-        (New, Tag) = self.rfid.Read_Rfid()
-        #if New:
-        #    Loc = self.Get_Dot(Room)
-        return (New, Tag)
-
-    #def Get_Dot(self, Value): #TBD
-    #    return DIJKSTRA_MATCH[Value, 1]
+        New = self.rfid.Read_Tag_Detect()
+        return New
+    
+    def Read_Data(self):
+        while not (self.rfid.Read_Tag_Data_Valid):
+            pass
+        point, position = self.rfid.Read_Tag()
+        self.rfid.Reset()
+        return (point, position)
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/IMUV3/BitStream/IMU.bit")
+    overlay = Overlay("../Overlays/RFID1/BitStream/bitstream.bit")
     overlay.download()
     rfid = RFID(overlay)
     while(1):
-        print(rfid.Check_RFID())
+        if rfid.Check_RFID():
+            print("RFID_Detected ", rfid.Read_Data())
+        else:
+            print("Nothing detected")
         sleep(0.5)

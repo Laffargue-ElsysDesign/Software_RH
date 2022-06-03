@@ -5,20 +5,22 @@ from Robot.Alerts import alerts, ultrasons
 #from Robot.FPGA.ronde import Ronde
 #from Robot.FPGA.ultrasons import Ultrasons
 from Robot.FPGA.imu import IMU
+from Robot.FPGA.rfid import RFID
 from Robot.holo32.holo_uart_management import odometry
+from Robot.Overlays.Overlay import overlay
 from time import sleep
 
 class Detection_Alert(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.interrupt = False
-        #self.balises = Balises()
-        #self.battery = Battery()
-        #self.ronde = Ronde()
-        #self.rfid = RFID()
-        #self.ultrasons = Ultrasons()
+        #self.balises = Balises(overlay)
+        #self.battery = Battery(overlay)
+        #self.ronde = Ronde(overlay)
+        self.rfid = RFID(overlay)
+        #self.ultrasons = Ultrasons(overlay)
         
-        self.imu = IMU()
+        self.imu = IMU(overlay)
         self.data = []
     
     def Interrupt(self):
@@ -63,14 +65,20 @@ class Detection_Alert(Thread):
             #    alerts.Set_Ronde_Alert()
             
             #Update for RFID
-            #new_rfid, tag  = self.rfid.Check_RFID()
-            #if new_rfid:
-            #    alerts.Set_NFC_Alert(tag)
+            new_rfid = self.rfid.Check_RFID()
+            #print(new_rfid)
+            if new_rfid:
+                print("RFID_Detected")
+                alerts.Set_NFC_New()
+                print("Waiting for data")
+                (point, position) = self.rfid.Read_Data()
+                alerts.Set_NFC_Alert(point,  position)
+                print("New Tag: ", point, " ", position)
             
             ##Update for utrasounds
             #self.Manage_US()
             self.data = self.imu.Get_Raw_Data()
-            print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
+            #print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
             sleep(0.1)
 
 thread_detection = Detection_Alert()

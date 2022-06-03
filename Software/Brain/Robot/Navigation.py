@@ -16,7 +16,7 @@ def Dijkstra(End):
     pass #TBD
 
 def Compute_Angle(point, old_point):
-    return 1, 3 #TBD
+    return 1, 3#TBD
 
 def Robot_Rotate(Turn):
     if Turn:
@@ -58,14 +58,16 @@ class Navigation(Thread):
     def Check_NFC(self, point, old_point):
         output = False
         if alerts.Get_NFC_Alert():
-            tag = alerts.Get_NFC_Tag()
-            if tag == point:
+            Robot_Stop()
+            sleep(0.5)
+            data_valid, tag_point, tag_position = alerts.Get_NFC_Tag()
+            if data_valid and tag_point == point:
                 #print("point reached")
                 output = True
-            elif tag == old_point:
+            elif data_valid and tag_point == old_point:
                 #print("still old point")
                 output = False
-            else:
+            elif data_valid:
                 #print("interrupting", point, old_point, tag)
                 self.mgt.Stop()
                 output = True
@@ -77,12 +79,15 @@ class Navigation(Thread):
             return 
             #End = Check_NFC(self.path, point, old_point)
         else:
-            #Turn, time = Compute_Angle(point, old_point)
-            #Robot_Rotate(Turn)
-            #sleep(time)
+            Turn, time = Compute_Angle(point, old_point)
+            Robot_Rotate(Turn)
+            sleep(time)
             Robot_Stop()
             if self.mgt.Check_Stop():
                 return
+            Robot_Froward()
+            sleep(1)
+            alerts.Reset_Tag_Alert()
             while not self.Check_NFC(point, old_point):
                 Robot_Froward()
             Robot_Stop()

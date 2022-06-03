@@ -3,7 +3,6 @@ from pynq import Overlay
 #import lib.imu_driver
 from signal import signal,SIGINT
 from time import sleep
-from Robot.Overlays.Overlay import overlay
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -11,7 +10,7 @@ def handler(signal_received, frame):
     exit(0)
 
 class IMU():
-    def __init__(self):
+    def __init__(self, overlay):
         self.imu = overlay.IMU_v3_0
         self.X_ACC_OFFSET = 0
         self.Y_ACC_OFFSET = 0

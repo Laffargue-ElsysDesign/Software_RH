@@ -4,7 +4,9 @@ from Robot.Constants import NOWHERE
 class State_NFC():
     def __init__(self):
         self.new = False
-        self.tag = 0 #TBD
+        self.data_valid = False
+        self.point = 0 
+        self.position = 0
         self.MUT = Lock()
 
     def Get_New(self):
@@ -15,21 +17,32 @@ class State_NFC():
 
     def Get_Tag(self):
         self.MUT.acquire()
-        tag = self.tag
+        valid = self.data_valid
+        point = self.point
+        position = self.position
         self.MUT.release()
-        return tag
-
-    def Set_Tag(self, tag):
+        return (valid, point, position)
+    
+    def Set_New(self):
         self.MUT.acquire()
         self.new = True
-        self.tag = tag
+        self.MUT.release()
+        return 1
+    
+    def Set_Tag(self, point, position):
+        self.MUT.acquire()
+        self.data_valid = True
+        self.point = point
+        self.positon = position
         self.MUT.release()
         return 1
 
     def Reset(self):
         self.MUT.acquire()
         self.new = False
-        self.tag = 0
+        self.data_valid = False
+        self.point = 0
+        self.position = 0
         self.MUT.release()
         return 1
 
@@ -128,8 +141,11 @@ class Alerts ():
     def Get_NFC_Tag(self):
         return self.NFC.Get_Tag()
 
-    def Set_NFC_Alert(self, tag):
-        return self.NFC.Set_Tag(tag)
+    def Set_NFC_New(self):
+        return self.NFC.Set_New()
+    
+    def Set_NFC_Alert(self, point, position):
+        return self.NFC.Set_Tag(point, position)
     
     def Reset_Tag_Alert(self):
         return self.NFC.Reset()

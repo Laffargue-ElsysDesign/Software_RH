@@ -14,6 +14,7 @@ from pynq import Overlay
 #====Custom import====#
 import Robot.holo32.lib.uart_driver
 import Robot.FPGA.lib.imu_driver
+import Robot.FPGA.lib.rfid_driver
 
 class Class_Command:
     def __init__(self):

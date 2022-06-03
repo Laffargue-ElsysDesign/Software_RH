@@ -25,7 +25,7 @@ class Auto_Control(Thread):
         while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
             sleep(0.1)
-            print("Auto Waiting..")
+            #print("Auto Waiting..")
         self.mgt.Is_Not_Waiting()
         return 1
 
