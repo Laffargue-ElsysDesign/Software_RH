@@ -92,7 +92,7 @@ if __name__ == '__main__':
     #print("gestionnaire thread start")
     thread_detection.start()
     #print("detection thread start")
-    thread_evitement.mgt.Stop()
+    thread_evitement.mgt.Restart()
     thread_evitement.start()
     #print("detection thread start")
 

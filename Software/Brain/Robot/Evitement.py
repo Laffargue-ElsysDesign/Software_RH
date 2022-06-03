@@ -86,13 +86,34 @@ class Evitement(Thread):
         (ALERT_N, Zone_N, DIST_N) = ultrasons.Get_N()
         (ALERT_NE, Zone_NE, DIST_NE) = ultrasons.Get_NE()
         (ALERT_E, Zone_E, DIST_E) = ultrasons.Get_E()
-        W = min(Zone_W, Zone_NW)
-        N = min(Zone_NW, Zone_N, Zone_NE)
-        E = min(Zone_NE, Zone_E)
+        print(Zone_W, Zone_NW, Zone_N, Zone_NE, Zone_E)
+        
+        if Zone_W == 1 or Zone_NW ==1:
+            W = 1
+        elif Zone_W == 2 or Zone_NW == 2:
+            W = 2
+        else: 
+            W = 0
+        
+        if Zone_N == 1 or Zone_NW ==1 or Zone_NE ==1:
+            N = 1
+        elif Zone_N == 2 or Zone_NE == 2 or Zone_NW ==2:
+            N = 2
+        else:
+            N = 0
+            
+        if Zone_E == 1 or Zone_NE ==1:
+            E = 1
+        elif Zone_E == 2 or Zone_NE == 2:
+            E = 2
+        else:
+            E = 0
+
         DIST_W = min(DIST_W, DIST_NW)
         DIST_N = min(DIST_NW, DIST_N, DIST_NE)
         DIST_E = min(DIST_E, DIST_NE)
         
+        print(W, N, E, DIST_W, DIST_N, DIST_E)
         return (W, N, E, DIST_W, DIST_N, DIST_E)
 
 
@@ -131,7 +152,7 @@ class Evitement(Thread):
             self.C_E = COUNTER 
             self.E = E
             self.DIST_E = DIST_E
-   
+        print(self.E, self.N, self.W)
     def run(self):    
         while not self.interrupt:
             self.Wait_Start()
@@ -146,13 +167,13 @@ class Evitement(Thread):
                         self.Stop()
                 
                 if self.W == 2 and self.speed_y < 0:
-                        self.speed_y = (self.DIST_W -15) * self.speed_y / 35
+                        self.speed_y = (self.DIST_W - 10) * self.speed_y / 15
 
                 if self.N == 2 and self.speed_x > 0:
-                        self.speed_y = (self.DIST_N -15) * self.speed_x / 35
+                        self.speed_x = (self.DIST_N - 10) * self.speed_x / 15
 
                 if self.E == 2 and self.speed_y > 0:
-                        self.speed_y = (self.DIST_E -15) * self.speed_y / 35
+                        self.speed_y = (self.DIST_E - 10) * self.speed_y / 15
                     
 
                 self.Set_Command()
