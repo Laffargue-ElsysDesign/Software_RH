@@ -86,7 +86,7 @@ class Evitement(Thread):
         (ALERT_N, Zone_N, DIST_N) = ultrasons.Get_N()
         (ALERT_NE, Zone_NE, DIST_NE) = ultrasons.Get_NE()
         (ALERT_E, Zone_E, DIST_E) = ultrasons.Get_E()
-        print(Zone_W, Zone_NW, Zone_N, Zone_NE, Zone_E)
+        #print(Zone_W, Zone_NW, Zone_N, Zone_NE, Zone_E)
         
         if Zone_W == 1 or Zone_NW ==1:
             W = 1
@@ -113,7 +113,7 @@ class Evitement(Thread):
         DIST_N = min(DIST_NW, DIST_N, DIST_NE)
         DIST_E = min(DIST_E, DIST_NE)
         
-        print(W, N, E, DIST_W, DIST_N, DIST_E)
+        #print(W, N, E, DIST_W, DIST_N, DIST_E)
         return (W, N, E, DIST_W, DIST_N, DIST_E)
 
 
@@ -152,7 +152,7 @@ class Evitement(Thread):
             self.C_E = COUNTER 
             self.E = E
             self.DIST_E = DIST_E
-        print(self.E, self.N, self.W)
+        #print(self.E, self.N, self.W)
     def run(self):    
         while not self.interrupt:
             self.Wait_Start()

@@ -86,7 +86,8 @@ class Detection_Alert(Thread):
                 alerts.Set_NFC_New()
                 #print("Waiting for data")
                 (point, position) = self.rfid.Read_Data()
-                alerts.Set_NFC_Alert(point,  position)
+                if not (point == 0 and position ==0):
+                    alerts.Set_NFC_Alert(point,  position)
                 #print("New Tag: ", point, " ", position)
             
             ##Update for utrasounds

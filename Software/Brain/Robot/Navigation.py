@@ -43,7 +43,7 @@ def Robot_Stop():
         
 
 def Robot_Forward():
-    raw_command.Set(0.15, 0, 0)
+    raw_command.Set(0.1, 0, 0)
     return 1
 
 def Procedure():
@@ -73,11 +73,14 @@ class Navigation(Thread):
             sleep(0.2)
             output = False
             data_valid, tag_point, tag_position = alerts.Get_NFC_Tag()
+            
+            while not data_valid:
+                data_valid, tag_point, tag_position = alerts.Get_NFC_Tag()
             print(data_valid, tag_point, tag_position)
-            if data_valid and tag_point == point:
+            if tag_point == point:
                 #print("point reached")
                 output = True
-            elif data_valid:
+            else:
                 #print("interrupting", point, old_point, tag)
                 self.mgt.Stop()
                 output = True
@@ -116,8 +119,7 @@ class Navigation(Thread):
             Robot_Forward()
             alerts.Reset_Tag_Alert()
 
-            while not self.Check_NFC(point, old_point) and not self.interrupt:
-                
+            while not self.Check_NFC(point, old_point) and not self.interrupt:           
                 Robot_Forward()
 
             Robot_Forward()
