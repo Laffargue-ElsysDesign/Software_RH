@@ -18,7 +18,7 @@ from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
 from Robot.Evitement import thread_evitement
-import Robot.holo32.holo_uart_management as HUM
+from Robot.holo32.holo_uart_management import thread_holo32
 
 ##########Overlay to program on PL############
 from Robot.Overlays.Overlay import overlay
@@ -29,6 +29,9 @@ from Robot.Overlays.Overlay import overlay
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
+    thread_holo32.Interrupt()
+    thread_holo32.join()
+    print("HOLOCOM exited succesfully")
     thread_evitement.Interrupt()
     thread_evitement.join()
     print("Evitement exited succesfully")
@@ -72,10 +75,10 @@ if __name__ == '__main__':
     #app.run(debug = True)
 
     #Start UART Comunication with robot
-    thread_holo = HUM.Holo_UART(overlay)
+    #thread_holo = HUM.Holo_UART(overlay)
 
     ################Start all threads###################
-    thread_holo.start()
+    thread_holo32.start()
     #print("holo thread start")
     thread_localisation.start()
     #print("loc thread start")

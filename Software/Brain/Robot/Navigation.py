@@ -138,7 +138,7 @@ class Navigation(Thread):
             self.Wait_Start()
             print("Start of Navigation")
             #T = time()
-            print("path:", self.path)
+            #print("path:", self.path)
             while not self.mgt.Check_Stop() and not self.interrupt:
                 #sleep(1)
                 #if time() > (T + 10):

@@ -28,7 +28,7 @@ class Ultrasons():
         self.ultrasons.Enable()
         return 1
 
-    def Disbale(self):
+    def Disable(self):
         self.ultrasons.Disable()
         return 1
 

@@ -10,6 +10,7 @@ from signal import signal, SIGINT
 
 #=====PYNQ import=====#
 from pynq import Overlay
+from Robot.Overlays.Overlay import overlay
 
 class Class_Command:
     def __init__(self):
@@ -147,13 +148,15 @@ class Holo_UART(Thread):
         self.speed_x = 0
         self.speed_y = 0
         self.speed_z = 0
+        self.interrupt = False
         self.msg= [0x5A, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0xA5] 
 
-    
+    def Interrupt(self):
+        self.interrupt = True
 
     def run(self):
         
-        while True :
+        while not self.interrupt :
 
             global cmd_robot
             cmd_robot.MUT.acquire()
@@ -266,7 +269,8 @@ def init():
     
     global init_done
     init_done=True
-
+    
+thread_holo32 = Holo_UART(overlay)
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -277,7 +281,7 @@ if __name__ == '__main__':
     
     signal(SIGINT, handler)
 
-    global overlay
+    #global overlay
     overlay=Overlay("./Overlays/Bitstream/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
         print("Loading Overlay ...")

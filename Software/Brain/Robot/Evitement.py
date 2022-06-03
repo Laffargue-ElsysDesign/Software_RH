@@ -1,11 +1,11 @@
 import cmd
 from threading import Thread, Lock
-from time import sleep
+from time import sleep, time
 from tkinter import E
 from Robot.Alerts import alerts, Mgt, ultrasons
 from Robot.holo32.holo_uart_management import cmd_robot
 
-COUNTER = 10
+COUNTER = 15
 
 class Raw_Command():
     def __init__(self):
@@ -133,15 +133,15 @@ class Evitement(Thread):
         self.mgt.Restart()
         while not self.interrupt:
             self.Wait_Start()
-            print("Start of Evitement")
+            #print("Start of Evitement")
 
             while not self.mgt.Check_Stop() and not self.interrupt:
-                
+
                 self.Get_Raw_Speed()
                 #print("Raw:", self.W, self.NW, self.N, self.NE, self.E)
                 self.Get_US()
 
-                if self.N or self.NW:
+                if self.W or self.NW:
                     if self.speed_y < 0:
                         self.Stop()
 
@@ -155,7 +155,8 @@ class Evitement(Thread):
                     
                 #print(self.speed_x, self.speed_y, self.speed_z)
                 self.Set_Command()
-            
+
+                sleep(0.1)
             self.Stop()
             self.Set_Command()
 
