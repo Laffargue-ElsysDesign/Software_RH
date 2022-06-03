@@ -29,7 +29,7 @@ class Detection_Alert(Thread):
         #self.battery = Battery(overlay)
         self.ronde = Ronde(overlay)
         self.rfid = RFID(overlay)
-        self.ultrasons = Ultrasons(overlay)
+        self.ultrason = Ultrasons(overlay)
         
         self.imu = IMU(overlay)
     
@@ -38,10 +38,10 @@ class Detection_Alert(Thread):
 
     ##This updates the class_ultrasounds so all datas are ready to be used
     def Manage_US(self):
-        (W_det, NW_det, N_det, NE_det, E_det) = self.ultrasons.Check_US_Detection()
-        (W_zone, NW_zone, N_zone, NE_zone, E_zone) = self.ultrasons.Check_US_Zone()
-        (W_val, NW_val, N_val, NE_val, E_val) = self.ultrasons.Get_Values()
-
+        (W_det, NW_det, N_det, NE_det, E_det) = self.ultrason.Check_US_Detection()
+        (W_zone, NW_zone, N_zone, NE_zone, E_zone) = self.ultrason.Check_US_Zone()
+        (W_val, NW_val, N_val, NE_val, E_val) = self.ultrason.Get_Values()
+        #print(W_det, NW_det, N_det, NE_det, E_det)
         ultrasons.Set_W(W_det, W_zone, W_val)
         
         ultrasons.Set_NW(NW_det, NW_zone, NW_val)
@@ -58,7 +58,7 @@ class Detection_Alert(Thread):
     def run(self):
 
         self.ronde.Set_2_hour()
-
+        self.ultrason.Enable()
         while(not self.interrupt):
             
             ##Update for Battery
@@ -98,6 +98,7 @@ class Detection_Alert(Thread):
             #print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
             
             sleep(0.1)
+        self.ultrason.Disable()
 
 thread_detection = Detection_Alert()
             

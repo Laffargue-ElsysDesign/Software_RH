@@ -5,6 +5,8 @@ from tkinter import E
 from Robot.Alerts import alerts, Mgt, ultrasons
 from Robot.holo32.holo_uart_management import cmd_robot
 
+COUNTER = 10
+
 class Raw_Command():
     def __init__(self):
         self.x = 0
@@ -77,14 +79,14 @@ class Evitement(Thread):
         cmd_robot.Set_Speed(self.speed_x, self.speed_y, self.speed_z)
     
     def Get_US(self):
-        
+
         if not ultrasons.Get_W()[0]:
             if not self.C_W == 0:
                 self.C_W = self.C_W - 1
             else:
                 self.W = False
         else:
-            self.C_W = 2 
+            self.C_W = COUNTER 
             self.W = True
 
         if not ultrasons.Get_NW()[0]:
@@ -93,7 +95,7 @@ class Evitement(Thread):
             else:
                 self.NW = False
         else:
-            self.C_NW = 2 
+            self.C_NW = COUNTER 
             self.NW = True
 
         if not ultrasons.Get_N()[0]:
@@ -102,7 +104,7 @@ class Evitement(Thread):
             else:
                 self.N = False
         else:
-            self.C_N = 2 
+            self.C_N = COUNTER 
             self.N = True
 
         if not ultrasons.Get_NE()[0]:
@@ -111,28 +113,32 @@ class Evitement(Thread):
             else:
                 self.NE = False
         else:
-            self.C_NE = 2 
+            self.C_NE = COUNTER 
             self.NE = True
-
+        
+        #(E, V, Z)= ultrasons.Get_E()
+        #print(E, V, Z)
         if not ultrasons.Get_E()[0]:
+            #print("E detected")
             if not self.C_E == 0:
                 self.C_E = self.C_E - 1
             else:
                 self.E = False
         else:
-            self.C_E = 2 
+            self.C_E = COUNTER 
             self.E = True
    
    
     def run(self):
+        self.mgt.Restart()
         while not self.interrupt:
             self.Wait_Start()
-            print("Start of Auto Control")
+            print("Start of Evitement")
 
             while not self.mgt.Check_Stop() and not self.interrupt:
                 
                 self.Get_Raw_Speed()
-
+                #print("Raw:", self.W, self.NW, self.N, self.NE, self.E)
                 self.Get_US()
 
                 if self.N or self.NW:
@@ -147,7 +153,7 @@ class Evitement(Thread):
                     if self.speed_y > 0:
                         self.Stop()
                     
-
+                #print(self.speed_x, self.speed_y, self.speed_z)
                 self.Set_Command()
             
             self.Stop()

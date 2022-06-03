@@ -7,6 +7,7 @@ import Robot.FPGA.lib.rfid_driver
 import Robot.FPGA.lib.ronde_driver
 import Robot.FPGA.lib.balise_driver
 import Robot.FPGA.lib.dijkstra_driver
+import Robot.FPGA.lib.ultrasons_driver
 
 ###########Threads Imports###############
 #from Robot import IHM
@@ -30,7 +31,7 @@ def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
     thread_evitement.Interrupt()
     thread_evitement.join()
-    print("Localisation exited succesfully")
+    print("Evitement exited succesfully")
     thread_localisation.Interrupt()
     thread_localisation.join()
     print("Localisation exited succesfully")
@@ -89,5 +90,6 @@ if __name__ == '__main__':
     thread_detection.start()
     #print("detection thread start")
     thread_evitement.start()
+    #print("detection thread start")
 
     

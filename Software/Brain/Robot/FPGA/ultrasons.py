@@ -1,5 +1,5 @@
 from pynq import Overlay
-import lib.ultrasons_driver
+#import lib.ultrasons_driver
 from signal import signal,SIGINT
 from time import sleep
 
@@ -36,13 +36,13 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
+    overlay = Overlay("../Overlays/US3/BitStream/bitstream.bit")
     overlay.download()
     ultrasons = Ultrasons(overlay)
     ultrasons.Enable()
     
     while (1):
-        print("Detection W NM N NE E : ", ultrasons.Check_US_Detection())
+        print("Detection W NW N NE E : ", ultrasons.Check_US_Detection())
         print("Zone W NM N NE E : ", ultrasons.Check_US_Zone())
         print("Values W NM N NE E : ", ultrasons.Get_Values())
         print()
