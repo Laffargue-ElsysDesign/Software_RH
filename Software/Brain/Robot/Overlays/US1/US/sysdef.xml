@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<Project Version="1" Minor="7" DIGEST="">
+	<TOOL_VERSION Version="2020.2"/>
+	<MODE Name="Post-Synthesis"/>
+	<SYSTEMINFO BOARD="digilentinc.com:zybo-z7-20:1.1" PART="xc7z020clg400-1" ARCH="zynq" PACKAGE="clg400" DEVICE="7z020" SPEED="-1"/>
+	<HIERARCHY Name="design_fpga_wrapper"/>
+	<File Type="HW_HANDOFF" Name="design_fpga.hwh" src_db="design_fpga.hwdef" DESIGN_HIERARCHY="design_fpga_i" BD_TYPE="DEFAULT_BD">
+	</File>
+	<File Type="BDA" Name="design_fpga.bda" src_db="design_fpga.hwdef">
+	</File>
+	<File Type="PS_FSBL_INIT" Name="ps7_init.c" src_db="design_fpga_processing_system7_0_0.hwdef">
+	</File>
+	<File Type="PS_FSBL_INIT" Name="ps7_init.h" src_db="design_fpga_processing_system7_0_0.hwdef">
+	</File>
+	<File Type="PS_FSBL_INIT_GPL" Name="ps7_init_gpl.c" src_db="design_fpga_processing_system7_0_0.hwdef">
+	</File>
+	<File Type="PS_FSBL_INIT_GPL" Name="ps7_init_gpl.h" src_db="design_fpga_processing_system7_0_0.hwdef">
+	</File>
+	<File Type="PS_INIT_HELP" Name="ps7_init.html" src_db="design_fpga_processing_system7_0_0.hwdef">
+	</File>
+	<File Type="PS_XMD_INIT" Name="ps7_init.tcl" src_db="design_fpga_processing_system7_0_0.hwdef">
+	</File>
+	<File Type="BIT" Name="design_fpga_all_wrapper.bit" src_db="temp.hdf">
+	</File>
+	<DRIVERS>
+		<DRIVER IP_VLNV="elsys-design.com:user:Balise:1.0">
+			<File PATH="drivers/Balise_v1_0/data/Balise.mdd"/>
+			<File PATH="drivers/Balise_v1_0/data/Balise.tcl"/>
+			<File PATH="drivers/Balise_v1_0/src/Makefile"/>
+			<File PATH="drivers/Balise_v1_0/src/Balise.h"/>
+			<File PATH="drivers/Balise_v1_0/src/Balise.c"/>
+			<File PATH="drivers/Balise_v1_0/src/Balise_selftest.c"/>
+		</DRIVER>
+		<DRIVER IP_VLNV="elsys-design.com:user:Dijkstra_reg:1.0">
+			<File PATH="drivers/Dijkstra_reg_v1_0/data/Dijkstra_reg.mdd"/>
+			<File PATH="drivers/Dijkstra_reg_v1_0/data/Dijkstra_reg.tcl"/>
+			<File PATH="drivers/Dijkstra_reg_v1_0/src/Makefile"/>
+			<File PATH="drivers/Dijkstra_reg_v1_0/src/Dijkstra_reg.h"/>
+			<File PATH="drivers/Dijkstra_reg_v1_0/src/Dijkstra_reg.c"/>
+			<File PATH="drivers/Dijkstra_reg_v1_0/src/Dijkstra_reg_selftest.c"/>
+		</DRIVER>
+		<DRIVER IP_VLNV="elsys-design.com:user:IMU_v3:1.0">
+			<File PATH="drivers/IMU_v3_v1_0/data/IMU_v3.mdd"/>
+			<File PATH="drivers/IMU_v3_v1_0/data/IMU_v3.tcl"/>
+			<File PATH="drivers/IMU_v3_v1_0/src/Makefile"/>
+			<File PATH="drivers/IMU_v3_v1_0/src/IMU_v3.h"/>
+			<File PATH="drivers/IMU_v3_v1_0/src/IMU_v3.c"/>
+			<File PATH="drivers/IMU_v3_v1_0/src/IMU_v3_selftest.c"/>
+		</DRIVER>
+		<DRIVER IP_VLNV="elsys-design.com:user:RFID_reader:1.0">
+			<File PATH="drivers/RFID_reader_v1_0/data/RFID_reader.mdd"/>
+			<File PATH="drivers/RFID_reader_v1_0/data/RFID_reader.tcl"/>
+			<File PATH="drivers/RFID_reader_v1_0/src/Makefile"/>
+			<File PATH="drivers/RFID_reader_v1_0/src/RFID_reader.h"/>
+			<File PATH="drivers/RFID_reader_v1_0/src/RFID_reader.c"/>
+			<File PATH="drivers/RFID_reader_v1_0/src/RFID_reader_selftest.c"/>
+		</DRIVER>
+		<DRIVER IP_VLNV="elsys-design.com:user:Timer_ronde:1.0">
+			<File PATH="drivers/Timer_ronde_v1_0/data/Timer_ronde.mdd"/>
+			<File PATH="drivers/Timer_ronde_v1_0/data/Timer_ronde.tcl"/>
+			<File PATH="drivers/Timer_ronde_v1_0/src/Makefile"/>
+			<File PATH="drivers/Timer_ronde_v1_0/src/Timer_ronde.h"/>
+			<File PATH="drivers/Timer_ronde_v1_0/src/Timer_ronde.c"/>
+			<File PATH="drivers/Timer_ronde_v1_0/src/Timer_ronde_selftest.c"/>
+		</DRIVER>
+	</DRIVERS>
+	<USEDRESOURCES/>
+</Project>
+

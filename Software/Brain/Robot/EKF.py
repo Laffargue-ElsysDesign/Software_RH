@@ -135,7 +135,7 @@ class Filter(Thread):
         #(X[0, 0], X[2, 0]) = Get_Loc_from_Dot(point, position)
         
     def run(self):     
-        dt = 0.1
+        dt = 0.15
         counter = 0
         X = self.initialize(0, 0, 0, 0, 0, 0, dt)
         #print(A, B, C, X)
@@ -146,7 +146,7 @@ class Filter(Thread):
         #    lines = f.readlines()
         #    f.close()
         #for i in lines:
-            t = time()
+            t=time()
             Z_hat = self.measurement()
             
             #print("Z_hat : ", Z_hat)
@@ -179,7 +179,6 @@ class Filter(Thread):
             #    break
             while time()<t+dt:
                 sleep(0.001)
-            
         #plt.plot(posX, posY)
         #plt.plot(range(counter), posTheta)
         #print("posX : ", posX)
