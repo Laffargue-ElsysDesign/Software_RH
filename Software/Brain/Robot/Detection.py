@@ -82,12 +82,12 @@ class Detection_Alert(Thread):
             new_rfid = self.rfid.Check_RFID()
             #print(new_rfid)
             if new_rfid:
-                print("RFID_Detected")
+                #print("RFID_Detected")
                 alerts.Set_NFC_New()
-                print("Waiting for data")
+                #print("Waiting for data")
                 (point, position) = self.rfid.Read_Data()
                 alerts.Set_NFC_Alert(point,  position)
-                print("New Tag: ", point, " ", position)
+                #print("New Tag: ", point, " ", position)
             
             ##Update for utrasounds
             self.Manage_US()

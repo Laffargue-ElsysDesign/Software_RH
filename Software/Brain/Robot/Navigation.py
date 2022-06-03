@@ -29,7 +29,7 @@ def Compute_Angle(end_angle):
 
 def Robot_Rotate(Turn_Right):
     
-    print("Rotate")
+    #print("Rotate")
     if Turn_Right:
         raw_command.Set(0, 0, 0.1)
     else:
@@ -37,13 +37,13 @@ def Robot_Rotate(Turn_Right):
     return 1
 
 def Robot_Stop():
-    print("Stop")
+    #print("Nav: Stop")
     raw_command.Set(0, 0, 0)
     return 1
         
 
 def Robot_Forward():
-    raw_command.Set(0.2, 0, 0)
+    raw_command.Set(0.15, 0, 0)
     return 1
 
 def Procedure():
@@ -70,9 +70,10 @@ class Navigation(Thread):
         output = False
         if alerts.Get_NFC_Alert():
             Robot_Stop()
-            sleep(0.5)
+            sleep(0.2)
             output = False
             data_valid, tag_point, tag_position = alerts.Get_NFC_Tag()
+            print(data_valid, tag_point, tag_position)
             if data_valid and tag_point == point:
                 #print("point reached")
                 output = True
@@ -87,8 +88,8 @@ class Navigation(Thread):
         angle_wanted = Get_Orientation(old_point, point)
         angle = Compute_Angle(angle_wanted)
 
-        while ((not np.abs(angle) < 2) and (not self.mgt.Check_Stop())):
-            print(angle)
+        while ((not np.abs(angle) < 1) and (not self.mgt.Check_Stop())):
+            #print(angle)
             Turn_Right = True
             #print(angle, np.abs(angle))
             if angle < 0:
@@ -116,8 +117,9 @@ class Navigation(Thread):
             alerts.Reset_Tag_Alert()
 
             while not self.Check_NFC(point, old_point) and not self.interrupt:
+                
                 Robot_Forward()
-            
+
             Robot_Forward()
             sleep(0.7)
             Robot_Stop()

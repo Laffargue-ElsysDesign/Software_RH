@@ -3,6 +3,7 @@ from threading import Thread, Lock
 import numpy as np
 from time import time, sleep
 from Robot.holo32.holo_uart_management import odometry
+from Robot.Permanent.Map import tags_loc
 
 """
 Created on Mon Jun 27 08:32:09 2022
@@ -111,7 +112,10 @@ class Filter(Thread):
         
         vx = R_vx*0.89
         vy = R_vy*0.89
-        vz = R_vz*0.62
+        if R_vz<0:
+            vz = R_vz*0.70
+        else:
+            vz = R_vz*0.63
         #print(R_vx, R_vy, R_ax, R_ay, R_gz, R_vz)
         return np.array([[vx], [vy], [vz]])
         
@@ -136,7 +140,7 @@ class Filter(Thread):
     def run(self):     
         dt = 0.15
         counter = 0
-        X = self.initialize(0, 0, 180, 0, 0, 0, dt)
+        X = self.initialize(1800, 350, 180, 0, 0, 0, dt)
         #print(A, B, C, X)
         
         while not self.interrupt:

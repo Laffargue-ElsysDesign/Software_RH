@@ -62,6 +62,8 @@ class Evitement(Thread):
 
         while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
+            self.Get_Raw_Speed()
+            self.Set_Command()
             sleep(0.1)
             #print("Evitement Waiting..")
         self.mgt.Is_Not_Waiting()
@@ -130,7 +132,7 @@ class Evitement(Thread):
    
    
     def run(self):
-        self.mgt.Restart()
+    
         while not self.interrupt:
             self.Wait_Start()
             #print("Start of Evitement")

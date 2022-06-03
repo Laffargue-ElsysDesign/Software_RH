@@ -65,10 +65,10 @@ def handler(signal_received, frame):
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
-    overlay.download()
-    #if overlay.is_loaded()==False:
-    #    print("Loading Overlay..")
-    #    overlay.download()
+    #overlay.download()
+    if overlay.is_loaded()==False:
+        print("Loading Overlay..")
+        overlay.download()
     
     
     #Start IHM
@@ -92,6 +92,7 @@ if __name__ == '__main__':
     #print("gestionnaire thread start")
     thread_detection.start()
     #print("detection thread start")
+    thread_evitement.mgt.Stop()
     thread_evitement.start()
     #print("detection thread start")
 
