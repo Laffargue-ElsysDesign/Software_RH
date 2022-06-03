@@ -94,7 +94,13 @@ class Keyboard_Read(Thread):
                     mode.mode_wanted.mode = cst.modes.MANUAL
                     mode.mode_wanted.MUT.release()
                 elif read_input == 'i':
-                    alerts.Set_Balise_Alert(4)
+                    print("Balise alert wanted, please input where:")
+                    read_input = input()
+                    dot = int(read_input)
+                    if (dot>=0) and (dot <=16):
+                        alerts.Set_Balise_Alert(dot)
+                    else:
+                        print("not a correct input, ignoring")
                 elif read_input == 'b':
                     alerts.Set_Battery_Alert()
                 elif read_input == 'r':

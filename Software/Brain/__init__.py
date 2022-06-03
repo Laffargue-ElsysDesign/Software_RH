@@ -1,7 +1,7 @@
 from signal import signal, SIGINT
 #from Brain.Robot import IHM
 #from pynq import Overlay
-from Robot.Localisation import thread_localisation
+from Robot.EKF import thread_localisation
 from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
@@ -28,7 +28,7 @@ def handler(signal_received, frame):
     thread_auto_control.join()
     print("AutoControl stopped properly")
     thread_manual_control.Interrupt()
-    print("Press i and enter")
+    print("Press enter")
     thread_manual_control.join()
     print("ManualControl stopped properly")
     thread_gestionnaire.Interrupt()
@@ -59,16 +59,18 @@ if __name__ == '__main__':
 
     ################Start all threads###################
     thread_holo.start()
-    
+    #print("holo thread start")
+    thread_localisation.start()
+    #print("loc thread start")
     thread_Navigation.start()
-
+    #print("nav thread start")
     thread_manual_control.start()
-    
+    #print("manual thread start")
     thread_auto_control.start()
-    
+    #print("auto thread start")
     thread_gestionnaire.start()
-
+    #print("gestionnaire thread start")
     thread_detection.start()
-
+    #print("detection thread start")
 
     

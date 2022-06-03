@@ -7,6 +7,7 @@ class State_NFC():
         self.data_valid = False
         self.point = 0 
         self.position = 0
+        self.last_dot = 0
         self.MUT = Lock()
 
     def Get_New(self):
@@ -23,6 +24,12 @@ class State_NFC():
         self.MUT.release()
         return (valid, point, position)
     
+    def Get_LastDot(self):
+        self.MUT.acquire()
+        point = self.last_dot
+        self.MUT.release()
+        return point
+    
     def Set_New(self):
         self.MUT.acquire()
         self.new = True
@@ -34,6 +41,7 @@ class State_NFC():
         self.data_valid = True
         self.point = point
         self.positon = position
+        self.last_dot = point
         self.MUT.release()
         return 1
 
@@ -140,6 +148,9 @@ class Alerts ():
     
     def Get_NFC_Tag(self):
         return self.NFC.Get_Tag()
+    
+    def Get_NFC_LastDot(self):
+        return self.NFC.Get_LastDot()
 
     def Set_NFC_New(self):
         return self.NFC.Set_New()

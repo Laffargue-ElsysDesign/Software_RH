@@ -69,7 +69,7 @@ class Auto_Control(Thread):
                     print("Balise Triggered")
                     self.End_Navigation()
                     #self.Alerts.Balise.MUT.acquire()
-                    self.Start_Navigation(dijkstra.Compute(0, alerts.Get_Balise_Dot()))
+                    self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), alerts.Get_Balise_Dot()))
                     alerts.Reset_Balise_Alert()
                     #self.Alerts.Balise.MUT.release()
                     alerts.Reset_Balise_Alert()

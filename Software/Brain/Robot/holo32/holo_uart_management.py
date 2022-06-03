@@ -194,7 +194,7 @@ class Holo_UART(Thread):
                 
             readTrame_uart(self.uart)
             #print(odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
-            sleep(0.3)
+            sleep(0.05)
 
 def init():
     duree_tour=6.5 #duree d'un tour en seconde 

@@ -1,33 +1,7 @@
-from threading import Lock
 from Robot.Permanent.Constants import ROOM_NFC_MATCH, DOT_POSITION_TO_X_MATCH, DOT_POSITION_TO_Y_MATCH
 from Robot.Permanent.Map import ARC_MAP
-from Robot.EKF import EKF
 
-class Coordinate:
 
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.angle = 0
-
-        self.MUT = Lock()
-    
-    def Write_Loc(self, X, Y, angle):
-        self.MUT.acquire()
-        self.x = X
-        self.y = Y
-        self.angle = 0
-        self.MUT.release()
-
-    def Get_Angle(self):
-        self.MUT.acquire()
-        angle = self.angle
-        self.MUT.release()
-        return angle
-
-coordinate = Coordinate()
-
-thread_localisation = EKF()
 
 def get_Dot_from_Bal(bal):
     return ROOM_NFC_MATCH[1, bal]

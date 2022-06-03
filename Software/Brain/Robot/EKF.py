@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from threading import Thread
+from threading import Thread, Lock
 import matplotlib.pyplot as plt
 import numpy as np
 from time import time, sleep
-from holo32.holo_uart_management import odometry
-from Localisation import coordinate
+from Robot.holo32.holo_uart_management import odometry
 
 """
 Created on Mon Jun 27 08:32:09 2022
@@ -12,7 +11,29 @@ Created on Mon Jun 27 08:32:09 2022
 @author: laffargue
 """
         
+class Coordinate:
 
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.angle = 0
+
+        self.MUT = Lock()
+    
+    def Write_Loc(self, X, Y, angle):
+        self.MUT.acquire()
+        self.x = X
+        self.y = Y
+        self.angle = angle
+        self.MUT.release()
+
+    def Get_Angle(self):
+        self.MUT.acquire()
+        angle = self.angle
+        self.MUT.release()
+        return angle
+
+coordinate = Coordinate()
 
 
 def cos(a):
@@ -21,7 +42,7 @@ def cos(a):
 def sin(a):
     return np.sin(a*np.pi/180)
 
-class EKF(Thread):
+class Filter(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.NFC_Alert = False
@@ -64,9 +85,9 @@ class EKF(Thread):
     
     def measurement(self):
         
-        vx = odometry.speed_x
-        vy = odometry.speed_y
-        vz = odometry.speed_z
+        vx = odometry.speed_x*0.89
+        vy = odometry.speed_y*0.89
+        vz = odometry.speed_z*0.62
 
         return np.array([[vx], [vy], [vz]])
         
@@ -80,7 +101,7 @@ class EKF(Thread):
         G = np.array([[cos(X[4, 0]), -sin(X[4, 0]), 0],
                       [sin(X[4, 0]), cos(X[4, 0]), 0],
                       [0, 0, 1]])
-        print("G: ", G)
+        #print("G: ", G)
         
         return np.dot(G, Z_hat)
         
@@ -92,7 +113,7 @@ class EKF(Thread):
 
         
         
-        dt = 0.2
+        dt = 0.1
         counter = 0
         X = self.initialize(0, 0, 0, 0, 0, 0, dt)
         #print(A, B, C, X)
@@ -125,6 +146,7 @@ class EKF(Thread):
                 X = self.Set_NFC(X)
             
             Y = self.compute_Y(X)
+            #print(Y[0, 0], Y[1, 0], Y[2, 0])
             coordinate.Write_Loc(Y[0, 0], Y[1, 0], Y[2, 0])
             #posX.append(Y[0, 0])
             #posY.append(Y[1, 0])
@@ -133,7 +155,7 @@ class EKF(Thread):
             counter += 1
             #if counter == 161:
             #    break
-            while time()<t+time():
+            while time()<t+dt:
                 sleep(0.001)
             
         #plt.plot(posX, posY)
@@ -148,8 +170,10 @@ class EKF(Thread):
 
         return 0
 
+thread_localisation = Filter()
+    
 if __name__ == '__main__':
-    ekf = EKF()
+    ekf = Fliter()
     
     ekf.run()
 

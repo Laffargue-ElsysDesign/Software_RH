@@ -1,5 +1,5 @@
 import numpy as np
-from Map import tags_loc as TL
+from Robot.Permanent.Map import tags_loc as TL
 
 #Mode
 class Mode():
@@ -14,6 +14,7 @@ class Mission():
     RETURN = 2
     RONDE = 3
     IN_CHARGE = 4
+    MANUAL = 5
 missions = Mission()
 
 #Etat batterie

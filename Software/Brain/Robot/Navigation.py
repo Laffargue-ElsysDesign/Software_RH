@@ -1,7 +1,8 @@
 from operator import truediv
 from threading import Thread, Lock
 from time import sleep, time
-from Robot.Localisation import coordinate, Get_Orientation
+from Robot.EKF import coordinate
+from Robot.Localisation import Get_Orientation
 from numpy import mgrid
 from Robot.Alerts import Mgt
 import Robot.Localisation as Loc
@@ -30,9 +31,9 @@ def Compute_Angle(end_angle):
 
 def Robot_Rotate(Turn_Right):
     if Turn_Right:
-        HUM.cmd_robot.Set_Speed(0, 0, 0.3)
+        HUM.cmd_robot.Set_Speed(0, 0, 0.1)
     else:
-        HUM.cmd_robot.Set_Speed(0, 0, -0.3) 
+        HUM.cmd_robot.Set_Speed(0, 0, -0.1) 
     return 1
 
 def Robot_Stop():
@@ -41,7 +42,7 @@ def Robot_Stop():
         
 
 def Robot_Forward():
-    HUM.cmd_robot.Set_Speed(0.3, 0, 0)
+    HUM.cmd_robot.Set_Speed(0.2, 0, 0)
     return 1
 
 def Procedure():
@@ -62,6 +63,7 @@ class Navigation(Thread):
 
     def Interrupt(self):
         self.interrupt = True
+        self.mgt.Stop()
     
     def Check_NFC(self, point, old_point):
         output = False
@@ -84,16 +86,16 @@ class Navigation(Thread):
         angle_wanted = Get_Orientation(old_point, point)
         angle = Compute_Angle(angle_wanted)
 
-        while ((not np.abs(angle) < 5) or (not self.mgt.Check_Stop())):
+        while ((not np.abs(angle) < 2) and (not self.mgt.Check_Stop())):
             Turn_Right = False
-
+            print(angle, np.abs(angle))
             if angle < 0:
                 Turn_Right = True
             
             Robot_Rotate(Turn_Right)
 
             angle = Compute_Angle(angle_wanted)
-        
+
         Robot_Stop()
 
 
@@ -134,7 +136,7 @@ class Navigation(Thread):
             self.Wait_Start()
             print("Start of Navigation")
             #T = time()
-            #print("path:", self.path)
+            print("path:", self.path)
             while not self.mgt.Check_Stop() and not self.interrupt:
                 #sleep(1)
                 #if time() > (T + 10):
