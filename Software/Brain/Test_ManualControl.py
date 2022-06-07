@@ -1,10 +1,11 @@
-import holo32.holo_uart_management as HUM 
+from tkinter import E
+import Robot.Motion.holo32.holo_uart_management as HUM 
 from time import sleep, time
 from threading import Thread, Lock
 from signal import signal, SIGINT
 from pynq import Overlay
-from IHM.website_robot.models import Current_Order as CO
-from IHM.website_robot import Create_App
+from Robot.IHM.interface import mode
+from Robot.IHM import Create_App
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -98,47 +99,47 @@ class IHM_Read(Thread):
         self.speed_y=0
         self.speed_z=0
     def Get_Trajectory(self, read_input):
-        if read_input=="north":
+        if mode.command == mode.command.NORTH:
             self.speed_x=0.3
             self.speed_y=0
             self.speed_z=0
-        elif read_input=="south":
+        elif mode.command == mode.command.SOUTH:
             self.speed_x=-0.3
             self.speed_y=0
             self.speed_z=0
-        elif read_input=="east'":
+        elif mode.command == mode.command.EAST:
             self.speed_x=0
             self.speed_y=0.3
             self.speed_z=0
-        elif read_input=="west":
+        elif mode.command == mode.command.WEST:
             self.speed_x=0
             self.speed_y=-0.3
             self.speed_z=0
-        elif read_input=="north-east":
+        elif mode.command == mode.command.NORTH_EAST:
             self.speed_x=-0.3
             self.speed_y=0.3
             self.speed_z=0
-        elif read_input=="north-west":
+        elif mode.command == mode.command.NORTH_WEST:
             self.speed_x=0.3
             self.speed_y=-0.3
             self.speed_z=0
-        elif read_input=="south-east":
+        elif mode.command == mode.command.SOUTH_EAST:
             self.speed_x=-0.3
             self.speed_y=0.3
             self.speed_z=0
-        elif read_input=="south-west":
+        elif mode.command == mode.command.SOUTH_WEST:
             self.speed_x=-0.3
             self.speed_y=-0.3
             self.speed_z=0
-        elif read_input=="rotate-right":
+        elif mode.command == mode.command.ROTATE_RIGHT:
             self.speed_x=0
             self.speed_y=0
             self.speed_z=0.3
-        elif read_input=="rotate-left":
+        elif mode.command == mode.command.ROTATE_LEFT:
             self.speed_x=-0
             self.speed_y=0
             self.speed_z=-0.3
-        elif read_input=="stop":
+        elif mode.command == mode.command.STOP:
             self.speed_x=0
             self.speed_y=0
             self.speed_z=0

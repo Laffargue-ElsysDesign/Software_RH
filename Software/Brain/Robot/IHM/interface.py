@@ -144,7 +144,6 @@ class Mode_Wanted:
         self.mode = self.MANUAL
         self.MUT.release()
 
-
 class Mode:
     def __init__(self):
         self.mode_wanted = Mode_Wanted()
@@ -178,4 +177,4 @@ class Mode:
         
         return output
 
-mode_wanted = Mode()      
+mode = Mode()      
