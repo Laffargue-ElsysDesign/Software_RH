@@ -3,7 +3,7 @@ from time import sleep, time
 from threading import Thread, Lock
 from signal import signal, SIGINT
 from pynq import Overlay
-from Robot.IHM.models import Current_Order as CO
+from Robot.IHM.interface import mode
 from Robot.IHM import Create_App
 
 #handler pour interrupt correctement 

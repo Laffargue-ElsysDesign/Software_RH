@@ -151,9 +151,9 @@ class IHM_Read(Thread):
         
 
     def run(self):
-            CO.MUT.acquire()
-            read_input=CO.Order
-            CO.MUT.release()
+            mode.command.MUT.acquire()
+            read_input=mode.command
+            mode.MUT.release()
             self.Get_Trajectory(read_input)
             HUM.cmd_robot.speed_x=self.speed_x
             HUM.cmd_robot.speed_y=self.speed_y
