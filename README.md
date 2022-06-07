@@ -1,2 +1,4 @@
 # Software_RH
-Software components of the robot
+This repository contains the software components of the Holonome robot Project 2022 for Elsys-Design Toulouse
+
+
