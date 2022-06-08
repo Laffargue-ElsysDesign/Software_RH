@@ -2,6 +2,14 @@ from threading import Lock
 
 class New_Alert:
     DEFAULT = 0
+    STAGIAIRE = 1
+    MANAGER = 2
+    PAUSE = 3
+    REUNION = 4
+    ENTREE = 5
+    BUREAU = 6
+    OPEN_SPACE_ENTREE = 7
+    OPEN_SPACE_FOND = 8
     def __init__(self):
         self.is_alert = False
         self.Loc = self.DEFAULT
@@ -19,4 +27,4 @@ class New_Alert:
         self.Loc = self.DEFAULT
         self.MUT.release()
     
-new_alert = New_Alert()
+alert_management = New_Alert()

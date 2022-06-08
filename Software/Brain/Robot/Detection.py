@@ -26,5 +26,17 @@ class Balise_Alert:
         self.is_alert = False
         self.Loc = self.NO_ALERT
         self.MUT.release()
+    
+    def is_Alert(self):
+        self.MUT.acquire()
+        output = self.alert
+        self.MUT.release()
+        return output
 
-alert = Balise_Alert()
+    def where_Alert(self):
+        self.MUT.acquire()
+        output = self.balise
+        self.MUT.release()
+        return output
+
+balise_alert = Balise_Alert()

@@ -3,6 +3,7 @@ from threading import Thread, Lock
 class Battery_Alert:
     def __init__(self):
         self.alert = False
+        self.isPlug = False
         self.MUT = Lock()
     
     def New_Alert(self):
@@ -14,11 +15,11 @@ class Battery_Alert:
         self.MUT.acquire()
         self.alert = False
         self.MUT.release()
-    
-class Charging:
-    def __init__(self):
-        self.isPlug = False
-        self.MUT = Lock()
 
-alert=Battery_Alert()
-charge=Charging()
+    def is_Alert(self):
+        self.MUT.acquire()
+        output= self.alert
+        self.MUT.release()
+        return output
+
+alert_battery=Battery_Alert()

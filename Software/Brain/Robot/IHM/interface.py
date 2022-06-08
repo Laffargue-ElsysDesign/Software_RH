@@ -15,52 +15,88 @@ class Class_Command:
     ROTATE_LEFT=10
     def __init__(self):
         self.order = self.STOP
+        self.x = 0.0
+        self.y = 0.0
+        self.z = 0.0
         self.MUT = Lock()
 
     def Convert_Button_to_order(self, button):
         if button.get("buttonN"):
             self.MUT.acquire()
             self.order = self.NORTH
+            self.x = 0.2
+            self.y = 0.0
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonS"):
             self.MUT.acquire()
             self.order = self.SOUTH
+            self.x = -0.2
+            self.y = 0.0
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonSE"):
             self.MUT.acquire()
             self.order = self.SOUTH_EAST
+            self.x = -0.2
+            self.y = 0.2
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonSW"):
             self.MUT.acquire()
             self.order = self.SOUTH_WEST
+            self.x = -0.2
+            self.y = -0.2
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonNE"):
             self.MUT.acquire()
             self.order = self.NORTH_EAST
+            self.x = 0.2
+            self.y = 0.2
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonNW"):
             self.MUT.acquire()
             self.order = self.NORTH_WEST
+            self.x = 0.2
+            self.y = -0.2
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonStop"):
             self.MUT.acquire()
             self.order = self.STOP
+            self.x = 0.0
+            self.y = 0.0
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonE"):
             self.MUT.acquire()
             self.order = self.EAST
+            self.x = 0.0
+            self.y = 0.2
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonW"):
             self.MUT.acquire()
             self.order = self.WEST
+            self.x = 0.0
+            self.y = -0.2
+            self.z = 0.0
             self.MUT.release()
         elif button.get("buttonRR"):
             self.MUT.acquire()
             self.order = self.ROTATE_RIGHT
+            self.x = 0.0
+            self.y = 0.0
+            self.z = 0.5
             self.MUT.release()
         elif button.get("buttonRL"):
             self.MUT.acquire()
             self.order = self.ROTATE_LEFT
+            self.x = 0.0
+            self.y = 0.0
+            self.z = -0.5
             self.MUT.release()
         print(self.order)
 
@@ -145,28 +181,44 @@ class Mode_Wanted:
         self.MUT.release()
 
 class Mode:
+    NO_ALERT = 0
+    STAGIAIRE = 1
+    MANAGER = 2
+    PAUSE = 3
+    REUNION = 4
+    ENTREE = 5
+    BUREAU = 6
+    OPEN_SPACE_ENTREE = 7
+    OPEN_SPACE_FOND = 8
     def __init__(self):
         self.mode_wanted = Mode_Wanted()
         self.current_mode = Current_Mode()
         self.command = Class_Command()
         self.mission = Current_Mission()
         self.ronde = Ronde_Wanted()
+        self.alert = False
+        self.Loc = 0
 
     def Set_AUTO(self):
-        self.mode_wanted.MUT.acquire()
-        self.mode_wanted.mode = self.mode_wanted.AUTO
-        self.mode_wanted.MUT.release()
+        self.current_mode.MUT.acquire()
+        self.current_mode.mode = self.mode_wanted.AUTO
+        self.current_mode.MUT.release()
         self.command.MUT.acquire()
         self.command.order = self.command.STOP
         self.command.MUT.release()
+        self.mission.Set_Idle()
         print(self.mode_wanted.mode, self.command.order)
 
     def Set_MANUAL(self):
-        self.mode_wanted.MUT.acquire()
-        self.mode_wanted.mode = self.mode_wanted.MANUAL
-        self.mode_wanted.MUT.release()
+        self.current_mode.MUT.acquire()
+        self.current_mode.mode = self.mode_wanted.MANUAL
+        self.current_mode.MUT.release()
         self.ronde.Disable_Ronde()
-        self.mission.Set_Mission(self.mission.MANUAL)
+        self.command.MUT.acquire()
+        self.command.order = self.command.STOP
+        self.command.MUT.release()
+        self.mission.Set_Manual()
+        
         print(self.mode_wanted.mode, self.command.order)
     
     def Is_Auto(self):
