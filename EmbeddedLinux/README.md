@@ -20,7 +20,8 @@ https://gitlab.com/dorfell/fer_sys_dev/-/tree/master/01_hw/Pynq_Zybo-Z7
 
 
 ## Environement requirements: 
-Ubuntu Version tested: 18.04.4. Download it here : http://old-releases.ubuntu.com/releases/18.04.4/ubuntu-18.04-desktop-amd64.iso.
+Ubuntu Version tested: 18.04.4. Download it here : http://old-releases.ubuntu.com/releases/18.04.4/ubuntu-18.04-desktop-amd64.iso
+
 If you are using VirtualBox, follow this guide to access your sdcard inside the virtual machine: https://scribles.net/accessing-sd-card-from-linux-virtualbox-guest-on-windows-host/
 
 Setup your linux to passwordless when using sudo. This step is not necessary but the build will be easier because PYNQ needs to sudo quite frequently so it will ask for your passwd during the build process if not set to passwordless, meaning you have to stay close to your compuer during a build that can take a couple of hours
@@ -55,6 +56,7 @@ Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_ar
 ### Setting-up xilinx tools
 
 Warning Links for Downloads will ask you to register or create a Xilinx account + some personal information (Name, Country, Company). It is a requirement by Xilinx in order to Download there products.
+
 For the next steps we assume your Download folder for Xilinx tools is ~/Download
 * Download Xilinx Unified on the Download page of Xilinx website https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_Unified_2020.2_1118_1232_Lin64.bin
 * Download Petalinux Installer on Xilinx Website as well https://www.xilinx.com/member/forms/download/xef.html?filename=petalinux-v2020.2-final-installer.run
@@ -78,7 +80,7 @@ exit
 ./petalinux-v2020.2-final-installer.run -d /opt/pkg/Petlainux
 ./Xilinx_Unified_2020.2_1118_1232_Lin64.bin
 ```
-Of course when you select the install folder in the xilinx installer menu, choose /opt/pkg/Xilinx. Vivado Download will take time. Wait this porcess to end before continuing
+Of course when you select the install folder in the xilinx installer menu, choose /opt/pkg/Xilinx. Vivado Download will take time. Wait this process to end before continuing
 
 Then you can source Xilinx and Petalinux settings scripts: 
 
