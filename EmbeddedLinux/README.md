@@ -41,8 +41,8 @@ Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_ar
 Warning Links for Downloads will ask you to register or create a Xilinx account + some personal information (Name, Country, Company). It is a requirement by Xilinx in order to Download their products.
 
 For the next steps we assume your Download folder for Xilinx tools is ~/Download
-* Download Xilinx Unified on the Download page of Xilinx website https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_Unified_2020.2_1118_1232_Lin64.bin
-* Download Petalinux Installer on Xilinx Website as well https://www.xilinx.com/member/forms/download/xef.html?filename=petalinux-v2020.2-final-installer.run
+* Download Xilinx Unified 2020.2 on the Download page of Xilinx website https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_Unified_2020.2_1118_1232_Lin64.bin
+* Download Petalinux Installer 2020.2 on Xilinx Website as well https://www.xilinx.com/member/forms/download/xef.html?filename=petalinux-v2020.2-final-installer.run
 * Download patch y2k22 for vivado (Required since January 2022). End of this page: https://support.xilinx.com/s/article/76960?language=en_US
 ```
 cd ~/Downloads
