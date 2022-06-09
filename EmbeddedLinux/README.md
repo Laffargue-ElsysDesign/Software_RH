@@ -60,7 +60,7 @@ chown username /opt/pkg/Xilinx
 chgrp username /opt/pkg/Xilinx
 exit
 
-./petalinux-v2020.2-final-installer.run -d /opt/pkg/Petlainux
+./petalinux-v2020.2-final-installer.run -d /opt/pkg/Petalinux
 ./Xilinx_Unified_2020.2_1118_1232_Lin64.bin
 ```
 Of course when you select the install folder in the xilinx installer menu, choose /opt/pkg/Xilinx. Vivado Download will take time. Wait this process to end before continuing
