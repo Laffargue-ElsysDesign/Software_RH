@@ -51,7 +51,7 @@ This may take some time
 cd ../../../Software_RH
 ./setup.sh
 ```
-Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_arm_2_7 
+Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_arm_2_7. Do NOT untar it.
 
 ### Setting-up xilinx tools
 
@@ -104,13 +104,14 @@ Vivado/2020.2/tps/lnx64/python-3.8.3/bin/python y2k22_patch/patch.py
 
 ### Build BSP
 
-* go to PYNQ/sdbuild folder
+Go to PYNQ folder
 ```
 petalinux-util --webtalk off
 ```
 Open PYNQ/boards/Zybo-Z7/Zybo-Z7.spec file
 Make sure it has the line BSP_Zybo-Z7 :=
 ```
+cd sdbuild
 make bsp BOARDS=Zybo-Z7
 cp output//bsp/Zybo-Z7/xilinx-zyboz7-2020.2.bsp ../boards/Zybo-Z7/
 ```
@@ -119,11 +120,11 @@ Add the bsp to the Zybo-Z7.spec: BSP_Zybo-Z7 := xilinx-zyboz7-2020.2.bsp.
 
 ### Build Image
 
-go back to PYNQ/sdbuild file if you moved from there
+Go back to PYNQ/sdbuild folder
 ```
 make BOARDS=Zybo-Z7 PREBUILT=focal.arm.2.7.0_2021_11_17.tar.gz nocheck_images
 ```
-Build will take a couple of hours. Image will be stored in output folder. Between 7.6 and 8.01 GB.
+Build will take a couple of hours. Image will be stored in output folder. Between 7.6 and 8.1 GB.
 ### Mount on SD card 
 An 8GB sdcard might not be enough, 16 or 32 GB is better.
 ```
