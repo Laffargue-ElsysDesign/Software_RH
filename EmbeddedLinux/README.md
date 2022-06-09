@@ -7,7 +7,7 @@ Ubuntu Version tested: 18.04.4. Download it here : http://old-releases.ubuntu.co
 
 If you are using VirtualBox, follow this guide to access your sdcard inside the virtual machine: https://scribles.net/accessing-sd-card-from-linux-virtualbox-guest-on-windows-host/
 
-Setup your linux to passwordless when using sudo. This step is not necessary but the build will be easier because PYNQ needs to sudo quite frequently so it will ask for your passwd during the build process if not set to passwordless, meaning you have to stay close to your compuer during a build that can take a couple of hours
+Setup your linux to passwordless when using sudo. This step is not necessary but the build will be easier because PYNQ needs to sudo quite frequently so it will ask for your password during the build process if not set to passwordless, meaning you have to stay close to your compuyer during a build that can take a couple of hours
 
 * open /etc/sudoers file
 * add this line at the end of the file:
