@@ -111,6 +111,7 @@ Go back to PYNQ/sdbuild folder
 make BOARDS=Zybo-Z7 PREBUILT=focal.arm.2.7.0_2021_11_17.tar.gz nocheck_images
 ```
 Build will take a couple of hours. Image will be stored in output folder. Between 7.6 and 8.1 GB.
+
 ### Mount on SD card 
 An 8GB sdcard might not be enough, 16 or 32 GB is better.
 ```
