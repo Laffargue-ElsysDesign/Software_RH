@@ -58,8 +58,11 @@ chown username /opt/pkg/Petalinux
 chgrp username /opt/pkg/Petalinux
 chown username /opt/pkg/Xilinx
 chgrp username /opt/pkg/Xilinx
+dpkg-reconfigure dash
+```
+Select the option not to use /bin/dash as the default shell. This is a requirement for petalinux
+```
 exit
-
 ./petalinux-v2020.2-final-installer.run -d /opt/pkg/Petalinux
 ./Xilinx_Unified_2020.2_1118_1232_Lin64.bin
 ```
