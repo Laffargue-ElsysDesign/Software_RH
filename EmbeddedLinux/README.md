@@ -145,16 +145,16 @@ In my case : sudo dd bs=4M if=Zybo-Z7-2.7.0.img of=/dev/sdb status=progress
 ## Refrences used to achieve this work: 
 
 ### Environment Setup:
-http://old-releases.ubuntu.com/releases/18.04.4/
-https://www.virtualbox.org/
-https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html
-https://support.xilinx.com/s/article/76960?language=en_US
+* http://old-releases.ubuntu.com/releases/18.04.4/
+* https://www.virtualbox.org/
+* https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html
+* https://support.xilinx.com/s/article/76960?language=en_US
 
 ### PYNQ guide: 
-https://pynq.readthedocs.io/en/latest/index.html
-http://www.pynq.io/board.html
+* https://pynq.readthedocs.io/en/latest/index.html
+* http://www.pynq.io/board.html
 
 ### Zybo-Z7 files: 
-https://discuss.pynq.io/t/pynq-2-7-for-zybo-z7/4124
-https://gitlab.com/dorfell/fer_sys_dev/-/tree/master/01_hw/Pynq_Zybo-Z7
+* https://discuss.pynq.io/t/pynq-2-7-for-zybo-z7/4124
+* https://gitlab.com/dorfell/fer_sys_dev/-/tree/master/01_hw/Pynq_Zybo-Z7
 
