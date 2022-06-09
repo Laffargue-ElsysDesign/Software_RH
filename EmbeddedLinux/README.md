@@ -1,23 +1,6 @@
-# PYNQ for Zybo-Z7 Repo
+# PYNQ for Zybo-Z7-20 Repo
 
 Final image can be found here: https://drive.google.com/file/d/1COR9SHoGHiNd57T-1oZzoWESZvyLyB8e/view?usp=sharing
-
-## Refrences used to achieve this work: 
-
-### Environment Setup:
-http://old-releases.ubuntu.com/releases/18.04.4/
-https://www.virtualbox.org/
-https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html
-https://support.xilinx.com/s/article/76960?language=en_US
-
-### PYNQ guide: 
-https://pynq.readthedocs.io/en/latest/index.html
-http://www.pynq.io/board.html
-
-### Zybo-Z7 files: 
-https://discuss.pynq.io/t/pynq-2-7-for-zybo-z7/4124
-https://gitlab.com/dorfell/fer_sys_dev/-/tree/master/01_hw/Pynq_Zybo-Z7
-
 
 ## Environement requirements: 
 Ubuntu Version tested: 18.04.4. Download it here : http://old-releases.ubuntu.com/releases/18.04.4/ubuntu-18.04-desktop-amd64.iso
@@ -140,3 +123,37 @@ umount /dev/sXX1
 sudo dd bs=4M if=Zybo-Z7-2.7.0.img of=/dev/sXX status=progress
 ```
 In my case : sudo dd bs=4M if=Zybo-Z7-2.7.0.img of=/dev/sdb status=progress
+
+### Boot
+
+* Connect your PC to Zybo J12 port with microUSB cable
+* Connect J3 Ethernet of the Zybo to an internet source
+* Plug the SDCard in the Zybo and set up to boot on sdcard
+* Turn on the Zybo
+* Open a Serial terminal : 
+** baudrate 115200
+** Data 8bits
+** Parity None
+** Stop bits 1
+* Press PS-RST button to see boot process from the beginning 
+* ifconfig and spot IP adress of your board
+* Open a Browser (mozilla, chrome, brave, ...)
+* Enter the IP adress
+* Password xilinx
+* Have fun
+
+## Refrences used to achieve this work: 
+
+### Environment Setup:
+http://old-releases.ubuntu.com/releases/18.04.4/
+https://www.virtualbox.org/
+https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html
+https://support.xilinx.com/s/article/76960?language=en_US
+
+### PYNQ guide: 
+https://pynq.readthedocs.io/en/latest/index.html
+http://www.pynq.io/board.html
+
+### Zybo-Z7 files: 
+https://discuss.pynq.io/t/pynq-2-7-for-zybo-z7/4124
+https://gitlab.com/dorfell/fer_sys_dev/-/tree/master/01_hw/Pynq_Zybo-Z7
