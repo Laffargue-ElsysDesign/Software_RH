@@ -55,7 +55,7 @@ Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_ar
 
 ### Setting-up xilinx tools
 
-Warning Links for Downloads will ask you to register or create a Xilinx account + some personal information (Name, Country, Company). It is a requirement by Xilinx in order to Download there products.
+Warning Links for Downloads will ask you to register or create a Xilinx account + some personal information (Name, Country, Company). It is a requirement by Xilinx in order to Download their products.
 
 For the next steps we assume your Download folder for Xilinx tools is ~/Download
 * Download Xilinx Unified on the Download page of Xilinx website https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_Unified_2020.2_1118_1232_Lin64.bin
