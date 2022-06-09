@@ -157,3 +157,4 @@ http://www.pynq.io/board.html
 ### Zybo-Z7 files: 
 https://discuss.pynq.io/t/pynq-2-7-for-zybo-z7/4124
 https://gitlab.com/dorfell/fer_sys_dev/-/tree/master/01_hw/Pynq_Zybo-Z7
+
