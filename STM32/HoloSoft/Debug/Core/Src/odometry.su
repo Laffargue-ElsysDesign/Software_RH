@@ -1,0 +1,6 @@
+odometry.c:30:6:ODOMETRY_init	4	static
+odometry.c:38:6:ODOMETRY_it_5ms	4	static
+odometry.c:43:22:ODOMETRY_it_10ms	88	static
+odometry.c:81:22:ODOMETRY_get_speed_wheels	88	static
+odometry.c:85:22:ODOMETRY_get_speed_robot	24	static
+odometry.c:89:6:ODOMETRY_calcul_speed_robot	40	static

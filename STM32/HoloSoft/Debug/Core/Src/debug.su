@@ -1,0 +1,6 @@
+debug.c:23:6:DEBUG_update_odometry	72	static
+debug.c:39:6:DEBUG_print_odometry	64	static
+debug.c:83:6:DEBUG_update_corrector	72	static
+debug.c:102:6:DEBUG_print_corrector	64	static
+debug.c:154:6:DEBUG_update_cmd	16	static
+debug.c:166:6:DEBUG_print_cmd	64	static

@@ -1,0 +1,3 @@
+pilote.c:41:6:PILOTE_recieve_cmd	40	static,ignoring_inline_asm
+pilote.c:80:6:PILOTE_stop	4	static
+pilote.c:86:6:PILOTE_mouv	8	static
