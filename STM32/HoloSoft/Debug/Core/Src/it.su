@@ -1,0 +1,4 @@
+it.c:19:6:IT_init	8	static
+it.c:27:6:HAL_TIM_PeriodElapsedCallback	16	static
+it.c:36:6:HAL_SPI_RxCpltCallback	16	static
+it.c:42:6:HAL_UART_RxCpltCallback	16	static
