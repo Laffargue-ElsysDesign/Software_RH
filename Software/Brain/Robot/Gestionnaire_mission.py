@@ -114,6 +114,61 @@ class Gestionnnaire_Mission(Thread):
                     HUM.cmd_robot.speed_z = mode.command.z
                     HUM.cmd_robot.MUT.release()
 
+    def run2(self):
+        mode.current_mode.MUT.acquire()
+        if not mode.current_mode == mode.current_mode.AUTO:
+            mode.current_mode == mode.current_mode.MANUAL
+        mode.current_mode.MUT.release()
+
+        coordinate.MUT.acquire()
+        if not coordinate.coo == coordinate.home:
+            print("error loc")
+        coordinate.MUT.release()
+
+        self.init_sequence()
+
+        while(True):
+            mode.current_mode.MUT.acquire()
+            if mode.current_mode.mode == mode.current_mode.AUTO:
+                mode.current_mode.MUT.release()
+
+                
+                if self.is_wanted_Mode():
+
+                    self.init_MANUAL_Mode()
+
+                    mode.Set_MANUAL()
+
+                    self.mission = self.MANUAL
+
+                elif balise_alert.is_Alert():
+                    alert_management.Alert(balise_alert.where_Alert())
+                    balise_alert.Reset()
+                    mode.mission.Set_Alert()
+                    ###self.battery = True
+
+            elif mode.current_mode.mode == mode.current_mode.MANUAL:
+                mode.current_mode.MUT.release()
+
+                if self.is_wanted_Mode():
+
+                    self.init_AUTO_Mode()
+
+                    mode.Set_AUTO()
+                
+                #elif alert_battery.is_Alert():
+                elif balise_alert.is_Alert():
+                    mode.alert = True
+                    mode.alert = balise_alert.where_Alert()
+                    balise_alert.Reset()
+
+                else:
+                    HUM.cmd_robot.MUT.acquire()
+                    HUM.cmd_robot.speed_x = mode.command.x
+                    HUM.cmd_robot.speed_y = mode.command.y
+                    HUM.cmd_robot.speed_z = mode.command.z
+                    HUM.cmd_robot.MUT.release()
+
 
     
 

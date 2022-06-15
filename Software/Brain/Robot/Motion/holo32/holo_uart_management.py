@@ -13,7 +13,7 @@ from pynq import MMIO
 from pynq import Overlay
 
 #====Custom import====#
-import lib.uart_driver
+import holo32.lib.uart_driver
 
 ADDRESS_0 = 0x00A0010000  # Address of the ip core  revision 80 et quelque 0xA0040000
 
