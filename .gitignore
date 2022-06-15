@@ -54,3 +54,4 @@ dkms.conf
 #folders
 
 STM32/.metadata/
+Vivado_debug
