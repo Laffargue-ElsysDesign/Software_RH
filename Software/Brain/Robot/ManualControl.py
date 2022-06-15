@@ -1,11 +1,10 @@
 from tkinter import E
-import Robot.Motion.holo32.holo_uart_management as HUM 
+import Motion.holo32.holo_uart_management as HUM 
 from time import sleep, time
 from threading import Thread, Lock
 from signal import signal, SIGINT
-from pynq import Overlay
-from Robot.IHM.interface import mode
-from Robot.IHM import Create_App
+from IHM.interface import mode
+from IHM import Create_App
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -13,12 +12,15 @@ def handler(signal_received, frame):
     print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
     exit(0)
 
+
+
 class Keyboard_Read(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.speed_x=0.5
         self.speed_y=0
         self.speed_z=0
+        self.thread_manual_stop = False
     def Get_Trajectory(self, read_input):
         if read_input==' ':
             #print("Stop")
@@ -81,12 +83,14 @@ class Keyboard_Read(Thread):
 
     def run(self):
         prompt_counter = 10
-        while True:
+        while not self.thread_manual_stop:
             prompt_counter+=1
             if prompt_counter>10:
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 prompt_counter=0
             read_input=input()
+            if (read_input == 'm'):
+                break
             self.Get_Trajectory(read_input)
             HUM.cmd_robot.speed_x=self.speed_x
             HUM.cmd_robot.speed_y=self.speed_y
@@ -159,23 +163,3 @@ class IHM_Read(Thread):
             HUM.cmd_robot.speed_x=self.speed_x
             HUM.cmd_robot.speed_y=self.speed_y
             HUM.cmd_robot.speed_z=self.speed_z
-
-
-app=Create_App()
-if __name__ == '__main__':
-    signal(SIGINT, handler)
-
-    global overlay
-    overlay=Overlay("./holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
-    if overlay.is_loaded()==False:
-        overlay.download()
-    
-    print('Bring up uart....')
-    
-    #app.run(debug = True)
-
-    thread_holo = HUM.Holo_UART(overlay)
-    thread_holo.start()
-
-    thread_keyboard = Keyboard_Read()
-    thread_keyboard.start()

@@ -7,7 +7,7 @@ from pynq import Overlay
 from Robot.IHM.interface import mode
 from Robot.IHM import Create_App
 from Robot.Gestionnaire_mission import Gestionnnaire_Mission
-from Test_ManualControl import Keyboard_Read, IHM_Read
+from Robot.ManualControl import Keyboard_Read, IHM_Read
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
 
     global overlay
-    overlay=Overlay("../bitstream/Test_3.bit", download=False)
+    overlay=Overlay("./Robot/Motion/holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
         overlay.download()
     
@@ -40,8 +40,8 @@ if __name__ == '__main__':
     thread_keyboard = Keyboard_Read()
     thread_keyboard.start()
 
-    thread_keyboard = IHM_Read()
-    thread_keyboard.start()
+    #thread_keyboard = IHM_Read()
+    #thread_keyboard.start()
 
     #Decision making Thread, will replace IHM and debug threads
     thread_gestionnaire = Gestionnnaire_Mission()
