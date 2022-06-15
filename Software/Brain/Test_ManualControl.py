@@ -25,7 +25,7 @@ class Keyboard_Read(Thread):
             self.speed_x=0
             self.speed_y=0
             self.speed_z=0
-        elif read_input=='w':
+        elif read_input=='z':
             #print("Avance")
             self.speed_x=0.5
             self.speed_y=0
@@ -35,7 +35,7 @@ class Keyboard_Read(Thread):
             self.speed_x=0
             self.speed_y=0.5
             self.speed_z=0
-        elif read_input=='a':
+        elif read_input=='q':
             #print("Gauche")
             self.speed_x=0
             self.speed_y=-0.5
@@ -50,12 +50,12 @@ class Keyboard_Read(Thread):
             self.speed_x=0.3
             self.speed_y=0.3
             self.speed_z=0
-        elif read_input=='q':
+        elif read_input=='a':
             #print("Nord-ouest")
             self.speed_x=0.3
             self.speed_y=-0.3
             self.speed_z=0
-        elif read_input=='z':
+        elif read_input=='w':
             #print("Sud-ouest")
             self.speed_x=-0.3
             self.speed_y=0.3
@@ -65,12 +65,12 @@ class Keyboard_Read(Thread):
             self.speed_x=-0.3
             self.speed_y=-0.3
             self.speed_z=0
-        elif read_input=='3':
+        elif read_input=='"':
             #print("pivot droite")
             self.speed_x=-0
             self.speed_y=0
             self.speed_z=0.3
-        elif read_input=='2':
+        elif read_input=='é':
             #print("pivot gauche")
             self.speed_x=0
             self.speed_y=0
@@ -151,6 +151,7 @@ class IHM_Read(Thread):
         
 
     def run(self):
+        while(True):
             mode.command.MUT.acquire()
             read_input=mode.command
             mode.MUT.release()

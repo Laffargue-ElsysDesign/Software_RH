@@ -1,6 +1,12 @@
 from ahrs.filters import Madgwick, DCM
+from ahrs.utils import WMM
 from numpy.linalg import inv
 import numpy as np
+
+lat = 43.5687
+lon = 1.38735
+
+#DCM and IMU manipulation
 gyro_data=np.array([0, 0, 0])
 acc_data=np.array([0, 0, 0])
 mag_data=np.array([0, 0, 0])
@@ -10,3 +16,9 @@ quaternion = madgwick.updateMARG(quaternion, gyr=gyro_data, acc=acc_data, mag=ma
 dcm=DCM(q=quaternion)
 print(dcm)
 output = np.dot(inv(dcm), acc_data)
+
+#Magnetic Declination and gravity offset
+wmm = WMM()
+wmm.magnetic_field(lat, lon, height=0.165)
+print(wmm.D)
+
