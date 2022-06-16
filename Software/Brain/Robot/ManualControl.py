@@ -5,6 +5,7 @@ from threading import Thread, Lock
 from signal import signal, SIGINT
 from IHM.interface import mode
 from IHM import Create_App
+from Navigation import mgt
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -20,7 +21,7 @@ class Keyboard_Read(Thread):
         self.speed_x=0.5
         self.speed_y=0
         self.speed_z=0
-        self.thread_manual_stop = False
+        self.Mgt = mgt()
     def Get_Trajectory(self, read_input):
         if read_input==' ':
             #print("Stop")
@@ -77,24 +78,36 @@ class Keyboard_Read(Thread):
             self.speed_x=0
             self.speed_y=0
             self.speed_z=-0.3
+        elif read_input == 'm':
+            self.Stop = True
         else:
             print("Input error, please retry")
         
+    def start_thread(self):
+        self.speed_x=0
+        self.speed_y=0
+        self.speed_z=0
 
     def run(self):
-        prompt_counter = 10
-        while not self.thread_manual_stop:
-            prompt_counter+=1
-            if prompt_counter>10:
+        self.Mgt.Stop = False
+        self.Mgt.Waiting = False
+        while True:
+            while self.Mgt.Stop:
+                self.Mgt.Waiting = True
+                self.Mgt.Waiting = False
+            self.start_thread()
+            while not self.Stop:
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
-                prompt_counter=0
-            read_input=input()
-            if (read_input == 'm'):
-                break
-            self.Get_Trajectory(read_input)
-            HUM.cmd_robot.speed_x=self.speed_x
-            HUM.cmd_robot.speed_y=self.speed_y
-            HUM.cmd_robot.speed_z=self.speed_z
+                read_input=input()
+                self.Get_Trajectory(read_input)
+                HUM.cmd_robot.speed_x=self.speed_x
+                HUM.cmd_robot.speed_y=self.speed_y
+                HUM.cmd_robot.speed_z=self.speed_z
+                print("Current Mode = Manual")
+            
+            HUM.cmd_robot.speed_x=0
+            HUM.cmd_robot.speed_y=0
+            HUM.cmd_robot.speed_z=0
 
 class IHM_Read(Thread):
     def __init__(self):

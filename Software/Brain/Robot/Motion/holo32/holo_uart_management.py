@@ -228,6 +228,12 @@ def init():
     global init_done
     init_done=True
 
+
+def handler(signal_received, frame):
+    # Handle any cleanup here
+    print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
+    exit(0)
+
 if __name__ == '__main__':
     
     signal(SIGINT, handler)
