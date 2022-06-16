@@ -1,10 +1,6 @@
-from tkinter import E
 import Motion.holo32.holo_uart_management as HUM 
-from time import sleep, time
-from threading import Thread, Lock
-from signal import signal, SIGINT
+from threading import Thread
 from IHM.interface import mode
-from IHM import Create_App
 from Navigation import mgt
 
 #handler pour interrupt correctement 

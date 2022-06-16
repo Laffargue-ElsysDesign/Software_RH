@@ -8,13 +8,24 @@ class mgt():
         self.Stop = False
         self.Waiting = False
 
+def Compute_Angle(point):
+    pass #TBD
 
+def Rotate(angle)
 
 class Navigation(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.path = 0 #TBD
         self.Mgt = mgt()
+
+    def Get_to_Point(self, point):
+        Angle = Compute_Angle(Point)
+        while Angle > 2: #TBD
+            Rotate(Angle)
+            Angle=Compute_Angle(point)
+        
+        
 
     def run(self):
         self.Mgt.Stop = False
@@ -24,4 +35,8 @@ class Navigation(Thread):
                 self.Mgt.Waiting = True
             self.Mgt.Waiting = False
             while not self.Mgt.Stop:
-                pass
+                for i in self.path:
+                    self.Get_to_point(i)
+                    if self.Mgt.Stop:
+                        break
+                

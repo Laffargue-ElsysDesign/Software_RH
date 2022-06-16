@@ -1,6 +1,4 @@
-from time import sleep, time
 from threading import Thread, Lock
-from signal import signal, SIGINT
 
 from IHM.interface import cst
 from Navigation import Navigation, Dijkstra, mgt
