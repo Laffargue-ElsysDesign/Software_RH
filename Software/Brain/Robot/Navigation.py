@@ -11,7 +11,8 @@ class mgt():
 def Compute_Angle(point):
     pass #TBD
 
-def Rotate(angle)
+def Rotate(angle):
+    pass
 
 class Navigation(Thread):
     def __init__(self):
@@ -20,7 +21,7 @@ class Navigation(Thread):
         self.Mgt = mgt()
 
     def Get_to_Point(self, point):
-        Angle = Compute_Angle(Point)
+        Angle = Compute_Angle(point)
         while Angle > 2: #TBD
             Rotate(Angle)
             Angle=Compute_Angle(point)

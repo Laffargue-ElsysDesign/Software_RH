@@ -1,18 +1,13 @@
 from threading import Thread
-from signal import signal, SIGINT
-
-from numpy import where
 
 from IHM.interface import mode, cst
-import IHM.interface
-import Motion.holo32.holo_uart_management as HUM
 from ManualControl import Keyboard_Read
 from AutoControl import Auto_Control
 
 class Gestionnnaire_Mission(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.mission = self.IDLE
+        self.mission = cst.HOME
     
     def init_sequence():
         pass #TBD
