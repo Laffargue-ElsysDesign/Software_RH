@@ -4,6 +4,8 @@ from IHM.interface import mode, cst
 from ManualControl import Keyboard_Read
 from AutoControl import Auto_Control
 
+
+
 class Gestionnnaire_Mission(Thread):
     def __init__(self):
         Thread.__init__(self)

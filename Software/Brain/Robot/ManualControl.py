@@ -2,6 +2,7 @@ import Motion.holo32.holo_uart_management as HUM
 from threading import Thread
 from IHM.interface import mode
 from Navigation import mgt
+from Alerts import Alerts
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -78,20 +79,22 @@ class Keyboard_Read(Thread):
             self.Stop = True
         else:
             print("Input error, please retry")
-        
-    def start_thread(self):
+        return      
+
+    def Wait_Start(self):
+        while self.Mgt.Stop:
+            self.Mgt.Waiting = True
+        self.Mgt.Waiting = False
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0
+        return
 
     def run(self):
         self.Mgt.Stop = False
         self.Mgt.Waiting = False
         while True:
-            while self.Mgt.Stop:
-                self.Mgt.Waiting = True
-                self.Mgt.Waiting = False
-            self.start_thread()
+            self.Wait_Start()
             while not self.Stop:
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
@@ -111,6 +114,8 @@ class IHM_Read(Thread):
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0
+        self.Alerts = Alerts()
+        self.Mgt = mgt()
     def Get_Trajectory(self, read_input):
         if mode.command == mode.command.NORTH:
             self.speed_x=0.3
@@ -162,9 +167,18 @@ class IHM_Read(Thread):
             self.speed_z=0
             print("Input error. Robot will stop. please retry")
         
+    def Wait_Start(self):
+        while self.Mgt.Stop:
+            self.Mgt.Waiting = True
+        self.Mgt.Waiting = False
+        self.speed_x=0
+        self.speed_y=0
+        self.speed_z=0
+        return
 
     def run(self):
         while(True):
+            self.Wait_Start()
             mode.command.MUT.acquire()
             read_input=mode.command
             mode.MUT.release()

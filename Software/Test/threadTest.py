@@ -19,8 +19,8 @@ class LookAgain(Thread):
         print(self.A)
 
 if __name__ == '__main__':
-    threadA = Look()
-    threadB = LookAgain()
-    threadB.start()
-    threadA.start()
-    threadB.join()
+    for i in [0, 1, 2, 3, 4, 5, 6]:
+        print(i)
+        if i > 2:
+            print("get out")
+            break
