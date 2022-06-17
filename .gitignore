@@ -53,5 +53,5 @@ Mkfile.old
 dkms.conf
 
 #folders
-Software/Vivado_debug
+#Software/Vivado_debug
 STM32/.metadata/
