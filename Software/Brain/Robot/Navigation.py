@@ -58,7 +58,10 @@ class Navigation(Thread):
                     self.Get_to_Point(i)
                     if self.Mgt.Stop:
                         break
+                if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
                     self.MUT.acquire()
                     self.path = Dijkstra(cst.Home)
                     self.MUT.release()
+                else:
+                    self.Mgt.Stop = True
                     

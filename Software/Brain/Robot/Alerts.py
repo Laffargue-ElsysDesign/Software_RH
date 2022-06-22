@@ -8,5 +8,10 @@ class Balise ():
 class Alerts():
     def __init__(self):
         self.Battery = False
-        self.Ronde = False
+        self.Ronde = Ronde()
         self.Balise = Balise()
+
+class Ronde ():
+    def __init__(self):
+        self.New = False
+        self.path = 0 #TBD

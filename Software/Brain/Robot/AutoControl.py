@@ -39,13 +39,14 @@ class Auto_Control(Thread):
                         self.Navigation.Mgt.Stop = True
                         while not self.Navigation.Mgt.Waiting:
                             pass
+                    if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
                         self.Navigation.MUT.acquire()
                         self.Navigation.path = Dijkstra(cst.Home)
                         self.Navigation.MUT.release()
                         self.Navigation.Mgt.Stop = False
                 
-                #If a new alert is triggeres, gets treated first
-                if self.Alerts.Balise.New:
+                #If a new alert is triggeres, gets priority
+                elif self.Alerts.Balise.New:
                     if not self.Navigation.Mgt.Waiting:
                         self.Navigation.Mgt.Stop = True
                         while not self.Navigation.Mgt.Waiting:
@@ -56,7 +57,14 @@ class Auto_Control(Thread):
                     self.Navigation.MUT.release()
                     self.Alerts.Balise.MUT.release()
                     self.Navigation.Mgt.Stop = False
+                    self.Alerts.Balise.New = False
 
+                elif self.Alerts.Ronde.New:
+                    if self.Navigation.Mgt.Waiting:
+                        self.Navigation.path = self.Alerts.Ronde.path
+                        self.Navigation.Mgt.Stop = False
+                        self.Alerts.Ronde = False
+                        
             self.Navigation.Mgt.Stop = True
             while not self.Navigation.Mgt.Waiting:
                 pass

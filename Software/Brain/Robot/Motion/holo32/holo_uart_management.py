@@ -15,7 +15,7 @@ from pynq import Overlay
 #====Custom import====#
 import holo32.lib.uart_driver
 
-ADDRESS_0 = 0x00A0010000  # Address of the ip core  revision 80 et quelque 0xA0040000
+ADDRESS_0 = 0x00A0010000  # Address of the ip core 0xA0040000
 
 RX_FIFO = 0x00
 TX_FIFO = 0x04
