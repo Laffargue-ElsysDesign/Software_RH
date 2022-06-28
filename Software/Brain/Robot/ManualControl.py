@@ -2,7 +2,7 @@
 from threading import Thread
 from Robot.IHM.interface import mode, cst
 from Robot.Navigation import mgt
-from Robot.Alerts import Alerts
+from Robot.Alerts import alerts
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -93,6 +93,12 @@ class Keyboard_Read(Thread):
                     mode.mode_wanted.MUT.acquire()
                     mode.mode_wanted.mode = cst.MANUAL
                     mode.mode_wanted.MUT.release()
+                elif read_input == 'i':
+                    alerts.Balise.New = True
+                elif read_input == 'b':
+                    alerts.Battery = True
+                elif read_input == 'r':
+                    alerts.Ronde.New = True
         self.Mgt.Waiting = False
         self.speed_x=0
         self.speed_y=0
@@ -122,7 +128,7 @@ class IHM_Read(Thread):
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0
-        self.Alerts = Alerts()
+        self.Alerts = alerts
         self.Mgt = mgt()
     def Get_Trajectory(self, read_input):
         if mode.command == mode.command.NORTH:

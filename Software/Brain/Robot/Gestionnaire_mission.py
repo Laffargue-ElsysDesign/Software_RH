@@ -45,7 +45,7 @@ class Gestionnnaire_Mission(Thread):
 
         #Start of main Thread
         while(True):
-            
+
             ##When Manual
             mode.mode_wanted.MUT.acquire()
             if mode.mode_wanted.mode == cst.MANUAL:

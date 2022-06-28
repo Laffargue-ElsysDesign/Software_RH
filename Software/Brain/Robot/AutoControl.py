@@ -1,7 +1,8 @@
 from threading import Thread
-from Robot.Alerts import Alerts
+from Robot.Alerts import alerts
 from Robot.IHM.interface import cst
 from Robot.Navigation import Navigation, Dijkstra, mgt
+from time import sleep
 
 
 
@@ -9,7 +10,6 @@ class Auto_Control(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.Mgt = mgt()
-        self.Alerts = Alerts()
         self.state = cst.HOME
         self.Navigation = Navigation()
 
@@ -32,42 +32,45 @@ class Auto_Control(Thread):
             #Continue until AutoMode gets shut down
             while not self.Mgt.Stop:
                 #print("Auto_Control")
-                Current_Loc = 0 #TBD
+                #Current_Loc = 0 #TBD
 
                 #If battery Alert, got back home asap
-                if self.Alerts.Battery:
+                if alerts.Battery:
                     print("Battery triggered")
                     if not self.Navigation.Mgt.Waiting:
                         self.Navigation.Mgt.Stop = True
                         while not self.Navigation.Mgt.Waiting:
-                            pass
-                    if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
-                        self.Navigation.MUT.acquire()
-                        self.Navigation.path = Dijkstra(cst.Home)
-                        self.Navigation.MUT.release()
-                        self.Navigation.Mgt.Stop = False
+                            sleep(0.01)
+                    #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
+                    self.Navigation.MUT.acquire()
+                    self.Navigation.path = cst.Home
+                    self.Navigation.MUT.release()
+                    self.Navigation.Mgt.Stop = False
+                    alerts.Battery = False
                 
                 #If a new alert is triggeres, gets priority
-                elif self.Alerts.Balise.New:
+                elif alerts.Balise.New:
                     print("Balise Triggered")
                     if not self.Navigation.Mgt.Waiting:
                         self.Navigation.Mgt.Stop = True
                         while not self.Navigation.Mgt.Waiting:
-                            pass
-                    self.Alerts.Balise.MUT.acquire()
+                            sleep(0.01)
+                    #self.Alerts.Balise.MUT.acquire()
                     self.Navigation.MUT.acquire()
-                    self.Navigation.path = Dijkstra(self.Alerts.Balise.Loc)
+                    self.Navigation.path = cst.Home
                     self.Navigation.MUT.release()
-                    self.Alerts.Balise.MUT.release()
+                    #self.Alerts.Balise.MUT.release()
                     self.Navigation.Mgt.Stop = False
-                    self.Alerts.Balise.New = False
+                    alerts.Balise.New = False
 
-                elif self.Alerts.Ronde.New:
+                elif alerts.Ronde.New:
                     print("Ronde triggered")
                     if self.Navigation.Mgt.Waiting:
-                        self.Navigation.path = self.Alerts.Ronde.path
+                        self.Navigation.MUT.acquire()
+                        self.Navigation.path = cst.Home
+                        self.Navigation.MUT.release()
                         self.Navigation.Mgt.Stop = False
-                        self.Alerts.Ronde = False
+                        alerts.Ronde.New = False
                         
             self.Navigation.Mgt.Stop = True
             while not self.Navigation.Mgt.Waiting:

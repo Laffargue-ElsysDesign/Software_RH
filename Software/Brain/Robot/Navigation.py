@@ -43,21 +43,22 @@ class Navigation(Thread):
         pass #TBD     
 
     def Wait_Start(self):
+        print("End of navigation")
         while self.Mgt.Stop:
             self.Mgt.Waiting = True
-            #print("Navigate Stopped")
         self.Mgt.Waiting = False
         return
 
     def run(self):
         while True:
             self.Wait_Start()
+            print("Start of Navigation")
             while not self.Mgt.Stop:
-                print("Navigating")
-                for i in self.path:
+                hello = True
+                #for i in self.path:
                     #self.Get_to_Point(i)
-                    if self.Mgt.Stop:
-                        break
+                    #if self.Mgt.Stop:
+                        #break
                 #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
                     #self.MUT.acquire()
                     #self.path = Dijkstra(cst.Home)
