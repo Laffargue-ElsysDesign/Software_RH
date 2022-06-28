@@ -24,14 +24,14 @@ linuxconfig ALL=(ALL) NOPASSWD:ALL
 git clone --recursive https://github.com/Xilinx/PYNQ.git
 git clone https://github.com/Laffargue-ElsysDesign/Software_RH.git
 ```
-Warning: We assume Software_RH and PYNQ folders are next to each other (in the same directory). If not you will have to modify command lines of this readme appropriately as well as the PYNQ_FOLDER macro in Software-RH/EmbeddedLinux/setup.sh file. You can change this macro to the absolute PATH of PYNQ directory.
+Warning: We assume Software_RH and PYNQ folders are next to each other (in the same folder). If not you will have to modify command lines of this readme appropriately as well as the PYNQ_FOLDER macro in Software-RH/EmbeddedLinux/setup.sh file. You can change this macro to the absolute PATH of PYNQ folder
 ```
 cd PYNQ/sdbuild/scripts
 ./setup-host.sh 
 ```
 This may take some time
 ```
-cd ../../../Software_RH
+cd ../../../Software_RH/EmbeddedLinux
 ./setup.sh
 ```
 Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_arm_2_7. Do NOT untar it.
@@ -66,7 +66,7 @@ exit
 ./petalinux-v2020.2-final-installer.run -d /opt/pkg/Petalinux
 ./Xilinx_Unified_2020.2_1118_1232_Lin64.bin
 ```
-When you select the install folder in the xilinx installer menu, choose /opt/pkg/Xilinx. Vivado Download will take time. Wait this process to end before continuing
+Of course when you select the install folder in the xilinx installer menu, choose /opt/pkg/Xilinx. Vivado Download will take time. Wait this process to end before continuing
 
 Then you can source Xilinx and Petalinux settings scripts: 
 
@@ -90,16 +90,16 @@ Vivado/2020.2/tps/lnx64/python-3.8.3/bin/python y2k22_patch/patch.py
 
 ### Build BSP
 
-Go to PYNQ directory.
+Go to PYNQ folder
 ```
 petalinux-util --webtalk off
 ```
 Open PYNQ/boards/Zybo-Z7/Zybo-Z7.spec file
-Make sure it has the line "BSP_Zybo-Z7 :=" uncommented 
+Make sure it has the line BSP_Zybo-Z7 :=
 ```
 cd sdbuild
 make bsp BOARDS=Zybo-Z7
-cp output/bsp/Zybo-Z7/xilinx-zyboz7-2020.2.bsp ../boards/Zybo-Z7/
+cp output//bsp/Zybo-Z7/xilinx-zyboz7-2020.2.bsp ../boards/Zybo-Z7/
 ```
 Open PYNQ/boards/Zybo-Z7/Zybo-Z7.spec file
 Add the bsp to the Zybo-Z7.spec: BSP_Zybo-Z7 := xilinx-zyboz7-2020.2.bsp.
@@ -110,7 +110,7 @@ Go back to PYNQ/sdbuild folder
 ```
 make BOARDS=Zybo-Z7 PREBUILT=focal.arm.2.7.0_2021_11_17.tar.gz nocheck_images
 ```
-Build will take a couple of hours. Image will be stored in output directory. Between 7.6 and 8.1 GB.
+Build will take a couple of hours. Image will be stored in output folder. Between 7.6 and 8.1 GB.
 
 ### Mount on SD card 
 An 8GB sdcard might not be enough, 16 or 32 GB is better.
@@ -131,8 +131,8 @@ In my case : sudo dd bs=4M if=Zybo-Z7-2.7.0.img of=/dev/sdb status=progress
 ### Boot
 
 * Connect your PC to Zybo J12 port with microUSB cable
-* Connect J3 Ethernet of the Zybo to an internet source.
-* Plug the SDCard in the Zybo and set the board to boot on sdcard
+* Connect J3 Ethernet of the Zybo to an internet source
+* Plug the SDCard in the Zybo and set up to boot on sdcard
 * Turn on the Zybo
 * Open a Serial terminal : 
 ** baudrate 115200
