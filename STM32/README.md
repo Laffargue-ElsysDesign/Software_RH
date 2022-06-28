@@ -1,6 +1,7 @@
 # STM32CubeIDE project for Elsys-Design Holo Robot
 
 This Directory include the complete Software used for the 2022 Holo project
+It is mainly the 2021 and 2020 Software used here
 
 # Hardware Configuration to program the board
 
