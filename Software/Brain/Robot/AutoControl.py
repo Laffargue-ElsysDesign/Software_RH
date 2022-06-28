@@ -12,23 +12,23 @@ class Auto_Control(Thread):
         self.Alerts = Alerts()
         self.state = cst.HOME
         self.Navigation = Navigation()
-        self.Navigation.Mgt.Stop = True
 
     def Wait_Start(self):
+        print("End of Auto_Control")
         while self.Mgt.Stop:
             self.Mgt.Waiting = True
+            #print("Auto Stopped")
         self.Mgt.Waiting = False
+
         return
 
     def run(self):
         #TBD
         self.Navigation.start()
-        self.Mgt.Stop = False
-        self.Mgt.Waiting = False
         while True:
             #Wait until Auto Mode gets called
             self.Wait_Start()
-
+            print("Start of Auto Control")
             #Continue until AutoMode gets shut down
             while not self.Mgt.Stop:
                 #print("Auto_Control")
@@ -71,4 +71,4 @@ class Auto_Control(Thread):
                         
             self.Navigation.Mgt.Stop = True
             while not self.Navigation.Mgt.Waiting:
-                pass
+                print(self.Navigation.Mgt.Waiting)

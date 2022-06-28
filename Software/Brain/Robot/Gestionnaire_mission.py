@@ -17,8 +17,7 @@ class Gestionnnaire_Mission(Thread):
         pass #TBD
 
     def init_robot(self):
-        self.manual_control.Mgt.Stop = False
-        self.auto_control.Mgt.Stop = True
+        pass
 
     def set_MANUAL():
         pass #TBD
@@ -32,28 +31,25 @@ class Gestionnnaire_Mission(Thread):
         if not mode.current_mode == cst.AUTO:
             mode.current_mode == cst.AUTO
         mode.current_mode.MUT.release()
-        mode.current_mode == cst.MANUAL
         ##IMU Calibration and first computations check (localisation, ...)
-        print("Keyboard")
+
         #Threads  useful
 
-        self.init_robot()
+        #self.init_robot()
 
         self.manual_control.start()
         self.auto_control.start()
 
         ##Small movement to indicate robot can be used properly
         #self.init_sequence()
-        
+
         #Start of main Thread
         while(True):
-            print("Mission")
+            
             ##When Manual
             mode.mode_wanted.MUT.acquire()
             if mode.mode_wanted.mode == cst.MANUAL:
-                print("Manual asked")
                 mode.mode_wanted.MUT.release()
-                 
                  ##If Auto_Thread is on, wait for it to finish.
                 if not self.auto_control.Mgt.Waiting:
                     self.auto_control.Mgt.Stop = True
@@ -65,16 +61,15 @@ class Gestionnnaire_Mission(Thread):
                     self.manual_control.Mgt.Stop = False
 
                 ##Set current values to Manual
-                self.set_MANUAL() 
+                #self.set_MANUAL() 
 
             ##When Auto
             elif mode.mode_wanted.mode == cst.AUTO:
                 mode.mode_wanted.MUT.release()
-                print("Auto Asked")
                 ##If Manual Thread is on, wait for it to  finish
                 if not self.manual_control.Mgt.Waiting:
                     self.manual_control.Mgt.Stop = True
-                    while not self.auto_control.Mgt.Waiting:
+                    while not self.manual_control.Mgt.Waiting:
                         pass
                 
                 ##If Auto Thread is not on, start it
@@ -82,6 +77,6 @@ class Gestionnnaire_Mission(Thread):
                     self.auto_control.Mgt.Stop = False
 
                 ##Set current values to Auto
-                self.set_AUTO()
+                #self.set_AUTO()
                 
 

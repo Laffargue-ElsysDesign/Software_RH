@@ -1,6 +1,6 @@
 #import Motion.holo32.holo_uart_management as HUM 
 from threading import Thread
-from Robot.IHM.interface import mode
+from Robot.IHM.interface import mode, cst
 from Robot.Navigation import mgt
 from Robot.Alerts import Alerts
 
@@ -76,14 +76,23 @@ class Keyboard_Read(Thread):
             self.speed_y=0
             self.speed_z=-0.3
         elif read_input == 'm':
-            self.Stop = True
+            mode.mode_wanted.mode = cst.AUTO
+            self.Mgt.Stop = True
         else:
             print("Input error, please retry")
         return      
 
     def Wait_Start(self):
+        print("End of Manual Control")
         while self.Mgt.Stop:
             self.Mgt.Waiting = True
+            
+            if (mode.mode_wanted.mode == cst.AUTO) :
+                read_input = input()
+                if (read_input == 'm'):
+                    mode.mode_wanted.MUT.acquire()
+                    mode.mode_wanted.mode = cst.MANUAL
+                    mode.mode_wanted.MUT.release()
         self.Mgt.Waiting = False
         self.speed_x=0
         self.speed_y=0
@@ -91,19 +100,17 @@ class Keyboard_Read(Thread):
         return
 
     def run(self):
-        self.Mgt.Stop = False
-        self.Mgt.Waiting = False
         while True:
             self.Wait_Start()
+            print("Start of Manual Control")
+
             while not self.Mgt.Stop:
-                print("Manual Control")
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
                 #HUM.cmd_robot.speed_x=self.speed_x
                 #HUM.cmd_robot.speed_y=self.speed_y
                 #HUM.cmd_robot.speed_z=self.speed_z
-                print("Current Mode = Manual")
             
             #HUM.cmd_robot.speed_x=0
             #HUM.cmd_robot.speed_y=0

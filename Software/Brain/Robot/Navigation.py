@@ -6,8 +6,8 @@ def Dijkstra(End):
 
 class mgt():
     def __init__(self):
-        self.Stop = False
-        self.Waiting = False
+        self.Stop = True
+        self.Waiting = True
 
 def Compute_Angle(point):
     return 0 #TBD
@@ -45,12 +45,11 @@ class Navigation(Thread):
     def Wait_Start(self):
         while self.Mgt.Stop:
             self.Mgt.Waiting = True
+            #print("Navigate Stopped")
         self.Mgt.Waiting = False
         return
 
     def run(self):
-        self.Mgt.Stop = False
-        self.Mgt.Waiting = False
         while True:
             self.Wait_Start()
             while not self.Mgt.Stop:
