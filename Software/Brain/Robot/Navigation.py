@@ -1,5 +1,5 @@
 from threading import Thread, Lock
-from IHM.interface import cst
+from Robot.IHM.interface import cst
 
 def Dijkstra(End):
     pass #TBD
@@ -23,7 +23,7 @@ def Correct():
 class Navigation(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.path = 0 #TBD
+        self.path = [0, 0] #TBD
         self.Mgt = mgt()
         self.MUT = Lock()
 
@@ -54,14 +54,15 @@ class Navigation(Thread):
         while True:
             self.Wait_Start()
             while not self.Mgt.Stop:
+                print("Navigating")
                 for i in self.path:
-                    self.Get_to_Point(i)
+                    #self.Get_to_Point(i)
                     if self.Mgt.Stop:
                         break
-                if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
-                    self.MUT.acquire()
-                    self.path = Dijkstra(cst.Home)
-                    self.MUT.release()
-                else:
-                    self.Mgt.Stop = True
+                #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
+                    #self.MUT.acquire()
+                    #self.path = Dijkstra(cst.Home)
+                    #self.MUT.release()
+                #else:
+                    #self.Mgt.Stop = True
                     

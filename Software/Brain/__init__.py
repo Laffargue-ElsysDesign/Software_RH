@@ -1,9 +1,9 @@
-import Robot.Motion.holo32.holo_uart_management as HUM 
+
 from time import sleep, time
 from threading import Thread, Lock
 from signal import signal, SIGINT
-from Brain.Robot import IHM
-from pynq import Overlay
+#from Brain.Robot import IHM
+#from pynq import Overlay
 from Robot.IHM.interface import mode
 from Robot.IHM import Create_App
 from Robot.Gestionnaire_mission import Gestionnnaire_Mission
@@ -17,24 +17,24 @@ def handler(signal_received, frame):
 
 
 
-app=Create_App()
+#app=Create_App()
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
 
-    global overlay
-    overlay=Overlay("./Robot/Motion/holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
-    if overlay.is_loaded()==False:
-        overlay.download()
+    #global overlay
+    #overlay=Overlay("./Robot/Motion/holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
+    #if overlay.is_loaded()==False:
+    #    overlay.download()
     
-    print('Bring up uart....')
+    #print('Bring up uart....')
     
     #Start IHM
-    app.run(debug = True)
+    #app.run(debug = True)
 
     #Start UART Comunication with robot
-    thread_holo = HUM.Holo_UART(overlay)
-    thread_holo.start()
+    #thread_holo = HUM.Holo_UART(overlay)
+    #thread_holo.start()
 
     #Decision making Thread, will replace IHM and debug threads
     thread_gestionnaire = Gestionnnaire_Mission()

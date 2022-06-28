@@ -1,7 +1,7 @@
 from threading import Thread
-from Alerts import Alerts
-from IHM.interface import cst
-from Navigation import Navigation, Dijkstra, mgt
+from Robot.Alerts import Alerts
+from Robot.IHM.interface import cst
+from Robot.Navigation import Navigation, Dijkstra, mgt
 
 
 
@@ -12,6 +12,7 @@ class Auto_Control(Thread):
         self.Alerts = Alerts()
         self.state = cst.HOME
         self.Navigation = Navigation()
+        self.Navigation.Mgt.Stop = True
 
     def Wait_Start(self):
         while self.Mgt.Stop:
@@ -30,11 +31,12 @@ class Auto_Control(Thread):
 
             #Continue until AutoMode gets shut down
             while not self.Mgt.Stop:
-
+                #print("Auto_Control")
                 Current_Loc = 0 #TBD
 
                 #If battery Alert, got back home asap
                 if self.Alerts.Battery:
+                    print("Battery triggered")
                     if not self.Navigation.Mgt.Waiting:
                         self.Navigation.Mgt.Stop = True
                         while not self.Navigation.Mgt.Waiting:
@@ -47,6 +49,7 @@ class Auto_Control(Thread):
                 
                 #If a new alert is triggeres, gets priority
                 elif self.Alerts.Balise.New:
+                    print("Balise Triggered")
                     if not self.Navigation.Mgt.Waiting:
                         self.Navigation.Mgt.Stop = True
                         while not self.Navigation.Mgt.Waiting:
@@ -60,6 +63,7 @@ class Auto_Control(Thread):
                     self.Alerts.Balise.New = False
 
                 elif self.Alerts.Ronde.New:
+                    print("Ronde triggered")
                     if self.Navigation.Mgt.Waiting:
                         self.Navigation.path = self.Alerts.Ronde.path
                         self.Navigation.Mgt.Stop = False
