@@ -4,6 +4,10 @@ from Robot.IHM.interface import mode, cst
 from Robot.Navigation import mgt
 from Robot.Alerts import alerts
 
+from signal import signal, SIGINT
+from pynq import Overlay
+import Robot.Motion.holo32.holo_uart_management as HUM
+
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -195,8 +199,26 @@ class IHM_Read(Thread):
             self.Wait_Start()
             mode.command.MUT.acquire()
             read_input=mode.command
-            mode.MUT.release()
+            mode.command.MUT.release()
             self.Get_Trajectory(read_input)
             #HUM.cmd_robot.speed_x=self.speed_x
             #HUM.cmd_robot.speed_y=self.speed_y
             #HUM.cmd_robot.speed_z=self.speed_z
+
+if __name__ == '__main__':
+    import Motion.holo32.holo_uart_management as HUM
+    signal(SIGINT, handler)
+
+    global overlay
+    overlay=Overlay("./Robot/Motion/holo32/Overlays/Bitstream/UartComm.bit", download=False)
+    if overlay.is_loaded()==False:
+        overlay.download()
+    
+    print('Bring up uart....')
+
+    thread_holo = HUM.Holo_UART(overlay)
+    thread_holo.start()
+
+    thread_keyboard = Keyboard_Read()
+    thread_keyboard.start()
+

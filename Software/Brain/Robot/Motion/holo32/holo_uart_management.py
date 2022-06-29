@@ -13,7 +13,7 @@ from pynq import MMIO
 from pynq import Overlay
 
 #====Custom import====#
-import holo32.lib.uart_driver
+import lib.uart_driver
 
 ADDRESS_0 = 0x00A0010000  # Address of the ip core 0xA0040000
 
@@ -37,7 +37,7 @@ CTRL_REG = 0x0C
 RST_TX = 0
 RST_RX = 1
 INTR_EN = 4
-uart = MMIO(ADDRESS_0,0x1000)
+#uart = MMIO(ADDRESS_0,0x1000)
 
 class Class_Command:
     def __init__(self):
@@ -151,7 +151,7 @@ class Holo_UART(Thread):
             
             
             try:
-                print(self.msg)
+                #print(self.msg)
                 self.uart.writeByte(self.msg) 
             except:
                 print("Send timeout")
