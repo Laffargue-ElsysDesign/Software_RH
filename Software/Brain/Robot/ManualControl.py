@@ -1,20 +1,15 @@
 #import Motion.holo32.holo_uart_management as HUM 
 from threading import Thread
-from Robot.IHM.interface import mode, cst
-from Robot.Navigation import mgt
-from Robot.Alerts import alerts
-
-from signal import signal, SIGINT
-from pynq import Overlay
-import Robot.Motion.holo32.holo_uart_management as HUM
+from Robot.Alerts import alerts, mgt
+#import Robot.Motion.holo32.holo_uart_management as HUM
+from Robot.IHM.interface import mode
+import Robot.Constants as cst
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     # Handle any cleanup here
-    print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
+    print('SIGINT or CTRL-C detected. ManualControl Exiting gracefully')
     exit(0)
-
-
 
 class Keyboard_Read(Thread):
     def __init__(self):
@@ -23,72 +18,69 @@ class Keyboard_Read(Thread):
         self.speed_y=0
         self.speed_z=0
         self.Mgt = mgt()
+        self.Interrupt = False
+
+    def set_speed(self, x, y, z):
+        self.speed_x = x
+        self.speed_y = y
+        self.speed_z = z
+
     def Get_Trajectory(self, read_input):
         if read_input==' ':
             print("Stop")
-            self.speed_x=0
-            self.speed_y=0
-            self.speed_z=0
+            self.set_speed(0, 0, 0)
+
         elif read_input=='z':
             print("Avance")
-            self.speed_x=0.5
-            self.speed_y=0
-            self.speed_z=0
+            self.set_speed(0.5, 0, 0)
+
         elif read_input=='d':
             print("Droite")
-            self.speed_x=0
-            self.speed_y=0.5
-            self.speed_z=0
+            self.set_speed(0, 0.5, 0)
+
         elif read_input=='q':
             print("Gauche")
-            self.speed_x=0
-            self.speed_y=-0.5
-            self.speed_z=0
+            self.set_speed(0, -0.5, 0)
+
         elif read_input=='s':
             print("Arriere")
-            self.speed_x=-0.5
-            self.speed_y=0
-            self.speed_z=0
+            self.set_speed(-0.5, 0, 0)
+
         elif read_input=='e':
             print("Nord-est")
-            self.speed_x=0.3
-            self.speed_y=0.3
-            self.speed_z=0
+            self.set_speed(0.3, 0.3, 0)
+
         elif read_input=='a':
             print("Nord-ouest")
-            self.speed_x=0.3
-            self.speed_y=-0.3
-            self.speed_z=0
+            self.set_speed(0.3, -0.3, 0)
+
         elif read_input=='w':
             print("Sud-ouest")
-            self.speed_x=-0.3
-            self.speed_y=0.3
-            self.speed_z=0
+            self.set_speed(-0.3, 0.3, 0)
+
         elif read_input=='x':
             print("sud-est")
-            self.speed_x=-0.3
-            self.speed_y=-0.3
-            self.speed_z=0
+            self.set_speed(-0.3, -0.3, 0)
+
         elif read_input=='"':
             print("pivot droite")
-            self.speed_x=-0
-            self.speed_y=0
-            self.speed_z=0.3
+            self.set_speed(0, 0, 0.3)
+
         elif read_input=='é':
             print("pivot gauche")
-            self.speed_x=0
-            self.speed_y=0
-            self.speed_z=-0.3
+            self.set_speed(0, 0, -0.3)
+
         elif read_input == 'm':
             mode.mode_wanted.mode = cst.AUTO
             self.Mgt.Stop = True
+            
         else:
             print("Input error, please retry")
         return      
 
     def Wait_Start(self):
         print("End of Manual Control")
-        while self.Mgt.Stop:
+        while self.Mgt.Stop and not self.Interrupt:
             self.Mgt.Waiting = True
             
             if (mode.mode_wanted.mode == cst.AUTO) :
@@ -110,11 +102,11 @@ class Keyboard_Read(Thread):
         return
 
     def run(self):
-        while True:
+        while not self.Interrupt:
             self.Wait_Start()
             print("Start of Manual Control")
 
-            while not self.Mgt.Stop:
+            while not self.Mgt.Stop and not self.Interrupt:
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
@@ -134,51 +126,46 @@ class IHM_Read(Thread):
         self.speed_z=0
         self.Alerts = alerts
         self.Mgt = mgt()
+
+    def set_speed(self, x, y, z):
+        self.speed_x=x
+        self.speed_y=y
+        self.speed_z=z
+
     def Get_Trajectory(self, read_input):
-        if mode.command == mode.command.NORTH:
-            self.speed_x=0.3
-            self.speed_y=0
-            self.speed_z=0
-        elif mode.command == mode.command.SOUTH:
-            self.speed_x=-0.3
-            self.speed_y=0
-            self.speed_z=0
-        elif mode.command == mode.command.EAST:
-            self.speed_x=0
-            self.speed_y=0.3
-            self.speed_z=0
-        elif mode.command == mode.command.WEST:
-            self.speed_x=0
-            self.speed_y=-0.3
-            self.speed_z=0
-        elif mode.command == mode.command.NORTH_EAST:
-            self.speed_x=-0.3
-            self.speed_y=0.3
-            self.speed_z=0
-        elif mode.command == mode.command.NORTH_WEST:
-            self.speed_x=0.3
-            self.speed_y=-0.3
-            self.speed_z=0
-        elif mode.command == mode.command.SOUTH_EAST:
-            self.speed_x=-0.3
-            self.speed_y=0.3
-            self.speed_z=0
-        elif mode.command == mode.command.SOUTH_WEST:
-            self.speed_x=-0.3
-            self.speed_y=-0.3
-            self.speed_z=0
-        elif mode.command == mode.command.ROTATE_RIGHT:
-            self.speed_x=0
-            self.speed_y=0
-            self.speed_z=0.3
-        elif mode.command == mode.command.ROTATE_LEFT:
-            self.speed_x=-0
-            self.speed_y=0
-            self.speed_z=-0.3
-        elif mode.command == mode.command.STOP:
-            self.speed_x=0
-            self.speed_y=0
-            self.speed_z=0
+        if mode.command == cst.NORTH:
+            self.set_speed(0.3, 0, 0)
+
+        elif mode.command == cst.SOUTH:
+            self.set_speed(-0.3, 0, 0)
+
+        elif mode.command == cst.EAST:
+            self.set_speed(0, 0.3, 0)
+
+        elif mode.command == cst.WEST:
+            self.set_speed(0, -0.3, 0)
+
+        elif mode.command == cst.NORTH_EAST:
+            self.set_speed(0.3, 0.3, 0)
+
+        elif mode.command == cst.NORTH_WEST:
+            self.set_speed(0.3, -0.3, 0)
+
+        elif mode.command == cst.SOUTH_EAST:
+            self.set_speed(-0.3, 0.3, 0)
+
+        elif mode.command == cst.SOUTH_WEST:
+            self.set_speed(-0.3, -0.3, 0)
+
+        elif mode.command == cst.ROTATE_RIGHT:
+            self.set_speed(0, 0, 0.3)
+
+        elif mode.command == cst.ROTATE_LEFT:
+            self.set_speed(0, 0, -0.3)
+
+        elif mode.command == cst.STOP:
+            self.set_speed(0, 0, 0)
+
         else:
             self.speed_x=0
             self.speed_y=0
@@ -205,20 +192,5 @@ class IHM_Read(Thread):
             #HUM.cmd_robot.speed_y=self.speed_y
             #HUM.cmd_robot.speed_z=self.speed_z
 
-if __name__ == '__main__':
-    import Motion.holo32.holo_uart_management as HUM
-    signal(SIGINT, handler)
-
-    global overlay
-    overlay=Overlay("./Robot/Motion/holo32/Overlays/Bitstream/UartComm.bit", download=False)
-    if overlay.is_loaded()==False:
-        overlay.download()
-    
-    print('Bring up uart....')
-
-    thread_holo = HUM.Holo_UART(overlay)
-    thread_holo.start()
-
-    thread_keyboard = Keyboard_Read()
-    thread_keyboard.start()
-
+thread_manual_control = Keyboard_Read()
+#thread_manual_control = IHM_Read()

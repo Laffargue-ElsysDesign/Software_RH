@@ -1,20 +1,21 @@
 from threading import Thread, Lock
-from Robot.IHM.interface import cst
+import Robot.Constants as cst
+from time import sleep, time
+from Robot.Alerts import mgt
+
+def handler(signal_received, frame):
+    # Handle any cleanup here
+    print('SIGINT or CTRL-C detected. Navigation Exiting gracefully')
+    exit(0)
 
 def Dijkstra(End):
     pass #TBD
-
-class mgt():
-    def __init__(self):
-        self.Stop = True
-        self.Waiting = True
 
 def Compute_Angle(point):
     return 0 #TBD
 
 def Rotate(angle):
     pass #TBD
-
 
 
 def Correct():
@@ -26,6 +27,7 @@ class Navigation(Thread):
         self.path = [0, 0] #TBD
         self.Mgt = mgt()
         self.MUT = Lock()
+        self.Interrupt = False
 
     def Get_to_Point(self, point):
         Angle = Compute_Angle(point)
@@ -50,11 +52,14 @@ class Navigation(Thread):
         return
 
     def run(self):
-        while True:
+        while not self.Interrupt:
             self.Wait_Start()
             print("Start of Navigation")
-            while not self.Mgt.Stop:
-                hello = True
+            T = time()
+            while not self.Mgt.Stop and not self.Interrupt:
+                sleep(1)
+                if time() > (T + 10):
+                    self.Mgt.Stop = True
                 #for i in self.path:
                     #self.Get_to_Point(i)
                     #if self.Mgt.Stop:
@@ -66,3 +71,4 @@ class Navigation(Thread):
                 #else:
                     #self.Mgt.Stop = True
                     
+thread_Navigation = Navigation()

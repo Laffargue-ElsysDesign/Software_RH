@@ -1,48 +1,6 @@
 from threading import Lock
+import Robot.Constants as cst
 
-class Value():
-    #Mode
-    AUTO = 0
-    MANUAL = 1
-
-    #Mission en cours
-    HOME = 10
-    ALERT = 11
-    RETURN = 12
-    RONDE = 13
-    IN_CHARGE = 14
-
-    #Etat batterie
-    LOW_BATTERY = 20
-    HIGH_BATTERY = 21
-
-    #Ordres robot
-    STOP=100
-    NORTH=101
-    SOUTH=102
-    EAST=103
-    WEST=104
-    NORTH_WEST=105
-    NORTH_EAST=106
-    SOUTH_WEST=107
-    SOUTH_EAST=108
-    ROTATE_RIGHT=109
-    ROTATE_LEFT=110
-
-    #Position Balises
-    STAGIAIRE = 30
-    MANAGER = 31
-    PAUSE = 32
-    REUNION = 33
-    ENTREE = 34
-    BUREAU = 35
-    OPEN_SPACE_ENTREE = 36
-    OPEN_SPACE_FOND = 37
-
-    #Loc Home
-    Home = [0, 0]
-
-cst = Value()
 class Class_Command:  
     def __init__(self):
         self.order = cst.STOP
@@ -214,21 +172,21 @@ class Mode:
 
     def Set_AUTO(self):
         self.current_mode.MUT.acquire()
-        self.current_mode.mode = self.mode_wanted.AUTO
+        self.current_mode.mode = cst.AUTO
         self.current_mode.MUT.release()
         self.command.MUT.acquire()
-        self.command.order = self.command.STOP
+        self.command.order = cst.STOP
         self.command.MUT.release()
         self.mission.Set_Idle()
         print(self.mode_wanted.mode, self.command.order)
 
     def Set_MANUAL(self):
         self.current_mode.MUT.acquire()
-        self.current_mode.mode = self.mode_wanted.MANUAL
+        self.current_mode.mode = cst.MANUAL
         self.current_mode.MUT.release()
         self.ronde.Disable_Ronde()
         self.command.MUT.acquire()
-        self.command.order = self.command.STOP
+        self.command.order = cst.STOP
         self.command.MUT.release()
         self.mission.Set_Manual()
         
@@ -237,7 +195,7 @@ class Mode:
     def Is_Auto(self):
         output = True
         self.current_mode.MUT.acquire()
-        if (self.current_mode.mode == self.current_mode.MANUAL):
+        if (self.current_mode.mode == cst.MANUAL):
             output = False
         
         return output

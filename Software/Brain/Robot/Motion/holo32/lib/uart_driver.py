@@ -1,6 +1,13 @@
 from pynq import DefaultIP
 import time
 
+ADDRESS_UARTLITE = 0x0042C00000
+CTRL_REG = 0x0C
+RST_REG = 0x03
+RX_FIFO = 0x00
+STATUS_REG = 0x08
+TX_FIFO = 0x04
+
 class UARTDriver(DefaultIP):
     def __init__(self, description):
         super().__init__(description=description)
@@ -8,9 +15,9 @@ class UARTDriver(DefaultIP):
     bindto = ['xilinx.com:ip:axi_uartlite:2.0']
     
     def reset(self):
-        self.write(0x0C,0x03)
+        self.write(CTRL_REG,RST_REG)
         time.sleep(0.1)
-        self.write(0x0C,0x00)
+        self.write(CTRL_REG,RX_FIFO)
     
     def writeByte(self, buf, timeout = 2):
         """Send a message
@@ -23,15 +30,15 @@ class UARTDriver(DefaultIP):
         for i in buf:
             stop_time = time.time() + timeout
             #Wait while TX FIFO is Full, stop waiting if timeout passes 
-            while ((self.read(0x08)>>3) & 1) and (time.time()<stop_time):
+            while ((self.read(STATUS_REG)>>3) & 1) and (time.time()<stop_time):
                 pass
             if time.time()>stop_time:
                 raise ValueError("Send timeout")
             
-            self.write(0x04, (i))
+            self.write(TX_FIFO, (i))
             wr_count += 1
             
-        while ((self.read(0x08)>>2) & 1)==0:
+        while ((self.read(STATUS_REG)>>2) & 1)==0:
                 pass
         return wr_count 
     
@@ -43,11 +50,11 @@ class UARTDriver(DefaultIP):
         
         """
         stop_time = time.time() + timeout
-        while (self.read(0x08) & 1)==0 and (time.time()<stop_time):
+        while (self.read(STATUS_REG) & 1)==0 and (time.time()<stop_time):
             pass
         if time.time()>stop_time:
             raise ValueError("Read timeout")
-        return self.read(0x00)
+        return self.read(RX_FIFO)
     
     def readNBytes(self, n, timeout=10):
         """Read n bytes

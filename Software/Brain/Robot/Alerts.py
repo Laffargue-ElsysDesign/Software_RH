@@ -1,4 +1,5 @@
 from threading import Lock
+
 class Balise ():
     def __init__(self):
         self.New = False
@@ -14,3 +15,8 @@ class Alerts():
         self.Ronde = Ronde()
         self.Balise = Balise()
 alerts = Alerts()
+
+class mgt():
+    def __init__(self):
+        self.Stop = True
+        self.Waiting = True
