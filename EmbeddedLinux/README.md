@@ -24,7 +24,7 @@ linuxconfig ALL=(ALL) NOPASSWD:ALL
 git clone --recursive https://github.com/Xilinx/PYNQ.git
 git clone https://github.com/Laffargue-ElsysDesign/Software_RH.git
 ```
-Warning: We assume Software_RH and PYNQ folders are next to each other (in the same folder). If not you will have to modify command lines of this readme appropriately as well as the PYNQ_FOLDER macro in Software-RH/EmbeddedLinux/setup.sh file. You can change this macro to the absolute PATH of PYNQ folder
+Warning: We assume Software_RH and PYNQ directories are next to each other (in the same directory). If not you will have to modify command lines of this readme appropriately as well as the PYNQ_FOLDER macro in Software-RH/EmbeddedLinux/setup.sh file. You can change this macro to the absolute PATH of PYNQ directory.
 ```
 cd PYNQ/sdbuild/scripts
 ./setup-host.sh 
@@ -40,7 +40,7 @@ Download Pynq rootfs arm 2.7 file in PYNQ/sdbuild folder: https://bit.ly/pynq_ar
 
 Warning Links for Downloads will ask you to register or create a Xilinx account + some personal information (Name, Country, Company). It is a requirement by Xilinx in order to Download their products.
 
-For the next steps we assume your Download folder for Xilinx tools is ~/Download
+For the next steps we assume your Download directory for Xilinx tools is ~/Download
 * Download Xilinx Unified 2020.2 on the Download page of Xilinx website https://www.xilinx.com/member/forms/download/xef.html?filename=Xilinx_Unified_2020.2_1118_1232_Lin64.bin
 * Download Petalinux Installer 2020.2 on Xilinx Website as well https://www.xilinx.com/member/forms/download/xef.html?filename=petalinux-v2020.2-final-installer.run
 * Download patch y2k22 for vivado (Required since January 2022). End of this page: https://support.xilinx.com/s/article/76960?language=en_US
