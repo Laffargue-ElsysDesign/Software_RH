@@ -4,40 +4,15 @@ import math
 import sys
 from sys import exit
 from time import sleep, time
-from math import sin, cos, pi
+#from math import sin, cos, pi
 from threading import Thread, Lock
 from signal import signal, SIGINT
 
 #=====PYNQ import=====#
-from pynq import MMIO
 from pynq import Overlay
 
 #====Custom import====#
-import holo32.lib.uart_driver
-
-ADDRESS_0 = 0x00A0010000  # Address of the ip core  revision 80 et quelque 0xA0040000
-
-RX_FIFO = 0x00
-TX_FIFO = 0x04
-#Status Reg
-STAT_REG = 0x08
-
-RX_VALID = 0
-RX_FULL = 1
-TX_EMPTY = 2
-TX_FULL = 3
-IS_INTR = 4
-OVERRUN_ERR = 5
-FRAME_ERR = 6
-PARITY_ERR =7
-
-#Ctrl Reg
-CTRL_REG = 0x0C  
-
-RST_TX = 0
-RST_RX = 1
-INTR_EN = 4
-uart = MMIO(ADDRESS_0,0x1000)
+import Robot.Motion.holo32.lib.uart_driver
 
 class Class_Command:
     def __init__(self):
@@ -227,6 +202,12 @@ def init():
     
     global init_done
     init_done=True
+
+
+def handler(signal_received, frame):
+    # Handle any cleanup here
+    print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
+    exit(0)
 
 if __name__ == '__main__':
     

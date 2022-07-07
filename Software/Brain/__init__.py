@@ -1,50 +1,56 @@
-import Robot.Motion.holo32.holo_uart_management as HUM 
-from time import sleep, time
-from threading import Thread, Lock
 from signal import signal, SIGINT
-from Software.Brain.Robot import IHM
-from pynq import Overlay
-from Robot.IHM.interface import mode
-from Robot.IHM import Create_App
-from Robot.Gestionnaire_mission import Gestionnnaire_Mission
-from Test_ManualControl import Keyboard_Read, IHM_Read
+#from Brain.Robot import IHM
+#from pynq import Overlay
+from Robot.ManualControl import thread_manual_control
+from Robot.AutoControl import thread_auto_control
+from Robot.Gestionnaire_mission import thread_gestionnaire
+from Robot.Navigation import thread_Navigation
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     # Handle any cleanup here
+    thread_Navigation.Interrupt = True
+    thread_Navigation.join()
+    thread_manual_control.Interrupt = True
+    thread_manual_control.join()
+    thread_auto_control.Interrupt = True
+    thread_auto_control.join()
+    thread_gestionnaire.Interrupt = True
+    thread_gestionnaire.join()
+
+    #HUM.cmd_robot.speed_x=self.speed_x
+    #HUM.cmd_robot.speed_y=self.speed_y
+    #HUM.cmd_robot.speed_z=self.speed_z
     print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
     exit(0)
 
 
 
-app=Create_App()
+#app=Create_App()
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
 
-    global overlay
-    overlay=Overlay("../bitstream/Test_3.bit", download=False)
-    if overlay.is_loaded()==False:
-        overlay.download()
+    #global overlay
+    #overlay=Overlay("./Robot/Motion/holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
+    #if overlay.is_loaded()==False:
+    #    overlay.download()
     
-    print('Bring up uart....')
+    #print('Bring up uart....')
     
     #Start IHM
-    app.run(debug = True)
+    #app.run(debug = True)
 
     #Start UART Comunication with robot
-    thread_holo = HUM.Holo_UART(overlay)
-    thread_holo.start()
+    #thread_holo = HUM.Holo_UART(overlay)
+    #thread_holo.start()
 
-    #Threads for Keyboard or IHM test
-    thread_keyboard = Keyboard_Read()
-    thread_keyboard.start()
+    thread_Navigation.start()
 
-    thread_keyboard = IHM_Read()
-    thread_keyboard.start()
-
-    #Decision making Thread, will replace IHM and debug threads
-    thread_gestionnaire = Gestionnnaire_Mission()
+    thread_manual_control.start()
+    
+    thread_auto_control.start()
+    
     thread_gestionnaire.start()
 
 

@@ -1,174 +1,85 @@
 from threading import Thread
-from signal import signal, SIGINT
+import Robot.Constants as cst
+from Robot.IHM.interface import mode
+from Robot.ManualControl import thread_manual_control as tmc
+from Robot.AutoControl import thread_auto_control as tac
+#import Motion.holo32.holo_uart_management as HUM
 
-from numpy import where
-
-from IHM.interface import mode
-from IHM import Create_App
-from Motion.Localisation import coordinate
-import Motion.holo32.holo_uart_management as HUM
-from Energie.Battery import alert_battery
-from Detection import balise_alert
-from Motion.Gestionnaire_alertes import alert_management
-import Motion.holo32.holo_uart_management 
 
 def handler(signal_received, frame):
     # Handle any cleanup here
-    print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
+    print('SIGINT or CTRL-C detected. Gestionnaire Exiting gracefully')
     exit(0)
 
+
 class Gestionnnaire_Mission(Thread):
-    IDLE = 0
-    INCHARGE = 1
-    ALERT = 2
-    RETURN = 3
-    RONDE = 4
-    MANUAL = 5
     def __init__(self):
         Thread.__init__(self)
-        self.mission = self.IDLE
-        ###self.battery = False
-    
+        self.mission = cst.HOME
+        self.manual_control = tmc
+        self.auto_control = tac
+        self.Interrupt = False
+
     def init_sequence():
-        a=1
+        pass #TBD
 
-    def init_AUTO_Mode():
-        HUM.cmd_robot.MUT.acquire()
-        HUM.cmd_robot.speed_x=0.0
-        HUM.cmd_robot.speed_y=0.0
-        HUM.cmd_robot.speed_z=0.0
-        HUM.cmd_robot.MUT.release()
+    def init_robot(self):
+        pass
 
-    def init_MANUAL_Mode():
-        #Navigation Interrupt + Gestion alerte Interrupt + Battery interrupt
-        #Ronde stop
-        #Make sure the car is stopped the car
-        HUM.cmd_robot.MUT.acquire()
-        HUM.cmd_robot.speed_x=0.0
-        HUM.cmd_robot.speed_y=0.0
-        HUM.cmd_robot.speed_z=0.0
-        HUM.cmd_robot.MUT.release()
+    def set_MANUAL(self):
 
-    def is_wanted_Mode():
-        mode.current_mode.MUT.acquire()
-        mode.mode_wanted.MUT.acquire()
-        output = (mode.mode_wanted.mode == mode.current_mode.mode)
-        mode.current_mode.MUT.release()
-        mode.mode_wanted.MUT.release()
-        return output
+                ##If Auto_Thread is on, wait for it to finish.
+            if not self.auto_control.Mgt.Waiting:
+                self.auto_control.Mgt.Stop = True
+                while not self.auto_control.Mgt.Waiting:
+                    pass
+            
+            ##If Manual thread is not on, start it 
+            if self.manual_control.Mgt.Waiting:
+                self.manual_control.Mgt.Stop = False
 
-
+    def set_AUTO(self):
+         ##If Manual Thread is on, wait for it to  finish
+        if not self.manual_control.Mgt.Waiting:
+            self.manual_control.Mgt.Stop = True
+            while not self.manual_control.Mgt.Waiting:
+                pass
+        
+        ##If Auto Thread is not on, start it
+        if self.auto_control.Mgt.Waiting:
+            self.auto_control.Mgt.Stop = False 
 
     def run(self):
+        ##Set on Auto mode
         mode.current_mode.MUT.acquire()
-        if not mode.current_mode == mode.current_mode.AUTO:
-            mode.current_mode == mode.current_mode.MANUAL
+        if not mode.current_mode == cst.AUTO:
+            mode.current_mode == cst.AUTO
         mode.current_mode.MUT.release()
+        ##IMU Calibration and first computations check (localisation, ...)
 
-        coordinate.MUT.acquire()
-        if not coordinate.coo == coordinate.home:
-            print("error loc")
-        coordinate.MUT.release()
+        #Threads  useful
 
-        self.init_sequence()
+        #self.init_robot()
 
-        while(True):
-            mode.current_mode.MUT.acquire()
-            if mode.current_mode.mode == mode.current_mode.AUTO:
-                mode.current_mode.MUT.release()
+        ##Small movement to indicate robot can be used properly
+        #self.init_sequence()
 
-                
-                if self.is_wanted_Mode():
+        #Start of main Thread
+        while(not self.Interrupt):
 
-                    self.init_MANUAL_Mode()
+            ##When Manual
+            mode.mode_wanted.MUT.acquire()
+            if mode.mode_wanted.mode == cst.MANUAL:
+                mode.mode_wanted.MUT.release()
+            ##Set current values to Manual
+                self.set_MANUAL() 
 
-                    mode.Set_MANUAL()
+            ##When Auto
+            elif mode.mode_wanted.mode == cst.AUTO:
+                mode.mode_wanted.MUT.release()
+               
 
-                    self.mission = self.MANUAL
+                ##Set current values to Auto
+                self.set_AUTO()
 
-                elif balise_alert.is_Alert():
-                    alert_management.Alert(balise_alert.where_Alert())
-                    balise_alert.Reset()
-                    mode.mission.Set_Alert()
-                    ###self.battery = True
-
-            elif mode.current_mode.mode == mode.current_mode.MANUAL:
-                mode.current_mode.MUT.release()
-
-                if self.is_wanted_Mode():
-
-                    self.init_AUTO_Mode()
-
-                    mode.Set_AUTO()
-                
-                #elif alert_battery.is_Alert():
-                elif balise_alert.is_Alert():
-                    mode.alert = True
-                    mode.alert = balise_alert.where_Alert()
-                    balise_alert.Reset()
-
-                else:
-                    HUM.cmd_robot.MUT.acquire()
-                    HUM.cmd_robot.speed_x = mode.command.x
-                    HUM.cmd_robot.speed_y = mode.command.y
-                    HUM.cmd_robot.speed_z = mode.command.z
-                    HUM.cmd_robot.MUT.release()
-
-    def run2(self):
-        mode.current_mode.MUT.acquire()
-        if not mode.current_mode == mode.current_mode.AUTO:
-            mode.current_mode == mode.current_mode.MANUAL
-        mode.current_mode.MUT.release()
-
-        coordinate.MUT.acquire()
-        if not coordinate.coo == coordinate.home:
-            print("error loc")
-        coordinate.MUT.release()
-
-        self.init_sequence()
-
-        while(True):
-            mode.current_mode.MUT.acquire()
-            if mode.current_mode.mode == mode.current_mode.AUTO:
-                mode.current_mode.MUT.release()
-
-                
-                if self.is_wanted_Mode():
-
-                    self.init_MANUAL_Mode()
-
-                    mode.Set_MANUAL()
-
-                    self.mission = self.MANUAL
-
-                elif balise_alert.is_Alert():
-                    alert_management.Alert(balise_alert.where_Alert())
-                    balise_alert.Reset()
-                    mode.mission.Set_Alert()
-                    ###self.battery = True
-
-            elif mode.current_mode.mode == mode.current_mode.MANUAL:
-                mode.current_mode.MUT.release()
-
-                if self.is_wanted_Mode():
-
-                    self.init_AUTO_Mode()
-
-                    mode.Set_AUTO()
-                
-                #elif alert_battery.is_Alert():
-                elif balise_alert.is_Alert():
-                    mode.alert = True
-                    mode.alert = balise_alert.where_Alert()
-                    balise_alert.Reset()
-
-                else:
-                    HUM.cmd_robot.MUT.acquire()
-                    HUM.cmd_robot.speed_x = mode.command.x
-                    HUM.cmd_robot.speed_y = mode.command.y
-                    HUM.cmd_robot.speed_z = mode.command.z
-                    HUM.cmd_robot.MUT.release()
-
-
-    
-
+thread_gestionnaire = Gestionnnaire_Mission()
