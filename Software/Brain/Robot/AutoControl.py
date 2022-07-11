@@ -51,27 +51,27 @@ class Auto_Control(Thread):
                 #Current_Loc = 0 #TBD
 
                 #If battery Alert, got back home asap
-                if alerts.Battery:
+                if alerts.Get_Battery_Alert():
                     print("Battery triggered")
                     self.End_Navigation()
                     #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
                     self.Start_Navigation(cst.LOC_HOME)
-                    alerts.Battery = False
+                    alerts.Reset_Battery_Alert()
                 
                 #If a new alert is triggeres, gets priority
-                elif alerts.Balise.New:
+                elif alerts.Get_Balise_Alert():
                     print("Balise Triggered")
                     self.End_Navigation()
                     #self.Alerts.Balise.MUT.acquire()
                     self.Start_Navigation(cst.LOC_HOME)
                     #self.Alerts.Balise.MUT.release()
-                    alerts.Balise.New = False
+                    alerts.Reset_Balise_Alert()
 
-                elif alerts.Ronde.New:
+                elif alerts.Get_Ronde_Alert():
                     print("Ronde triggered")
                     if self.Navigation.Mgt.Waiting:
                         self.Start_Navigation(cst.LOC_HOME)
-                    alerts.Ronde.New = False
+                    alerts.Reset_Ronde_Alert()
 
 
             self.End_Navigation() 

@@ -90,11 +90,11 @@ class Keyboard_Read(Thread):
                     mode.mode_wanted.mode = cst.MANUAL
                     mode.mode_wanted.MUT.release()
                 elif read_input == 'i':
-                    alerts.Balise.New = True
+                    alerts.Set_Balise_Alert(1)
                 elif read_input == 'b':
-                    alerts.Battery = True
+                    alerts.Set_Battery_Alert()
                 elif read_input == 'r':
-                    alerts.Ronde.New = True
+                    alerts.Set_Ronde_Alert()
         self.Mgt.Waiting = False
         self.speed_x=0
         self.speed_y=0

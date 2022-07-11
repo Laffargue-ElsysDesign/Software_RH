@@ -43,19 +43,14 @@ class DijkstraDriver(DefaultIP):
 
 class Dijkstra():
     def __init__(self):
-        self.start = 0
-        self.stop = 0
         self.Dijkstra = overlay.Dijkstra_reg_0
-        self.Path = []
     
     def Compute(self, Start, Stop):
-        self.start = Start
-        self.stop = Stop
         self.Dijkstra.Write_Data(self.start, self.stop)
-        self.Dijkstra.Read_Data()
+        PATH = self.Dijkstra.Read_Data()
         self.Dijkstra.Disable()
         
-        return 1
+        return PATH
 
 if __name__ == '__main__':
     signal(SIGINT, handler)

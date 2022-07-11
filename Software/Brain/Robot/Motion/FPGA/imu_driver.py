@@ -25,7 +25,7 @@ class IMUDriver(DefaultIP):
         (ax, ay, az) = self.Read_acc()
         (gx, gy, gz) = self.Read_gyr()
         (mx, my, mz) = self.Read_mag()
-        return (ax, ay, az, gx, gy, gz, mx, my, mz)
+        return [ax, ay, az, gx, gy, gz, mx, my, mz]
 
 class IMU():
     def __init__(self, overlay):

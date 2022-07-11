@@ -20,17 +20,13 @@ class RondeDriver(DefaultIP):
 
 class Ronde():
     def __init__(self, overlay):
-        self.New_Alert = False
         self.Ronde = overlay.ronde_reg #TBD
-    
-    def Get_New_Alert(self):
-        return self.New_Alert
 
     def Check(self): #TBD
-        self.New_Alert = self.Ronde.Read_State()
-        if self.New_Alert:
+        New_Alert = self.Ronde.Read_State()
+        if New_Alert:
             self.Ronde.Reset()
-        return 0
+        return New_Alert
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
