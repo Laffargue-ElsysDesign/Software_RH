@@ -20,6 +20,9 @@ class Gestionnnaire_Mission(Thread):
         self.auto_control = tac
         self.Interrupt = False
 
+    def Set_Interrupt(self):
+        self.Interrupt = True
+
     def init_sequence():
         pass #TBD
 

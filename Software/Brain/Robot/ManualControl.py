@@ -20,6 +20,9 @@ class Keyboard_Read(Thread):
         self.Mgt = mgt()
         self.Interrupt = False
 
+    def Set_Interrupt(self):
+        self.interupt = True
+
     def set_speed(self, x, y, z):
         self.speed_x = x
         self.speed_y = y

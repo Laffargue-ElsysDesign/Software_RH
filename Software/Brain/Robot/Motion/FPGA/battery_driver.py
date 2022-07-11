@@ -17,15 +17,10 @@ class BatteryDriver(DefaultIP):
 
 class Battery():
     def __init__(self, overlay):
-        self.New_Alert = False
         self.Battery = overlay.battery_reg #TBD
-    
-    def Get_New_Alert(self):
-        return self.New_Alert
 
     def Check(self): #TBD
-        self.New_Alert = self.Battery.Read_State()
-        return 0
+        return self.Battery.Read_State()
 
 if __name__ == '__main__':
     signal(SIGINT, handler)

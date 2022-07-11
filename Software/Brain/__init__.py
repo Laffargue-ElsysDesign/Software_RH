@@ -9,13 +9,13 @@ from Robot.Navigation import thread_Navigation
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     # Handle any cleanup here
-    thread_Navigation.Interrupt = True
+    thread_Navigation.Set_Interrupt()
     thread_Navigation.join()
-    thread_manual_control.Interrupt = True
+    thread_manual_control.Set_Interrupt()
     thread_manual_control.join()
-    thread_auto_control.Interrupt = True
+    thread_auto_control.Set_Interrupt()
     thread_auto_control.join()
-    thread_gestionnaire.Interrupt = True
+    thread_gestionnaire.Set_Interrupt()
     thread_gestionnaire.join()
 
     #HUM.cmd_robot.speed_x=self.speed_x

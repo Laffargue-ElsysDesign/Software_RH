@@ -15,27 +15,27 @@ class Auto_Control(Thread):
         self.Navigation = tn
         self.Interrupt = False
 
+    def Set_Interrupt(self):
+        self.Interrupt = True
+
     def Wait_Start(self):
         print("End of Auto_Control")
-        while self.Mgt.Stop:
-            self.Mgt.Waiting = True
-            #print("Auto Stopped")
-        self.Mgt.Waiting = False
-
-        return
+        while self.Mgt.Check_Stop():
+            self.Mgt.Is_Waiting()
+            sleep(0.1)
+        self.Mgt.Is_Not_Waiting()
+        return 1
 
     def End_Navigation(self):
-        if not self.Navigation.Mgt.Waiting:
-            self.Navigation.Mgt.Stop = True
-            while not self.Navigation.Mgt.Waiting:
-                sleep(0.01)
+        if not self.Navigation.Mgt.Check_Waiting():
+            self.Navigation.Mgt.Stop()
+            while not self.Navigation.Mgt.Is_Waiting():
+                sleep(0.1)
         return 1
     
     def Start_Navigation(self, path):
-        self.Navigation.MUT.acquire()
-        self.Navigation.path = path
-        self.Navigation.MUT.release()
-        self.Navigation.Mgt.Stop = False
+        self.Navigation.Set_Path(path)
+        self.Navigation.Mgt.Restart()
         return 0
 
     def run(self):
@@ -46,7 +46,7 @@ class Auto_Control(Thread):
             self.Wait_Start()
             print("Start of Auto Control")
             #Continue until AutoMode gets shut down
-            while not self.Mgt.Stop and not self.Interrupt:
+            while not self.Mgt.Check_Stop() and not self.Interrupt:
                 #print("Auto_Control")
                 #Current_Loc = 0 #TBD
 

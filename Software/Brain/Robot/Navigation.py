@@ -29,6 +29,14 @@ class Navigation(Thread):
         self.MUT = Lock()
         self.Interrupt = False
 
+    def Set_Path(self, path):
+        self.MUT.acquire()
+        self.path = path
+        self.MUT.release()
+
+    def Set_Interrupt(self):
+        self.Interrupt = True
+
     def Get_to_Point(self, point):
         Angle = Compute_Angle(point)
         while Angle > 2: #TBD
