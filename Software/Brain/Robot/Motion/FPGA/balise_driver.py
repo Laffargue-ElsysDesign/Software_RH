@@ -1,8 +1,12 @@
 from pynq import DefaultIP, Overlay
 from signal import signal,SIGINT
 from Constants import DIJKSTRA_MATCH
+import time
 
-
+OFFSET_RESET = 0x00
+OFFSET_READ_STATE = 0x04
+OFFSET_READ_BALISE = 0x08
+MASK_BALISE = 0x0F
 
 
 def handler(signal_received, frame):
@@ -14,29 +18,34 @@ class BaliseDriver(DefaultIP):
     def __init(self, description):
         super().__init(description=description)
         self.reset()
-    bindto = ['elsys-design.com:user:Balise_reg:1.0'] #TBD
+    bindto = ['elsys-design.com:user:Balise:1.0']
     
     def Read_State(self):
-        return 0 #TBD
+        state = self.read(OFFSET_READ_STATE & 1)
+        return state
         
     def Read_Loc(self, timeout = 1):
-        return(0) #TBD
+        Loc = self.read(OFFSET_READ_BALISE & MASK_BALISE)
+        return Loc 
     
     def Reset(self):
-        return 0 #TBD
+        while self.read(OFFSET_READ_STATE & 1) != 0)):
+            self.write(OFFSET_RESET, 1)
+        self.write(OFFSET_RESET, 0)
+        return 1
 
     def Read_Balise(self):
         Loc = 0
         New = False
-        if (self.Read_State()):
+        if (self.Read_State() == 1):
             New = True
-            Loc = self.Read_Balise()
+            Loc = self.Read_Loc()
             self.Reset()
         return (New, Loc)
 
 class Balises():
     def __init__(self, overlay):
-        self.balises = overlay.balise_reg #TBD
+        self.balises = overlay.balise_0
 
     def Check_Balise(self):
         (New, Room) = self.balises.Read_Balise()
