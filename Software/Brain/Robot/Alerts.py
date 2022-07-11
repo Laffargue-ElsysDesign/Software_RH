@@ -1,123 +1,124 @@
+from msilib.schema import Class
 from threading import Lock
 from Robot.Constants import NOWHERE
 
 ##Class Balise used for Alerts management
 class State_Balise():
     def __init__(self):
-        self.New = False
-        self.Dot = 0 #TBD
+        self.new = False
+        self.dot = 0 #TBD
         self.MUT = Lock()
 
     def Get_New(self):
         self.MUT.acquire()
-        alert = self.New
+        alert = self.new
         self.MUT.release()
         return alert
     
     def Get_Dot(self):
         self.MUT.acquire()
-        Dot = self.Dot
+        Dot = self.dot
         self.MUT.release()
         return Dot
     
     def Set_Balise(self, Dot):
         self.MUT.acquire()
-        self.New = True
-        self.Dot = Dot
+        self.new = True
+        self.dot = Dot
         self.MUT.release()
         return 1
 
     def Reset(self):
         self.MUT.acquire()
-        self.New = False
-        self.Dot = NOWHERE
+        self.new = False
+        self.dot = NOWHERE
         self.MUT.release()
         return 1
 
 ##Class Battery used for Alerts management
 class State_Battery ():
     def __init__(self):
-        self.New = False
+        self.new = False
         self.MUT = Lock()
 
     def Get_New(self):
         self.MUT.acquire()
-        alert = self.New
+        alert = self.new
         self.MUT.release()
         return alert
     
     def Set_New(self):
         self.MUT.acquire()
-        self.New = True
+        self.new = True
         self.MUT.release()
         return 1
     
     def Reset(self):
         self.MUT.acquire()
-        self.New = False
+        self.new = False
         self.MUT.release()
         return 1
 
 ##Class Ronde used for Alerts management
 class State_Ronde():
     def __init__(self):
-        self.New = False
+        self.new = False
         self.MUT = Lock()
     
     def Get_New(self):
         self.MUT.acquire()
-        alert = self.New
+        alert = self.new
         self.MUT.release()
         return alert
     
     def Set_New(self):
         self.MUT.acquire()
-        self.New = True
+        self.new = True
         self.MUT.release()
         return 1
     
     def Reset(self):
         self.MUT.acquire()
-        self.New = False
+        self.new = False
         self.MUT.release()
         return 1
 
 ##Class Alerts combining all Alerts which can create a new objective
 class Alerts ():
     def __init__(self):
-        self.Battery = State_Battery()
-        self.Ronde = State_Ronde()
-        self.Balise = State_Balise()
+        self.battery = State_Battery()
+        self.ronde = State_Ronde()
+        self.balise = State_Balise()
     
     def Get_Battery_Alert(self):
-        return self.Battery.Get_New()
+        return self.battery.Get_New()
 
     def Set_Battery_Alert(self):
-        return self.Battery.Set_New()
+        return self.battery.Set_New()
 
     def Reset_Battery_Alert(self):
-        return self.Battery.Reset()
+        return self.battery.Reset()
 
     def Get_Balise_Alert(self):
-        return self.Balise.Get_New()
+        return self.balise.Get_New()
     
     def Get_Balise_Dot(self):
-        return self.Balise.Get_Dot()
+        return self.balise.Get_Dot()
 
     def Set_Balise_Alert(self, Dot):
-        return self.Balise.Set_Balise(Dot)
+        return self.balise.Set_Balise(Dot)
     
     def Reset_Balise_Alert(self):
-        return self.Balise.Reset()
+        return self.balise.Reset()
     
     def Get_Ronde_Alert(self):
-        return self.Ronde.Get_New()
+        return self.ronde.Get_New()
     
     def Set_Ronde_Alert(self):
-        return self.Ronde.Set_New()
+        return self.ronde.Set_New()
     
     def Reset_Ronde_Alert(self):
-        return self.Ronde.Reset() 
+        return self.ronde.Reset() 
 
 ##element alerts used by all threads who needs to share these informations
 alerts = Alerts()
@@ -171,7 +172,7 @@ class Zone():
         return (State, Zone, Value)
 
 ##Class Ultrasons For Avoidance featureContainging all infos on every Zones
-class State_Ultrasons():
+class Class_Ultrasons():
     def __init__(self):
         self.W = Zone()
         self.NW = Zone()
@@ -180,31 +181,48 @@ class State_Ultrasons():
         self.E = Zone()
     
     def Get_W(self):
-        return self.N.Get()
-    
+        return self.W.Get()
+
     def Set_W(self, State, Zone, Value):
-        return self.N.Set(State, Zone, Value)
+        return self.W.Set(State, Zone, Value)
+
+    def Reset_W(self):
+        return self.Set_W(False, 0, 0)
     
     def Get_NW(self):
-        return self.N.Get()
+        return self.NW.Get()
     
     def Set_NW(self, State, Zone, Value):
-        return self.N.Set(State, Zone, Value)
+        return self.NW.Set(State, Zone, Value)
+    
+    def Reset_NW(self):
+        return self.Set_NW(False, 0, 0)
 
     def Get_N(self):
         return self.N.Get()
     
     def Set_N(self, State, Zone, Value):
         return self.N.Set(State, Zone, Value)
+    
+    def Reset_N(self):
+        return self.Set_N(False, 0, 0)
 
     def Get_NE(self):
-        return self.N.Get()
+        return self.NE.Get()
     
     def Set_NE(self, State, Zone, Value):
-        return self.N.Set(State, Zone, Value)
+        return self.NE.Set(State, Zone, Value)
+    
+    def Reset_NE(self):
+        return self.Set_NE(False, 0, 0)
 
     def Get_E(self):
-        return self.N.Get()
+        return self.E.Get()
     
     def Set_E(self, State, Zone, Value):
-        return self.N.Set(State, Zone, Value)
+        return self.E.Set(State, Zone, Value)
+    
+    def Reset_E(self):
+        return self.Set_E(False, 0, 0)
+    
+ultrasons = Class_Ultrasons()

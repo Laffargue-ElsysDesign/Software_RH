@@ -19,10 +19,10 @@ class Gestionnnaire_Mission(Thread):
         self.mission = cst.HOME
         self.manual_control = tmc
         self.auto_control = tac
-        self.Interrupt = False
+        self.interrupt = False
 
     def Set_Interrupt(self):
-        self.Interrupt = True
+        self.interrupt = True
 
     def init_sequence():
         pass #TBD
@@ -68,7 +68,7 @@ class Gestionnnaire_Mission(Thread):
         #self.init_sequence()
 
         #Start of main Thread
-        while(not self.Interrupt):
+        while(not self.interrupt):
 
             ##When Manual
             mode.mode_wanted.MUT.acquire()

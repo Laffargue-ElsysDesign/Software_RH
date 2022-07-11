@@ -13,10 +13,10 @@ class Auto_Control(Thread):
         self.Mgt = mgt()
         self.state = cst.HOME
         self.Navigation = tn
-        self.Interrupt = False
+        self.interrupt = False
 
     def Set_Interrupt(self):
-        self.Interrupt = True
+        self.interrupt = True
 
     def Wait_Start(self):
         print("End of Auto_Control")
@@ -41,12 +41,12 @@ class Auto_Control(Thread):
     def run(self):
         #TBD
 
-        while not self.Interrupt:
+        while not self.interrupt:
             #Wait until Auto Mode gets called
             self.Wait_Start()
             print("Start of Auto Control")
             #Continue until AutoMode gets shut down
-            while not self.Mgt.Check_Stop() and not self.Interrupt:
+            while not self.Mgt.Check_Stop() and not self.interrupt:
                 #print("Auto_Control")
                 #Current_Loc = 0 #TBD
 

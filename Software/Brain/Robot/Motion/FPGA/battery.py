@@ -1,19 +1,10 @@
-from pynq import DefaultIP, Overlay
+from pynq import Overlay
 from signal import signal,SIGINT
 
 def handler(signal_received, frame):
     # Handle any cleanup here
     print('SIGINT or CTRL-C detected. HOLOCOM Exiting gracefully')
-    exit(0)                       
-
-class BatteryDriver(DefaultIP):
-    def __init(self, description):
-        super().__init(description=description)
-        self.reset()
-    bindto = ['elsys-design.com:user:Balise_reg:1.0'] #TBD
-    
-    def Read_State(self):
-        return 0 #TBD
+    exit(0) 
 
 class Battery():
     def __init__(self, overlay):
@@ -28,10 +19,10 @@ if __name__ == '__main__':
     global overlay
     overlay = Overlay("../Wrappers/Dijkstra_V2/Files/Dijkstra.bit")
     overlay.download()
-    battery = Battery()
+    battery = Battery(overlay)
     
     try :
-        if battery.Get_New_Alert():
+        if battery.Check():
             print("Low Bettery Level")
     except:
         print("Balises Lecture failed")
