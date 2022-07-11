@@ -54,9 +54,9 @@ class Navigation(Thread):
 
     def Wait_Start(self):
         print("End of navigation")
-        while self.Mgt.Stop:
-            self.Mgt.Waiting = True
-        self.Mgt.Waiting = False
+        while self.Mgt.Check_Stop():
+            self.Mgt.Is_Waiting()
+        self.Mgt.Is_Not_Waiting()
         return
 
     def run(self):
@@ -64,10 +64,10 @@ class Navigation(Thread):
             self.Wait_Start()
             print("Start of Navigation")
             T = time()
-            while not self.Mgt.Stop and not self.Interrupt:
+            while not self.Mgt.Check_Stop() and not self.Interrupt:
                 sleep(1)
                 if time() > (T + 10):
-                    self.Mgt.Stop = True
+                    self.Mgt.Stop()
                 #for i in self.path:
                     #self.Get_to_Point(i)
                     #if self.Mgt.Stop:

@@ -75,7 +75,7 @@ class Keyboard_Read(Thread):
 
         elif read_input == 'm':
             mode.mode_wanted.mode = cst.AUTO
-            self.Mgt.Stop = True
+            self.Mgt.Stop()
             
         else:
             print("Input error, please retry")
@@ -83,8 +83,8 @@ class Keyboard_Read(Thread):
 
     def Wait_Start(self):
         print("End of Manual Control")
-        while self.Mgt.Stop and not self.Interrupt:
-            self.Mgt.Waiting = True
+        while self.Mgt.Check_Stop() and not self.Interrupt:
+            self.Mgt.Is_Waiting()
             
             if (mode.mode_wanted.mode == cst.AUTO) :
                 read_input = input()
@@ -98,7 +98,7 @@ class Keyboard_Read(Thread):
                     alerts.Set_Battery_Alert()
                 elif read_input == 'r':
                     alerts.Set_Ronde_Alert()
-        self.Mgt.Waiting = False
+        self.Mgt.Is_Not_Waiting()
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0
@@ -109,7 +109,7 @@ class Keyboard_Read(Thread):
             self.Wait_Start()
             print("Start of Manual Control")
 
-            while not self.Mgt.Stop and not self.Interrupt:
+            while not self.Mgt.Check_Stop() and not self.Interrupt:
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
@@ -176,9 +176,9 @@ class IHM_Read(Thread):
             print("Input error. Robot will stop. please retry")
         
     def Wait_Start(self):
-        while self.Mgt.Stop:
-            self.Mgt.Waiting = True
-        self.Mgt.Waiting = False
+        while self.Mgt.Check_Stop():
+            self.Mgt.Is_Waiting()
+        self.Mgt.Is_Not_Waiting()
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0

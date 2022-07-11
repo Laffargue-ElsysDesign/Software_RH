@@ -29,7 +29,7 @@ class Auto_Control(Thread):
     def End_Navigation(self):
         if not self.Navigation.Mgt.Check_Waiting():
             self.Navigation.Mgt.Stop()
-            while not self.Navigation.Mgt.Is_Waiting():
+            while not self.Navigation.Mgt.Check_Waiting():
                 sleep(0.1)
         return 1
     
@@ -69,7 +69,7 @@ class Auto_Control(Thread):
 
                 elif alerts.Get_Ronde_Alert():
                     print("Ronde triggered")
-                    if self.Navigation.Mgt.Waiting:
+                    if self.Navigation.Mgt.Check_Waiting():
                         self.Start_Navigation(cst.LOC_HOME)
                     alerts.Reset_Ronde_Alert()
 
