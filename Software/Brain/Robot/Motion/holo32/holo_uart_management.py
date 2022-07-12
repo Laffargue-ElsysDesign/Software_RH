@@ -21,6 +21,62 @@ class Class_Command:
         self.speed_z = 0
         self.MUT = Lock()
 
+    def set_speed(self, x, y, z):
+        self.MUT.acquire()
+        self.speed_x = x
+        self.speed_y = y
+        self.speed_z = z
+        self.MUT.release()
+
+    def Get_Trajectory(self, read_input):
+        if read_input==' ':
+            print("Stop")
+            self.set_speed(0, 0, 0)
+
+        elif read_input=='z':
+            print("Avance")
+            self.set_speed(0.3, 0, 0)
+
+        elif read_input=='d':
+            print("Droite")
+            self.set_speed(0, 0.3, 0)
+
+        elif read_input=='q':
+            print("Gauche")
+            self.set_speed(0, -0.3, 0)
+
+        elif read_input=='s':
+            print("Arriere")
+            self.set_speed(-0.3, 0, 0)
+
+        elif read_input=='e':
+            print("Nord-est")
+            self.set_speed(0.3, 0.3, 0)
+
+        elif read_input=='a':
+            print("Nord-ouest")
+            self.set_speed(0.3, -0.3, 0)
+
+        elif read_input=='w':
+            print("Sud-ouest")
+            self.set_speed(-0.3, 0.3, 0)
+
+        elif read_input=='x':
+            print("sud-est")
+            self.set_speed(-0.3, -0.3, 0)
+
+        elif read_input=='"':
+            print("pivot droite")
+            self.set_speed(0, 0, 0.3)
+
+        elif read_input=='é':
+            print("pivot gauche")
+            self.set_speed(0, 0, -0.3)
+            
+        else:
+            print("Input error, please retry")
+        return 1  
+
 class Class_Odom:
     def __init__(self):
         self.speed_x = 0
@@ -86,6 +142,8 @@ class Holo_UART(Thread):
         self.speed_y = 0
         self.speed_z = 0
         self.msg= [0x5A, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0xA5] 
+
+    
 
     def run(self):
         

@@ -14,7 +14,7 @@ def handler(signal_received, frame):
 class Keyboard_Read(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.speed_x=0.5
+        self.speed_x=0
         self.speed_y=0
         self.speed_z=0
         self.Mgt = mgt()
@@ -35,19 +35,19 @@ class Keyboard_Read(Thread):
 
         elif read_input=='z':
             print("Avance")
-            self.set_speed(0.5, 0, 0)
+            self.set_speed(0.3, 0, 0)
 
         elif read_input=='d':
             print("Droite")
-            self.set_speed(0, 0.5, 0)
+            self.set_speed(0, 0.3, 0)
 
         elif read_input=='q':
             print("Gauche")
-            self.set_speed(0, -0.5, 0)
+            self.set_speed(0, -0.3, 0)
 
         elif read_input=='s':
             print("Arriere")
-            self.set_speed(-0.5, 0, 0)
+            self.set_speed(-0.3, 0, 0)
 
         elif read_input=='e':
             print("Nord-est")
@@ -79,7 +79,7 @@ class Keyboard_Read(Thread):
             
         else:
             print("Input error, please retry")
-        return      
+        return 1    
 
     def Wait_Start(self):
         print("End of Manual Control")

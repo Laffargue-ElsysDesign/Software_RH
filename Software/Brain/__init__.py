@@ -5,6 +5,7 @@ from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
+from Robot.Detection import thread_detection
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):

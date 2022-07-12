@@ -1,5 +1,6 @@
 from tkinter import E
 import Robot.Motion.holo32.holo_uart_management as HUM 
+from Robot.ManualControl import thread_manual_control
 from time import sleep, time
 from threading import Thread, Lock
 from signal import signal, SIGINT
@@ -28,5 +29,4 @@ if __name__ == '__main__':
     thread_holo = HUM.Holo_UART(overlay)
     thread_holo.start()
 
-    thread_keyboard = Keyboard_Read()
-    thread_keyboard.start()
+    thread_manual_control.start()

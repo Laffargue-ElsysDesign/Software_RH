@@ -25,13 +25,13 @@ class Detection_Alert(Thread):
 
         ultrasons.Set_W(W_det, W_zone, W_val)
         
-        ultrasons.Set_W(NW_det, NW_zone, NW_val)
+        ultrasons.Set_NW(NW_det, NW_zone, NW_val)
         
-        ultrasons.Set_W(N_det, N_zone, N_val)
+        ultrasons.Set_N(N_det, N_zone, N_val)
         
-        ultrasons.Set_W(NE_det, NE_zone, NE_val)
+        ultrasons.Set_NE(NE_det, NE_zone, NE_val)
         
-        ultrasons.Set_W(E_det, E_zone, E_val)
+        ultrasons.Set_E(E_det, E_zone, E_val)
         
         return 0
 
@@ -39,25 +39,25 @@ class Detection_Alert(Thread):
     def run(self):
         while(not self.interrupt):
             
-            ##Check for Battery
+            ##Update for Battery
             if self.battery.Check():
                 alerts.Set_Battery_Alert()
             else:
                 alerts.Reset_Battery_Alert()
             
-            ##Check for a new balise
+            ##Update for balise
             new, dot = self.balises.Check_Balise()
             if new:
                 if not (dot == alerts.Get_Balise_Dot()):
                     alerts.Set_Balise_Alert(dot)
             
-            ##Check for Balise
+            ##Update for Ronde
             if self.ronde.Check():
                 alerts.Set_Ronde_Alert()
             else:
                 alerts.Reset_Ronde_Alert()
             
-            ##Check for utrasounds
+            ##Update for utrasounds
             self.Manage_US()
 
 
