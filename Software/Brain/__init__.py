@@ -5,11 +5,13 @@ from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
-from Robot.Detection import thread_detection
+#from Robot.Detection import thread_detection
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
-    # Handle any cleanup here
+    #Handle any cleanup here. All threads are ended properly, one after the other
+    #thread_detection.Set_Interrupt()
+    #thread_detection.join()
     thread_Navigation.Set_Interrupt()
     thread_Navigation.join()
     thread_manual_control.Set_Interrupt()
@@ -46,6 +48,7 @@ if __name__ == '__main__':
     #thread_holo = HUM.Holo_UART(overlay)
     #thread_holo.start()
 
+    ################Start all threads###################
     thread_Navigation.start()
 
     thread_manual_control.start()
@@ -53,6 +56,8 @@ if __name__ == '__main__':
     thread_auto_control.start()
     
     thread_gestionnaire.start()
+
+    #thread_detection.start()
 
 
     

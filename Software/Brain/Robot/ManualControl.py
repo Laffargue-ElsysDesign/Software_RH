@@ -1,6 +1,5 @@
-#import Motion.holo32.holo_uart_management as HUM 
 from threading import Thread
-from Robot.Alerts import alerts, mgt
+from Robot.Alerts import alerts, Mgt
 #import Robot.Motion.holo32.holo_uart_management as HUM
 from Robot.IHM.interface import mode
 import Robot.Constants as cst
@@ -17,11 +16,12 @@ class Keyboard_Read(Thread):
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0
-        self.Mgt = mgt()
+        self.mgt = Mgt()
         self.Interrupt = False
 
     def Set_Interrupt(self):
         self.interupt = True
+        self.mgt.Stop()
 
     def set_speed(self, x, y, z):
         self.speed_x = x
@@ -75,7 +75,7 @@ class Keyboard_Read(Thread):
 
         elif read_input == 'm':
             mode.mode_wanted.mode = cst.AUTO
-            self.Mgt.Stop()
+            self.mgt.Stop()
             
         else:
             print("Input error, please retry")
@@ -83,8 +83,8 @@ class Keyboard_Read(Thread):
 
     def Wait_Start(self):
         print("End of Manual Control")
-        while self.Mgt.Check_Stop() and not self.Interrupt:
-            self.Mgt.Is_Waiting()
+        while self.mgt.Check_Stop() and not self.Interrupt:
+            self.mgt.Is_Waiting()
             
             if (mode.mode_wanted.mode == cst.AUTO) :
                 read_input = input()
@@ -98,7 +98,7 @@ class Keyboard_Read(Thread):
                     alerts.Set_Battery_Alert()
                 elif read_input == 'r':
                     alerts.Set_Ronde_Alert()
-        self.Mgt.Is_Not_Waiting()
+        self.mgt.Is_Not_Waiting()
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0
@@ -109,7 +109,7 @@ class Keyboard_Read(Thread):
             self.Wait_Start()
             print("Start of Manual Control")
 
-            while not self.Mgt.Check_Stop() and not self.Interrupt:
+            while not self.mgt.Check_Stop() and not self.Interrupt:
                 print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
@@ -128,7 +128,7 @@ class IHM_Read(Thread):
         self.speed_y=0
         self.speed_z=0
         self.Alerts = alerts
-        self.Mgt = mgt()
+        self.mgt = Mgt()
 
     def set_speed(self, x, y, z):
         self.speed_x=x
@@ -176,9 +176,9 @@ class IHM_Read(Thread):
             print("Input error. Robot will stop. please retry")
         
     def Wait_Start(self):
-        while self.Mgt.Check_Stop():
-            self.Mgt.Is_Waiting()
-        self.Mgt.Is_Not_Waiting()
+        while self.mgt.Check_Stop():
+            self.mgt.Is_Waiting()
+        self.mgt.Is_Not_Waiting()
         self.speed_x=0
         self.speed_y=0
         self.speed_z=0

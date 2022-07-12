@@ -2,7 +2,7 @@ from threading import Thread
 from Robot.Alerts import alerts
 import Robot.Constants as cst
 from Robot.Navigation import thread_Navigation as tn
-from Robot.Alerts import mgt
+from Robot.Alerts import Mgt
 from time import sleep
 
 
@@ -10,32 +10,33 @@ from time import sleep
 class Auto_Control(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.Mgt = mgt()
+        self.mgt = Mgt()
         self.state = cst.HOME
         self.Navigation = tn
         self.interrupt = False
 
     def Set_Interrupt(self):
         self.interrupt = True
+        self.mgt.Stop()
 
     def Wait_Start(self):
         print("End of Auto_Control")
-        while self.Mgt.Check_Stop():
-            self.Mgt.Is_Waiting()
+        while self.mgt.Check_Stop():
+            self.mgt.Is_Waiting()
             sleep(0.1)
-        self.Mgt.Is_Not_Waiting()
+        self.mgt.Is_Not_Waiting()
         return 1
 
     def End_Navigation(self):
-        if not self.Navigation.Mgt.Check_Waiting():
-            self.Navigation.Mgt.Stop()
-            while not self.Navigation.Mgt.Check_Waiting():
+        if not self.Navigation.mgt.Check_Waiting():
+            self.Navigation.mgt.Stop()
+            while not self.Navigation.mgt.Check_Waiting():
                 sleep(0.1)
         return 1
     
     def Start_Navigation(self, path):
         self.Navigation.Set_Path(path)
-        self.Navigation.Mgt.Restart()
+        self.Navigation.mgt.Restart()
         return 0
 
     def run(self):
@@ -46,7 +47,7 @@ class Auto_Control(Thread):
             self.Wait_Start()
             print("Start of Auto Control")
             #Continue until AutoMode gets shut down
-            while not self.Mgt.Check_Stop() and not self.interrupt:
+            while not self.mgt.Check_Stop() and not self.interrupt:
                 #print("Auto_Control")
                 #Current_Loc = 0 #TBD
 
@@ -69,7 +70,7 @@ class Auto_Control(Thread):
 
                 elif alerts.Get_Ronde_Alert():
                     print("Ronde triggered")
-                    if self.Navigation.Mgt.Check_Waiting():
+                    if self.Navigation.mgt.Check_Waiting():
                         self.Start_Navigation(cst.LOC_HOME)
                     alerts.Reset_Ronde_Alert()
 

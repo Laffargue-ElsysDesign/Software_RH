@@ -124,7 +124,7 @@ class Alerts ():
 alerts = Alerts()
 
 ##Class mgt is usefull to stop/Restart a Thread
-class mgt():
+class Mgt():
     def __init__(self):
         self.stop = True
         self.waiting = True

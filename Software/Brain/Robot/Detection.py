@@ -60,6 +60,6 @@ class Detection_Alert(Thread):
             ##Update for utrasounds
             self.Manage_US()
 
-
+thread_detection = Detection_Alert()
             
 

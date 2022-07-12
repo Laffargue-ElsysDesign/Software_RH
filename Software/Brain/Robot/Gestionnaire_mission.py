@@ -33,24 +33,24 @@ class Gestionnnaire_Mission(Thread):
     def set_MANUAL(self):
 
         ##If Auto_Thread is on, wait for it to finish.
-        if not self.auto_control.Mgt.Check_Waiting():
-            self.auto_control.Mgt.Stop()
-            while not self.auto_control.Mgt.Check_Waiting():
+        if not self.auto_control.mgt.Check_Waiting():
+            self.auto_control.mgt.Stop()
+            while not self.auto_control.mgt.Check_Waiting():
                 sleep(0.1)
         ##If Manual thread is not on, start it 
-        if self.manual_control.Mgt.Check_Waiting():
-            self.manual_control.Mgt.Restart()
+        if self.manual_control.mgt.Check_Waiting():
+            self.manual_control.mgt.Restart()
 
     def set_AUTO(self):
         ##If Manual Thread is on, wait for it to  finish
-        if not self.manual_control.Mgt.Check_Waiting():
-            self.manual_control.Mgt.Stop()
-            while not self.manual_control.Mgt.Check_Waiting():
+        if not self.manual_control.mgt.Check_Waiting():
+            self.manual_control.mgt.Stop()
+            while not self.manual_control.mgt.Check_Waiting():
                 sleep(0.1)
         
         ##If Auto Thread is not on, start it
-        if self.auto_control.Mgt.Check_Waiting():
-            self.auto_control.Mgt.Restart() 
+        if self.auto_control.mgt.Check_Waiting():
+            self.auto_control.mgt.Restart() 
 
     def run(self):
         ##Set on Auto mode

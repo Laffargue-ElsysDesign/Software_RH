@@ -15,15 +15,15 @@ class BaliseDriver(DefaultIP):
     bindto = ['elsys-design.com:user:Balise:1.0']
     
     def Read_State(self):
-        state = self.read(OFFSET_READ_STATE & 1)
+        state = self.read(OFFSET_READ_STATE) & 1
         return state
         
     def Read_Loc(self, timeout = 1):
-        Loc = self.read(OFFSET_READ_BALISE & MASK_BALISE)
+        Loc = self.read(OFFSET_READ_BALISE) & MASK_BALISE
         return Loc 
     
     def Reset(self):
-        while self.read((OFFSET_READ_STATE & 1) != 0):
+        while (self.read(OFFSET_READ_STATE) & 1) != 0:
             self.write(OFFSET_RESET, 1)
         self.write(OFFSET_RESET, 0)
         return 1
