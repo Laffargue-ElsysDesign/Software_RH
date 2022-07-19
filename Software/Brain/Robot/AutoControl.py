@@ -35,8 +35,11 @@ class Auto_Control(Thread):
         return 1
     
     def Start_Navigation(self, path):
-        self.Navigation.Set_Path(path)
-        self.Navigation.mgt.Restart()
+        if path[0] != path[1]:
+            self.Navigation.Set_Path(path)
+            self.Navigation.mgt.Restart()
+        else:
+            self.Navigation.Set_Path([path[0]])
         return 0
 
     def run(self):

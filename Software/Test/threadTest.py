@@ -21,5 +21,6 @@ class LookAgain(Thread):
 
 if __name__ == '__main__':
     matrix = np.eye(3)
-    for i in matrix[1, :]:
-        print(matrix[0, 0])
+    for i in range(3):
+        print(i)
+    print(i)

@@ -1,7 +1,7 @@
 from threading import Thread, Lock
-import Robot.Constants as cst
 from time import sleep, time
 from Robot.Alerts import Mgt
+import Localisation as Loc
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -17,9 +17,11 @@ def Compute_Angle(point):
 def Rotate(angle):
     pass #TBD
 
-
 def Correct():
     pass #TBD
+
+def Procedure():
+    pass #TBD:  Routine when ariving on a point
 
 class Navigation(Thread):
     def __init__(self):
@@ -38,16 +40,19 @@ class Navigation(Thread):
         self.Interrupt = True
 
     def Get_to_Point(self, point):
-        Angle = Compute_Angle(point)
-        while Angle > 2: #TBD
-            Rotate(Angle)
-            Angle=Compute_Angle(point)
-            if self.mgt.Stop:
-                return
-            self.Froward(point)
-            if self.mgt.Stop:
-                return
-            Correct()
+        if Loc.Loc_point_check(point):
+            return
+        else:
+            Angle = Compute_Angle(point)
+            while Angle > 2: #TBD
+                Rotate(Angle)
+                Angle=Compute_Angle(point)
+                if self.mgt.Stop:
+                    return
+                self.Froward(point)
+                if self.mgt.Stop:
+                    return
+                Correct()
 
     def Froward(self):
         pass #TBD     
@@ -68,15 +73,18 @@ class Navigation(Thread):
                 sleep(1)
                 if time() > (T + 10):
                     self.mgt.Stop()
+
                 #for i in self.path:
                     #self.Get_to_Point(i)
-                    #if self.mgt.Stop:
+                    #if self.mgt.Stop or self.Interrupt:
                         #break
+                
                 #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
+                    #Procedure()
                     #self.MUT.acquire()
                     #self.path = Dijkstra(cst.Home)
                     #self.MUT.release()
                 #else:
-                    #self.mgt.Stop = True
+                    #self.mgt.Stop()
                     
 thread_Navigation = Navigation()

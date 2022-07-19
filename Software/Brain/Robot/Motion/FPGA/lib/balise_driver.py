@@ -7,7 +7,7 @@ import time
 OFFSET_RESET = 0x00
 OFFSET_READ_STATE = 0x04
 OFFSET_READ_BALISE = 0x08
-MASK_BALISE = 0x0F                      
+MASK_BALISE = 0xFF                      
 
 class BaliseDriver(DefaultIP):
     def __init(self, description):

@@ -44,6 +44,9 @@ def get_Dot_from_Loc(loc):
         if (DIJKSTRA_MATCH[2, bal] == loc[0]) and (DIJKSTRA_MATCH[3, bal] == loc[1]):
             return DIJKSTRA_MATCH[1, bal]
 
+def Loc_point_check(point):
+    pass #TBD
+
 if __name__ == '__main__':
     print(get_Bal_from_Loc([4, 12]))
     print(get_Dot_from_Loc([4, 12]))
