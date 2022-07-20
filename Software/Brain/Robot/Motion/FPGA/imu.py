@@ -1,6 +1,7 @@
 from curses import raw
 from Software.Brain.Robot.Motion.FPGA.lib.imu_driver import X_MAG_OFFSET, Y_ACC_OFFSET
 from pynq import Overlay
+import lib.imu_driver
 from signal import signal,SIGINT
 from time import sleep
 
