@@ -1,3 +1,4 @@
+from codecs import raw_unicode_escape_decode
 from pynq import DefaultIP
 import numpy as np
 
@@ -38,15 +39,18 @@ class IMUDriver(DefaultIP):
     bindto = ['elsys-design.com:user:IP_IMU:1.0']
     
     def Read_acc(self):
-        acc_x = (self.read(OFFSET_READ_ACC_X) & MASQUE) * (G/SENS_ACC)
-        acc_y = (self.read(OFFSET_READ_ACC_Y) & MASQUE) * (G/SENS_ACC)
+        raw_acc_x = self.read(OFFSET_READ_ACC_X)
+        raw_acc_y = self.read(OFFSET_READ_ACC_Y) 
+        acc_x = (raw_acc_x & MASQUE) * (G/SENS_ACC)
+        acc_y = (raw_acc_y & MASQUE) * (G/SENS_ACC)
         acc_z = -G
         return (acc_x, acc_y, acc_z)
         
     def Read_gyr(self):
+        raw_gyr_z = self.read(OFFSET_READ_GYR_Z)
         gyr_x = 0
         gyr_y = 0
-        gyr_z = -(2*np.pi/360 * (self.read(OFFSET_READ_GYR_Z) & MASQUE) )/ SENS_GYRO - Z_GYRO_OFFSET
+        gyr_z = -(2*np.pi/360 * (raw_gyr_z & MASQUE) )/ SENS_GYRO - Z_GYRO_OFFSET
         return (gyr_x, gyr_y, gyr_z)
     
     def Read_mag(self):
