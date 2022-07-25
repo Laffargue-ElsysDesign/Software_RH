@@ -1,7 +1,7 @@
 from threading import Thread, Lock
 from time import sleep, time
 from Robot.Alerts import Mgt
-import Localisation as Loc
+import Robot.Localisation as Loc
 
 def handler(signal_received, frame):
     # Handle any cleanup here
