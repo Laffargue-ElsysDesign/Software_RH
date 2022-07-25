@@ -1,5 +1,5 @@
 from threading import Lock
-from Constants import DIJKSTRA_MATCH
+from Robot.Constants import DIJKSTRA_MATCH
 
 class Coordinate:
     home = [0, 0]
