@@ -79,6 +79,7 @@ class Class_Command:
 
 class Class_Odom:
     def __init__(self):
+        self.stack = []
         self.speed_x = 0
         self.speed_y = 0
         self.speed_z = 0
