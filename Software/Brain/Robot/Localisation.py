@@ -1,5 +1,6 @@
 from threading import Lock
 from Robot.Constants import DIJKSTRA_MATCH
+from Robot.Motion.holo32.holo_uart_management import odometry
 
 class Coordinate:
     home = [0, 0]
@@ -49,8 +50,10 @@ def Loc_point_check(point):
 
 if __name__ == '__main__':
     print(get_Bal_from_Loc([4, 12]))
-    print(get_Dot_from_Loc([4, 12]))
-    print(get_Bal_from_Dot(11))
-    print(get_Loc_from_Dot(11))
-    print(get_Dot_from_Bal(4))
-    print(get_Loc_from_Bal(4))
+    #print(get_Dot_from_Loc([4, 12]))
+    #print(get_Bal_from_Dot(11))
+    #print(get_Loc_from_Dot(11))
+    #print(get_Dot_from_Bal(4))
+    #print(get_Loc_from_Bal(4))
+
+

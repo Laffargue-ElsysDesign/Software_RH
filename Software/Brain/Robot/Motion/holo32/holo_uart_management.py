@@ -118,18 +118,18 @@ def readTrame_uart(uart):
         #print("6=")
         #print("6t=",twos_comp((buf[6]),8),"8t=",twos_comp((buf[8]),8),"10t=",twos_comp((buf[10]),8))
     #print(buf)
-    global odom_recu
-    odom_recu.MUT.acquire()
+    global odometry
+    odometry.MUT.acquire()
 
-    odom_recu.speed_x=twos_comp((buf[-10]),8)
-    odom_recu.speed_y=-twos_comp((buf[-8]),8)
-    odom_recu.speed_z=twos_comp((buf[-6]),8)
-    odom_recu.ang_z=twos_comp(buf[-3],8)
-    odom_recu.dist_y=twos_comp(buf[-4],8)
-    odom_recu.dist_x=twos_comp(buf[-5],8)
-    odom_recu.stack.append(odom_recu.speed_z)
+    odometry.speed_x=twos_comp((buf[-10]),8)
+    odometry.speed_y=-twos_comp((buf[-8]),8)
+    odometry.speed_z=twos_comp((buf[-6]),8)
+    odometry.ang_z=twos_comp(buf[-3],8)
+    odometry.dist_y=twos_comp(buf[-4],8)
+    odometry.dist_x=twos_comp(buf[-5],8)
+    odometry.stack.append(odometry.speed_z)
     
-    odom_recu.MUT.release()
+    odometry.MUT.release()
     return True
 
 class Holo_UART(Thread):
@@ -190,7 +190,8 @@ class Holo_UART(Thread):
             except:
                 print("Send timeout")
                 
-            #readTrame_uart(self.uart)
+            readTrame_uart(self.uart)
+            print(odometry)
             sleep(0.5)
 
 def init():
