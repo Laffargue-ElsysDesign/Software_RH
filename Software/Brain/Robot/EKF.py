@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from time import time
+#from Motion.holo32.holo_uart_management import odometry
 
 """
 Created on Mon Jun 27 08:32:09 2022
@@ -35,14 +36,12 @@ class EKF():
                       [z],
                       [vz]])
         
-        R = np.array([[Sigma_odom, 0, 0, 0, 0, 0],# 0, 0],
-                     [0, Sigma_odom, 0, 0, 0, 0],# 0, 0],
-                     [0, 0, Sigma_acc, 0, 0, 0],# 0, 0],
-                     [0, 0, 0, Sigma_acc, 0, 0],# 0, 0],
-                     [0, 0, 0, 0, Sigma_odom, 0],# 0, 0],
-                     [0, 0, 0, 0, 0, Sigma_gyro]])#, 0, 0],
-                     #[0, 0, 0, 0, 0, 0, Sigma_odom, 0],
-                     #[0, 0, 0, 0, 0, 0, 0, Sigma_odom]])
+        R = np.array([[Sigma_odom, 0, 0, 0, 0, 0],
+                     [0, Sigma_odom, 0, 0, 0, 0],
+                     [0, 0, Sigma_acc, 0, 0, 0],
+                     [0, 0, 0, Sigma_acc, 0, 0],
+                     [0, 0, 0, 0, Sigma_odom, 0],
+                     [0, 0, 0, 0, 0, Sigma_gyro]])
        
         Q = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
                      [0, err_N_dot, 0, 0, 0, 0, 0, 0],
@@ -57,16 +56,15 @@ class EKF():
         
         return (A, X, R, Q, P)
     
-    def measurement(self):
-        ax = 1
+    def measurement(self, line):
+        ax = 0
         ay = 0
-        #dx = 0
-        #dy = 0
-        vx = 0
-        vy = 0
-        theta_dotOz = 36
-        theta_dotGz = 36
-        return np.array([[vx], [vy], [ax], [ay], [theta_dotOz], [theta_dotGz]])#, [dx], [dy]])
+        words = line.split()
+        vx = int(words[0])
+        vy = int(words[1])
+        theta_dotOz = int(words[2])
+        theta_dotGz = int(words[2])
+        return np.array([[vx], [vy], [ax], [ay], [theta_dotOz], [theta_dotGz]])
     
     def predict(self, X, A, P, Q):
         X_hat = np.dot(A, X)
@@ -88,9 +86,7 @@ class EKF():
                          [X[1, 0] * cos(X[6, 0]) + X[4, 0] * sin(X[6, 0])],
                          [X[4, 0] * cos(X[6, 0]) - X[1, 0] * sin(X[6, 0])],
                          [X[7, 0]],
-                         [X[7, 0]]])#,
-                         #[X[0, 0] * cos(X[6, 0]) + X[3, 0] * sin(X[6, 0])],
-                         #[X[3, 0] * cos(X[6, 0]) - X[0, 0] * sin(X[6, 0])]])
+                         [X[7, 0]]])
         
     def compute_H(self, X):
         return np.array([[0, cos(X[6, 0]), 0, 0, sin(X[6, 0]), 0, - X[1, 0] * sin(X[6, 0]) + X[4, 0] * cos(X[6, 0]), 0],
@@ -111,17 +107,21 @@ class EKF():
         posYhat = []
         posThetahat = []
         dt = 1
-        (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 36, 1, 0, dt, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
+        counter = 0
+        (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
         print(A, X, R, Q, P)
         #while true()
-        for i in range(100):
+        with open('EKF/odometry.txt') as f:
+            lines = f.readlines()
+            f.close()
+        for i in lines:
             (X_hat, P_hat) = self.predict(X, A, P, Q)
             print("X_hat", X_hat)
             posXhat.append(X_hat[0, 0])
             posYhat.append(X_hat[3, 0])
             posThetahat.append(X_hat[6, 0])
             #print(X_hat, P_hat)
-            Z = self.measurement()
+            Z = self.measurement(i)
             H = self.compute_H(X)
             #print(Z)
             (K, X, P) = self.update(H, P_hat, X_hat, R, Z)
@@ -134,8 +134,11 @@ class EKF():
             #print("X = ", X[0, 0])
             #print("Y = ", X[3, 0])
             #print("Theta = ", X[6, 0])
+            counter += 1
             
         plt.plot(posX, posY)
+        #plt.plot(range(counter), posTheta)
+        print(posTheta)
         #plt.plot(range(10), posTheta)
         #print (posX, posY)
         #print(posX, posY, posTheta)
