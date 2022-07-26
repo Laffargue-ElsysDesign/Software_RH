@@ -3,6 +3,7 @@ from Robot.Alerts import alerts, Mgt
 import Robot.Motion.holo32.holo_uart_management as HUM
 from Robot.IHM.interface import mode
 import Robot.Constants as cst
+from time import sleep
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -30,47 +31,47 @@ class Keyboard_Read(Thread):
 
     def Get_Trajectory(self, read_input):
         if read_input==' ':
-            print("Stop")
+            #print("Stop")
             self.set_speed(0, 0, 0)
 
         elif read_input=='z':
-            print("Avance")
+            #print("Avance")
             self.set_speed(0.3, 0, 0)
 
         elif read_input=='d':
-            print("Droite")
+            #print("Droite")
             self.set_speed(0, 0.3, 0)
 
         elif read_input=='q':
-            print("Gauche")
+            #print("Gauche")
             self.set_speed(0, -0.3, 0)
 
         elif read_input=='s':
-            print("Arriere")
+            #print("Arriere")
             self.set_speed(-0.3, 0, 0)
 
         elif read_input=='e':
-            print("Nord-est")
+            #print("Nord-est")
             self.set_speed(0.3, 0.3, 0)
 
         elif read_input=='a':
-            print("Nord-ouest")
+            #print("Nord-ouest")
             self.set_speed(0.3, -0.3, 0)
 
         elif read_input=='w':
-            print("Sud-ouest")
+            #print("Sud-ouest")
             self.set_speed(-0.3, 0.3, 0)
 
         elif read_input=='x':
-            print("sud-est")
+            #print("sud-est")
             self.set_speed(-0.3, -0.3, 0)
 
         elif read_input=='"':
-            print("pivot droite")
+            #print("pivot droite")
             self.set_speed(0, 0, 0.3)
 
         elif read_input=='é':
-            print("pivot gauche")
+            #print("pivot gauche")
             self.set_speed(0, 0, -0.3)
 
         elif read_input == 'm':
@@ -110,7 +111,7 @@ class Keyboard_Read(Thread):
             print("Start of Manual Control")
 
             while not self.mgt.Check_Stop() and not self.Interrupt:
-                print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
+                #print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
                 HUM.cmd_robot.speed_x=self.speed_x

@@ -48,6 +48,8 @@ def get_Dot_from_Loc(loc):
 def Loc_point_check(point):
     pass #TBD
 
+
+
 if __name__ == '__main__':
     print(get_Bal_from_Loc([4, 12]))
     #print(get_Dot_from_Loc([4, 12]))
