@@ -5,6 +5,8 @@ from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
+from Robot.Motion.Overlays.Overlay import overlay
+
 #from Robot.Detection import thread_detection
 
 #handler pour interrupt correctement 
@@ -34,12 +36,10 @@ def handler(signal_received, frame):
 if __name__ == '__main__':
     signal(SIGINT, handler)
 
-    #global overlay
-    #overlay=Overlay("./Robot/Motion/holo32/Overlays/UartComm/CorrectFiles/UartComm.bit", download=False)
-    #if overlay.is_loaded()==False:
-    #    overlay.download()
+    if overlay.is_loaded()==False:
+        print("Loading Overlay..")
+        overlay.download()
     
-    #print('Bring up uart....')
     
     #Start IHM
     #app.run(debug = True)

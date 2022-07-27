@@ -4,7 +4,8 @@ import Robot.Constants as cst
 from Robot.Navigation import thread_Navigation as tn
 from Robot.Alerts import Mgt
 from time import sleep
-
+from Robot.Motion.FPGA.dijkstra import Dijkstra
+from Robot.Motion.Overlays.Overlay import overlay
 
 
 class Auto_Control(Thread):
@@ -44,6 +45,7 @@ class Auto_Control(Thread):
 
     def run(self):
         #TBD
+        dijkstra = Dijkstra(overlay)
 
         while not self.interrupt:
             #Wait until Auto Mode gets called
@@ -67,7 +69,8 @@ class Auto_Control(Thread):
                     print("Balise Triggered")
                     self.End_Navigation()
                     #self.Alerts.Balise.MUT.acquire()
-                    self.Start_Navigation(cst.LOC_HOME)
+                    self.Start_Navigation(dijkstra.Compute(0, alerts.Get_Balise_Dot()))
+                    alerts.Reset_Balise_Alert()
                     #self.Alerts.Balise.MUT.release()
                     alerts.Reset_Balise_Alert()
 

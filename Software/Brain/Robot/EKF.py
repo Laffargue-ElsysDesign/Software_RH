@@ -111,7 +111,7 @@ class EKF():
         (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
         print(A, X, R, Q, P)
         #while true()
-        with open('EKF/odometry.txt') as f:
+        with open('EKF/odometryNorthWest.txt') as f:
             lines = f.readlines()
             f.close()
         for i in lines:

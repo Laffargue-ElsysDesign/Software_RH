@@ -1,6 +1,38 @@
 from threading import Lock
 from Robot.Constants import NOWHERE
 
+class State_NFC():
+    def __init__(self):
+        self.new = False
+        self.tag = 0 #TBD
+        self.MUT = Lock()
+
+    def Get_New(self):
+        self.MUT.acquire()
+        alert = self.new
+        self.MUT.release()
+        return alert
+
+    def Get_Tag(self):
+        self.MUT.acquire()
+        tag = self.tag
+        self.MUT.release()
+        return tag
+
+    def Set_Tag(self, tag):
+        self.MUT.acquire()
+        self.new = True
+        self.tag = tag
+        self.MUT.release()
+        return 1
+
+    def Reset(self):
+        self.MUT.acquire()
+        self.new = False
+        self.tag = 0
+        self.MUT.release()
+        return 1
+
 ##Class Balise used for Alerts management
 class State_Balise():
     def __init__(self):
@@ -16,14 +48,14 @@ class State_Balise():
     
     def Get_Dot(self):
         self.MUT.acquire()
-        Dot = self.dot
+        dot = self.dot
         self.MUT.release()
-        return Dot
+        return dot
     
-    def Set_Balise(self, Dot):
+    def Set_Balise(self, dot):
         self.MUT.acquire()
         self.new = True
-        self.dot = Dot
+        self.dot = dot
         self.MUT.release()
         return 1
 
@@ -88,6 +120,19 @@ class Alerts ():
         self.battery = State_Battery()
         self.ronde = State_Ronde()
         self.balise = State_Balise()
+        self.NFC = State_NFC()
+
+    def Get_NFC_Alert(self):
+        return self.NFC.Get_New()
+    
+    def Get_NFC_Tag(self):
+        return self.NFC.Get_Tag()
+
+    def Set_NFC_Alert(self, tag):
+        return self.NFC.Set_Tag(tag)
+    
+    def Reset_Tag_Alert(self):
+        return self.NFC.Reset()
     
     def Get_Battery_Alert(self):
         return self.battery.Get_New()
@@ -104,8 +149,8 @@ class Alerts ():
     def Get_Balise_Dot(self):
         return self.balise.Get_Dot()
 
-    def Set_Balise_Alert(self, Dot):
-        return self.balise.Set_Balise(Dot)
+    def Set_Balise_Alert(self, dot):
+        return self.balise.Set_Balise(dot)
     
     def Reset_Balise_Alert(self):
         return self.balise.Reset()

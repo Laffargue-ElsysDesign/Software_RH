@@ -1,20 +1,3 @@
-Bring up uart....
-0   0   0
-End of Manual Control
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-0   0   0
-Start of Manual Control
 0   0   0
 0   0   0
 0   0   0

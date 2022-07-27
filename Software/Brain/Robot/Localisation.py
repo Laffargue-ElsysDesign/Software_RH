@@ -1,6 +1,5 @@
 from threading import Lock
 from Robot.Constants import DIJKSTRA_MATCH
-from Robot.Motion.holo32.holo_uart_management import odometry
 
 class Coordinate:
     home = [0, 0]

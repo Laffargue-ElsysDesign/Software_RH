@@ -60,11 +60,11 @@ class Keyboard_Read(Thread):
 
         elif read_input=='w':
             #print("Sud-ouest")
-            self.set_speed(-0.3, 0.3, 0)
+            self.set_speed(-0.3, -0.3, 0)
 
         elif read_input=='x':
             #print("sud-est")
-            self.set_speed(-0.3, -0.3, 0)
+            self.set_speed(-0.3, 0.3, 0)
 
         elif read_input=='"':
             #print("pivot droite")
@@ -94,11 +94,23 @@ class Keyboard_Read(Thread):
                     mode.mode_wanted.mode = cst.MANUAL
                     mode.mode_wanted.MUT.release()
                 elif read_input == 'i':
-                    alerts.Set_Balise_Alert(1)
+                    alerts.Set_Balise_Alert(4)
                 elif read_input == 'b':
                     alerts.Set_Battery_Alert()
                 elif read_input == 'r':
                     alerts.Set_Ronde_Alert()
+                elif read_input == '1':
+                    alerts.Set_NFC_Alert(1)
+                elif read_input == '2':
+                    alerts.Set_NFC_Alert(2)
+                elif read_input == '3':
+                    alerts.Set_NFC_Alert(3)
+                elif read_input == '4':
+                    alerts.Set_NFC_Alert(4)
+                elif read_input == '5':
+                    alerts.Set_NFC_Alert(5)
+                elif read_input == '6':
+                    alerts.Set_NFC_Alert(6)
         self.mgt.Is_Not_Waiting()
         self.speed_x=0
         self.speed_y=0
