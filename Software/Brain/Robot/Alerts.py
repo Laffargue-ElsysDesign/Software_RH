@@ -135,7 +135,7 @@ class Alerts ():
         return self.NFC.Reset()
     
     def Get_Battery_Alert(self):
-        return self.battery.Get_New()
+        return self.battery.Get_New() 
 
     def Set_Battery_Alert(self):
         return self.battery.Set_New()
