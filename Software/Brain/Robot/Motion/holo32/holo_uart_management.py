@@ -21,8 +21,65 @@ class Class_Command:
         self.speed_z = 0
         self.MUT = Lock()
 
+    def Set_Speed(self, x, y, z):
+        self.MUT.acquire()
+        self.speed_x = x
+        self.speed_y = y
+        self.speed_z = z
+        self.MUT.release()
+
+    def Get_Trajectory(self, read_input):
+        if read_input==' ':
+            print("Stop")
+            self.Set_Speed(0, 0, 0)
+
+        elif read_input=='z':
+            print("Avance")
+            self.Set_Speed(0.3, 0, 0)
+
+        elif read_input=='d':
+            print("Droite")
+            self.Set_Speed(0, 0.3, 0)
+
+        elif read_input=='q':
+            print("Gauche")
+            self.Set_Speed(0, -0.3, 0)
+
+        elif read_input=='s':
+            print("Arriere")
+            self.Set_Speed(-0.3, 0, 0)
+
+        elif read_input=='e':
+            print("Nord-est")
+            self.Set_Speed(0.3, 0.3, 0)
+
+        elif read_input=='a':
+            print("Nord-ouest")
+            self.Set_Speed(0.3, -0.3, 0)
+
+        elif read_input=='w':
+            print("Sud-ouest")
+            self.Set_Speed(-0.3, 0.3, 0)
+
+        elif read_input=='x':
+            print("sud-est")
+            self.Set_Speed(-0.3, -0.3, 0)
+
+        elif read_input=='"':
+            print("pivot droite")
+            self.Set_Speed(0, 0, 0.3)
+
+        elif read_input=='é':
+            print("pivot gauche")
+            self.Set_Speed(0, 0, -0.3)
+            
+        else:
+            print("Input error, please retry")
+        return 1  
+
 class Class_Odom:
     def __init__(self):
+        self.stack = []
         self.speed_x = 0
         self.speed_y = 0
         self.speed_z = 0
@@ -62,18 +119,18 @@ def readTrame_uart(uart):
         #print("6=")
         #print("6t=",twos_comp((buf[6]),8),"8t=",twos_comp((buf[8]),8),"10t=",twos_comp((buf[10]),8))
     #print(buf)
-    global odom_recu
-    odom_recu.MUT.acquire()
+    global odometry
+    odometry.MUT.acquire()
 
-    odom_recu.speed_x=twos_comp((buf[-10]),8)
-    odom_recu.speed_y=-twos_comp((buf[-8]),8)
-    odom_recu.speed_z=twos_comp((buf[-6]),8)
-    odom_recu.ang_z=twos_comp(buf[-3],8)
-    odom_recu.dist_y=twos_comp(buf[-4],8)
-    odom_recu.dist_x=twos_comp(buf[-5],8)
-    odom_recu.stack.append(odom_recu.speed_z)
+    odometry.speed_x=twos_comp((buf[-10]),8)
+    odometry.speed_y=-twos_comp((buf[-8]),8)
+    odometry.speed_z=twos_comp((buf[-6]),8)
+    odometry.ang_z=twos_comp(buf[-3],8)
+    odometry.dist_y=twos_comp(buf[-4],8)
+    odometry.dist_x=twos_comp(buf[-5],8)
+    odometry.stack.append(odometry.speed_z)
     
-    odom_recu.MUT.release()
+    odometry.MUT.release()
     return True
 
 class Holo_UART(Thread):
@@ -86,6 +143,8 @@ class Holo_UART(Thread):
         self.speed_y = 0
         self.speed_z = 0
         self.msg= [0x5A, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0xA5] 
+
+    
 
     def run(self):
         
@@ -126,14 +185,15 @@ class Holo_UART(Thread):
             
             
             try:
+                #I = input("Enter")
                 print(self.msg)
                 self.uart.writeByte(self.msg) 
             except:
                 print("Send timeout")
                 
             #readTrame_uart(self.uart)
-                
-            sleep(0.1)
+            print(odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
+            sleep(0.5)
 
 def init():
     duree_tour=6.5 #duree d'un tour en seconde 
@@ -216,6 +276,7 @@ if __name__ == '__main__':
     global overlay
     overlay=Overlay("./Overlays/Bitstream/UartComm.bit", download=False)
     if overlay.is_loaded()==False:
+        print("Loading Overlay ...")
         overlay.download()
     
     print('Bring up uart....')

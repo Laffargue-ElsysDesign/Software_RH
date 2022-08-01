@@ -1,5 +1,6 @@
 from threading import Thread
 from time import sleep
+import numpy as np
 
 class Look(Thread):
     def __init__(self):
@@ -19,8 +20,7 @@ class LookAgain(Thread):
         print(self.A)
 
 if __name__ == '__main__':
-    for i in [0, 1, 2, 3, 4, 5, 6]:
+    matrix = np.eye(3)
+    for i in range(3):
         print(i)
-        if i > 2:
-            print("get out")
-            break
+    print(i)

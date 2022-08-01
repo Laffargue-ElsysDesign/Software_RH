@@ -1,0 +1,34 @@
+Etat:
+Base roulante Uart RX branché au Zybo JE4
+Base roulante Uart TX branché au Zybo JE10
+
+Base Roulante Uart 54 MHz
+Zybo Uart 50MHz
+
+Lancement STM32
+Lancement Zybo
+
+Observation: 
+1er envoi correctement reçu par Base Roulante RX
+Réponse du Robot avec données Odomèrique par Base Roulane TX: Créé un nouveau message sur Base Roulante RX. Probablement par interférence
+
+Effet: Réception de données par l'UART en même temps que l'envoi => Overrun Error (+Frame error si décalé).
+
+Tentavie de fix 1: Brancher Base Roulante TX sur un autre pin random de la Zybo inutilisé
+
+Comportement Normal avec envoi et réception de trames normales pendant un temps, mais fini par tomber en Overrun malgré tout (+Fe ou Ne parfois)
+
+
+Tentative de fix 2: passer la Zybo Uart à 150 Mhz
+
+Abolument pas efficace.(le message inital n'est pas perçu correctement)
+
+Tentative de fix 3: passer la Base Roulante Uart à 50 MHz
+
+Pareil à l'observation initales
+
+Tentative de fix 4: changer le cable utilisé (cable actuel à un peu cramé au début du stage)
+Objectif: cerner d'où vient cette interférence qui créer un message si étrange
+
+
+

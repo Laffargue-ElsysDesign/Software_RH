@@ -3,6 +3,7 @@ import Robot.Constants as cst
 from Robot.IHM.interface import mode
 from Robot.ManualControl import thread_manual_control as tmc
 from Robot.AutoControl import thread_auto_control as tac
+from time import sleep
 #import Motion.holo32.holo_uart_management as HUM
 
 
@@ -18,7 +19,10 @@ class Gestionnnaire_Mission(Thread):
         self.mission = cst.HOME
         self.manual_control = tmc
         self.auto_control = tac
-        self.Interrupt = False
+        self.interrupt = False
+
+    def Interrupt(self):
+        self.interrupt = True
 
     def init_sequence():
         pass #TBD
@@ -28,26 +32,25 @@ class Gestionnnaire_Mission(Thread):
 
     def set_MANUAL(self):
 
-                ##If Auto_Thread is on, wait for it to finish.
-            if not self.auto_control.Mgt.Waiting:
-                self.auto_control.Mgt.Stop = True
-                while not self.auto_control.Mgt.Waiting:
-                    pass
-            
-            ##If Manual thread is not on, start it 
-            if self.manual_control.Mgt.Waiting:
-                self.manual_control.Mgt.Stop = False
+        ##If Auto_Thread is on, wait for it to finish.
+        if not self.auto_control.mgt.Check_Waiting():
+            self.auto_control.mgt.Stop()
+            while not self.auto_control.mgt.Check_Waiting() and not self.interrupt:
+                sleep(0.1)
+        ##If Manual thread is not on, start it 
+        if self.manual_control.mgt.Check_Waiting():
+            self.manual_control.mgt.Restart()
 
     def set_AUTO(self):
-         ##If Manual Thread is on, wait for it to  finish
-        if not self.manual_control.Mgt.Waiting:
-            self.manual_control.Mgt.Stop = True
-            while not self.manual_control.Mgt.Waiting:
-                pass
+        ##If Manual Thread is on, wait for it to  finish
+        if not self.manual_control.mgt.Check_Waiting():
+            self.manual_control.mgt.Stop()
+            while not self.manual_control.mgt.Check_Waiting() and not self.interrupt:
+                sleep(0.1)
         
         ##If Auto Thread is not on, start it
-        if self.auto_control.Mgt.Waiting:
-            self.auto_control.Mgt.Stop = False 
+        if self.auto_control.mgt.Check_Waiting():
+            self.auto_control.mgt.Restart() 
 
     def run(self):
         ##Set on Auto mode
@@ -65,7 +68,7 @@ class Gestionnnaire_Mission(Thread):
         #self.init_sequence()
 
         #Start of main Thread
-        while(not self.Interrupt):
+        while(not self.interrupt):
 
             ##When Manual
             mode.mode_wanted.MUT.acquire()
