@@ -31,47 +31,47 @@ class Class_Command:
     def Get_Trajectory(self, read_input):
         if read_input==' ':
             print("Stop")
-            self.set_speed(0, 0, 0)
+            self.Set_Speed(0, 0, 0)
 
         elif read_input=='z':
             print("Avance")
-            self.set_speed(0.3, 0, 0)
+            self.Set_Speed(0.3, 0, 0)
 
         elif read_input=='d':
             print("Droite")
-            self.set_speed(0, 0.3, 0)
+            self.Set_Speed(0, 0.3, 0)
 
         elif read_input=='q':
             print("Gauche")
-            self.set_speed(0, -0.3, 0)
+            self.Set_Speed(0, -0.3, 0)
 
         elif read_input=='s':
             print("Arriere")
-            self.set_speed(-0.3, 0, 0)
+            self.Set_Speed(-0.3, 0, 0)
 
         elif read_input=='e':
             print("Nord-est")
-            self.set_speed(0.3, 0.3, 0)
+            self.Set_Speed(0.3, 0.3, 0)
 
         elif read_input=='a':
             print("Nord-ouest")
-            self.set_speed(0.3, -0.3, 0)
+            self.Set_Speed(0.3, -0.3, 0)
 
         elif read_input=='w':
             print("Sud-ouest")
-            self.set_speed(-0.3, 0.3, 0)
+            self.Set_Speed(-0.3, 0.3, 0)
 
         elif read_input=='x':
             print("sud-est")
-            self.set_speed(-0.3, -0.3, 0)
+            self.Set_Speed(-0.3, -0.3, 0)
 
         elif read_input=='"':
             print("pivot droite")
-            self.set_speed(0, 0, 0.3)
+            self.Set_Speed(0, 0, 0.3)
 
         elif read_input=='é':
             print("pivot gauche")
-            self.set_speed(0, 0, -0.3)
+            self.Set_Speed(0, 0, -0.3)
             
         else:
             print("Input error, please retry")
