@@ -1,6 +1,6 @@
 from threading import Thread
 from Robot.Alerts import alerts, Mgt
-import Robot.Motion.holo32.holo_uart_management as HUM
+import Robot.holo32.holo_uart_management as HUM
 from Robot.IHM.interface import mode
 import Robot.Constants as cst
 from time import sleep

@@ -1,9 +1,9 @@
 from threading import Thread
 from Robot.Alerts import alerts, ultrasons
-from Robot.Motion.FPGA.balise import Balises
-from Robot.Motion.FPGA.battery import Battery
-from Robot.Motion.FPGA.ronde import Ronde
-from Robot.Motion.FPGA.ultrasons import Ultrasons
+from Robot.FPGA.balise import Balises
+from Robot.FPGA.battery import Battery
+from Robot.FPGA.ronde import Ronde
+from Robot.FPGA.ultrasons import Ultrasons
 
 class Detection_Alert(Thread):
     def __init__(self):

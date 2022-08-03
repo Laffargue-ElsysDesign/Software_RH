@@ -5,7 +5,7 @@ from numpy import mgrid
 from Robot.Alerts import Mgt
 import Robot.Localisation as Loc
 from Robot.Alerts import alerts
-import Robot.Motion.holo32.holo_uart_management as HUM
+import Robot.holo32.holo_uart_management as HUM
 
 def handler(signal_received, frame):
     # Handle any cleanup here
