@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from time import time
-#from Motion.holo32.holo_uart_management import odometry
+#from holo32.holo_uart_management import odometry
 
 """
 Created on Mon Jun 27 08:32:09 2022

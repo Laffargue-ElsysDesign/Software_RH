@@ -4,8 +4,8 @@ import Robot.Constants as cst
 from Robot.Navigation import thread_Navigation as tn
 from Robot.Alerts import Mgt
 from time import sleep
-from Robot.Motion.FPGA.dijkstra import Dijkstra
-from Robot.Motion.Overlays.Overlay import overlay
+from Robot.FPGA.dijkstra import Dijkstra
+from Robot.Overlays.Overlay import overlay
 
 
 class Auto_Control(Thread):

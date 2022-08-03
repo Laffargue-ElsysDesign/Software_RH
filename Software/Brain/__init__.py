@@ -5,8 +5,8 @@ from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
-from Robot.Motion.Overlays.Overlay import overlay
-import Robot.Motion.holo32.holo_uart_management as HUM 
+from Robot.Overlays.Overlay import overlay
+import Robot.holo32.holo_uart_management as HUM 
 
 #from Robot.Detection import thread_detection
 
