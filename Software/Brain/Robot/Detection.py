@@ -15,6 +15,7 @@ class Detection_Alert(Thread):
         #self.balises = Balises()
         #self.battery = Battery()
         #self.ronde = Ronde()
+        #self.rfid = RFID()
         #self.ultrasons = Ultrasons()
         
         self.imu = IMU()
@@ -52,16 +53,19 @@ class Detection_Alert(Thread):
             #    alerts.Reset_Battery_Alert()
             
             ##Update for balise
-            #new, dot = self.balises.Check_Balise()
-            #if new:
+            #new_balise, dot = self.balises.Check_Balise()
+            #if new_balise:
             #    if not (dot == alerts.Get_Balise_Dot()):
             #        alerts.Set_Balise_Alert(dot)
             
             ##Update for Ronde
             #if self.ronde.Check():
             #    alerts.Set_Ronde_Alert()
-            #else:
-            #    alerts.Reset_Ronde_Alert()
+            
+            #Update for RFID
+            #new_rfid, tag  = self.rfid.Check_RFID()
+            #if new_rfid:
+            #    alerts.Set_NFC_Alert(tag)
             
             ##Update for utrasounds
             #self.Manage_US()
