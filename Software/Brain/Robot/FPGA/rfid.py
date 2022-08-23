@@ -1,6 +1,5 @@
 from signal import signal, SIGINT
 from pynq import Overlay
-#from Constants import DIJKSTRA_MATCH
 #import lib.rfid_driver
 from time import sleep
 

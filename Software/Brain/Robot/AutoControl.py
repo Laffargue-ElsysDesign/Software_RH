@@ -1,6 +1,6 @@
 from threading import Thread
 from Robot.Alerts import alerts
-import Robot.Constants as cst
+import Robot.Permanent.Constants as cst
 from Robot.Navigation import thread_Navigation as tn
 from Robot.Alerts import Mgt
 from time import sleep
@@ -12,7 +12,6 @@ class Auto_Control(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.mgt = Mgt()
-        self.state = cst.HOME
         self.Navigation = tn
         self.interrupt = False
 

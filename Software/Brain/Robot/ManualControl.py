@@ -2,7 +2,7 @@ from threading import Thread
 from Robot.Alerts import alerts, Mgt
 import Robot.holo32.holo_uart_management as HUM
 from Robot.IHM.interface import mode
-import Robot.Constants as cst
+import Robot.Permanent.Constants as cst
 from time import sleep
 
 #handler pour interrupt correctement 
@@ -75,7 +75,7 @@ class Keyboard_Read(Thread):
             self.Set_Speed(0, 0, -0.3)
 
         elif read_input == 'm':
-            mode.mode_wanted.mode = cst.AUTO
+            mode.mode_wanted.mode = cst.modes.AUTO
             self.mgt.Stop()
             
         else:
@@ -87,11 +87,11 @@ class Keyboard_Read(Thread):
         while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
             
-            if (mode.mode_wanted.mode == cst.AUTO) :
+            if (mode.mode_wanted.mode == cst.modes.AUTO) :
                 read_input = input()
                 if (read_input == 'm'):
                     mode.mode_wanted.MUT.acquire()
-                    mode.mode_wanted.mode = cst.MANUAL
+                    mode.mode_wanted.mode = cst.modes.MANUAL
                     mode.mode_wanted.MUT.release()
                 elif read_input == 'i':
                     alerts.Set_Balise_Alert(4)
@@ -151,37 +151,37 @@ class IHM_Read(Thread):
         self.speed_z=z
 
     def Get_Trajectory(self, read_input):
-        if mode.command == cst.NORTH:
+        if mode.command == cst.orders.NORTH:
             self.Set_Speed(0.3, 0, 0)
 
-        elif mode.command == cst.SOUTH:
+        elif mode.command == cst.orders.SOUTH:
             self.Set_Speed(-0.3, 0, 0)
 
-        elif mode.command == cst.EAST:
+        elif mode.command == cst.orders.EAST:
             self.Set_Speed(0, 0.3, 0)
 
-        elif mode.command == cst.WEST:
+        elif mode.command == cst.orders.WEST:
             self.Set_Speed(0, -0.3, 0)
 
-        elif mode.command == cst.NORTH_EAST:
+        elif mode.command == cst.orders.NORTH_EAST:
             self.Set_Speed(0.3, 0.3, 0)
 
-        elif mode.command == cst.NORTH_WEST:
+        elif mode.command == cst.orders.NORTH_WEST:
             self.Set_Speed(0.3, -0.3, 0)
 
-        elif mode.command == cst.SOUTH_EAST:
+        elif mode.command == cst.orders.SOUTH_EAST:
             self.Set_Speed(-0.3, 0.3, 0)
 
-        elif mode.command == cst.SOUTH_WEST:
+        elif mode.command == cst.orders.SOUTH_WEST:
             self.Set_Speed(-0.3, -0.3, 0)
 
-        elif mode.command == cst.ROTATE_RIGHT:
+        elif mode.command == cst.orders.ROTATE_RIGHT:
             self.Set_Speed(0, 0, 0.3)
 
-        elif mode.command == cst.ROTATE_LEFT:
+        elif mode.command == cst.orders.ROTATE_LEFT:
             self.Set_Speed(0, 0, -0.3)
 
-        elif mode.command == cst.STOP:
+        elif mode.command == cst.orders.STOP:
             self.Set_Speed(0, 0, 0)
 
         else:

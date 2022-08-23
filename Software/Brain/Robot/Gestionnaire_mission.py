@@ -1,5 +1,5 @@
 from threading import Thread
-import Robot.Constants as cst
+import Robot.Permanent.Constants as cst
 from Robot.IHM.interface import mode
 from Robot.ManualControl import thread_manual_control as tmc
 from Robot.AutoControl import thread_auto_control as tac
@@ -16,7 +16,7 @@ def handler(signal_received, frame):
 class Gestionnnaire_Mission(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.mission = cst.HOME
+        self.mission = cst.missions.HOME
         self.manual_control = tmc
         self.auto_control = tac
         self.interrupt = False
@@ -55,8 +55,8 @@ class Gestionnnaire_Mission(Thread):
     def run(self):
         ##Set on Auto mode
         mode.current_mode.MUT.acquire()
-        if not mode.current_mode == cst.AUTO:
-            mode.current_mode == cst.AUTO
+        if not mode.current_mode == cst.modes.AUTO:
+            mode.current_mode == cst.modes.AUTO
         mode.current_mode.MUT.release()
         ##IMU Calibration and first computations check (localisation, ...)
 
@@ -72,13 +72,13 @@ class Gestionnnaire_Mission(Thread):
 
             ##When Manual
             mode.mode_wanted.MUT.acquire()
-            if mode.mode_wanted.mode == cst.MANUAL:
+            if mode.mode_wanted.mode == cst.modes.MANUAL:
                 mode.mode_wanted.MUT.release()
             ##Set current values to Manual
                 self.set_MANUAL() 
 
             ##When Auto
-            elif mode.mode_wanted.mode == cst.AUTO:
+            elif mode.mode_wanted.mode == cst.modes.AUTO:
                 mode.mode_wanted.MUT.release()
                
 

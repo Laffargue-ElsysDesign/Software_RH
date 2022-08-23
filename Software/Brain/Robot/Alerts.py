@@ -1,5 +1,5 @@
 from threading import Lock
-from Robot.Constants import NOWHERE
+import Robot.Permanent.Constants as cst
 
 class State_NFC():
     def __init__(self):
@@ -75,7 +75,7 @@ class State_Balise():
     def Reset(self):
         self.MUT.acquire()
         self.new = False
-        self.dot = NOWHERE
+        self.dot = cst.dots.DOT_NOWHERE
         self.MUT.release()
         return 1
 

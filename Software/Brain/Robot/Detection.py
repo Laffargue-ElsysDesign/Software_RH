@@ -77,8 +77,11 @@ class Detection_Alert(Thread):
             
             ##Update for utrasounds
             #self.Manage_US()
+
+            #Update IMU
             self.data = self.imu.Get_Raw_Data()
             #print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
+            
             sleep(0.1)
 
 thread_detection = Detection_Alert()
