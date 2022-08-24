@@ -1,13 +1,15 @@
 from threading import Lock
 from Robot.Permanent.Constants import ROOM_NFC_MATCH, DOT_POSITION_TO_X_MATCH, DOT_POSITION_TO_Y_MATCH
+from Robot.Permanent.Map import ARC_MAP
+from Robot.EKF import EKF
 
 class Coordinate:
-    home = [0, 0]
+
     def __init__(self):
         self.x = 0
         self.y = 0
         self.angle = 0
-        #self.coo = [0, 0]
+
         self.MUT = Lock()
     
     def Write_Loc(self, X, Y, angle):
@@ -15,10 +17,17 @@ class Coordinate:
         self.x = X
         self.y = Y
         self.angle = 0
-        #self.coo = [X, Y]
         self.MUT.release()
 
+    def Get_Angle(self):
+        self.MUT.acquire()
+        angle = self.angle
+        self.MUT.release()
+        return angle
+
 coordinate = Coordinate()
+
+thread_localisation = EKF()
 
 def get_Dot_from_Bal(bal):
     return ROOM_NFC_MATCH[1, bal]
@@ -31,10 +40,9 @@ def get_Bal_from_Dot(dot):
 def Get_Loc_from_Dot(point, position):
     return (DOT_POSITION_TO_X_MATCH[point, position], DOT_POSITION_TO_Y_MATCH[point, position])
 
-def Loc_point_check(point):
-    pass #TBD
-
-
+def Get_Orientation(start_point, end_point):
+    return (ARC_MAP[start_point, end_point])
+    
 
 if __name__ == '__main__':
     print(get_Bal_from_Dot([4, 12]))

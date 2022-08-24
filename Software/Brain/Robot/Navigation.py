@@ -1,10 +1,12 @@
+from operator import truediv
 from threading import Thread, Lock
 from time import sleep, time
-
+from Robot.Localisation import coordinate, Get_Orientation
 from numpy import mgrid
 from Robot.Alerts import Mgt
 import Robot.Localisation as Loc
 from Robot.Alerts import alerts
+import numpy as np
 import Robot.holo32.holo_uart_management as HUM
 
 def handler(signal_received, frame):
@@ -15,11 +17,19 @@ def handler(signal_received, frame):
 def Dijkstra(End):
     pass #TBD
 
-def Compute_Angle(point, old_point):
-    return 1, 3#TBD
+def Compute_Angle(end_angle):
+    angle = coordinate.Get_Angle() - end_angle
 
-def Robot_Rotate(Turn):
-    if Turn:
+    if angle < -180:
+        angle = -360 - angle
+    elif angle > 180:
+        angle = 360 - angle
+
+    return angle
+    
+
+def Robot_Rotate(Turn_Right):
+    if Turn_Right:
         HUM.cmd_robot.Set_Speed(0, 0, 0.3)
     else:
         HUM.cmd_robot.Set_Speed(0, 0, -0.3) 
@@ -29,10 +39,8 @@ def Robot_Stop():
     HUM.cmd_robot.Set_Speed(0, 0, 0)
     return 1
         
-def Correct():
-    pass #TBD
 
-def Robot_Froward():
+def Robot_Forward():
     HUM.cmd_robot.Set_Speed(0.3, 0, 0)
     return 1
 
@@ -60,13 +68,11 @@ class Navigation(Thread):
         if alerts.Get_NFC_Alert():
             Robot_Stop()
             sleep(0.5)
+            output = False
             data_valid, tag_point, tag_position = alerts.Get_NFC_Tag()
             if data_valid and tag_point == point:
                 #print("point reached")
                 output = True
-            elif data_valid and tag_point == old_point:
-                #print("still old point")
-                output = False
             elif data_valid:
                 #print("interrupting", point, old_point, tag)
                 self.mgt.Stop()
@@ -74,26 +80,47 @@ class Navigation(Thread):
             alerts.Reset_Tag_Alert()
         return output
 
+    def Orientation(self, point, old_point):
+        angle_wanted = Get_Orientation(old_point, point)
+        angle = Compute_Angle(angle_wanted)
+
+        while ((not np.abs(angle) < 5) or (not self.mgt.Check_Stop())):
+            Turn_Right = False
+
+            if angle < 0:
+                Turn_Right = True
+            
+            Robot_Rotate(Turn_Right)
+
+            angle = Compute_Angle(angle_wanted)
+        
+        Robot_Stop()
+
+
     def Get_to_Point(self, point, old_point):
         if point == old_point:
             return 
             #End = Check_NFC(self.path, point, old_point)
         else:
-            Turn, time = Compute_Angle(point, old_point)
-            Robot_Rotate(Turn)
-            sleep(time)
-            Robot_Stop()
+
+            self.Orientation(point, old_point)
+
             if self.mgt.Check_Stop():
                 return
-            Robot_Froward()
-            sleep(1)
+            
+            Robot_Forward()
             alerts.Reset_Tag_Alert()
+
             while not self.Check_NFC(point, old_point):
-                Robot_Froward()
+                Robot_Forward()
+            
+            Robot_Forward()
+            sleep(0.7)
             Robot_Stop()
+
             if self.mgt.Check_Stop():
                 return
-            #Correct()    
+    
 
     def Wait_Start(self):
         print("End of navigation")
@@ -106,7 +133,7 @@ class Navigation(Thread):
         while not self.interrupt:
             self.Wait_Start()
             print("Start of Navigation")
-            T = time()
+            #T = time()
             #print("path:", self.path)
             while not self.mgt.Check_Stop() and not self.interrupt:
                 #sleep(1)

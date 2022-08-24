@@ -1,6 +1,7 @@
 from signal import signal, SIGINT
 #from Brain.Robot import IHM
 #from pynq import Overlay
+from Robot.Localisation import thread_localisation
 from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
@@ -14,9 +15,12 @@ from Robot.Detection import thread_detection
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
+    thread_localisation.Interrupt()
+    thread_localisation.join()
+    print("Localisation exited succesfully")
     thread_detection.Interrupt()
     thread_detection.join()
-    print("Trying to exit")
+    print("Detection exited succesfully")
     thread_Navigation.Interrupt()
     thread_Navigation.join()
     print("Navigation stopped properly")

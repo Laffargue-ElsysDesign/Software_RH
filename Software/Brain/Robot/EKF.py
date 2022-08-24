@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from threading import Thread
 import matplotlib.pyplot as plt
 import numpy as np
 from time import time, sleep
@@ -10,11 +11,6 @@ Created on Mon Jun 27 08:32:09 2022
 
 @author: laffargue
 """
-class Localisation():
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.theta = 0
         
 
 
@@ -25,12 +21,16 @@ def cos(a):
 def sin(a):
     return np.sin(a*np.pi/180)
 
-class EKF():
+class EKF(Thread):
     def __init__(self):
+        Thread.__init__(self)
         self.NFC_Alert = False
         self.point = 0
         self.position = 0
         self.interrupt = False
+    
+    def Interrupt(self):
+        self.interrupt = True
 
     def initialize(self, x, y, z, vx, vy, vz, dt):
         self.A = np.array([[1, 0, 0, 0, 0, 0],
@@ -117,9 +117,10 @@ class EKF():
             #OdoZ.append(Z_hat[2, 0])
             
             X = self.compute_X(X, Z)
-                
+
+            #Angle modulo 360 pour garde run intervaller entre 0 et 360 (j'ai pas trouvé mieux comme calcul)
+            X[2, 0] = X[2, 0] % 360    
             #print("X", X)
-            
             if self.NFC_Alert:
                 X = self.Set_NFC(X)
             
@@ -146,7 +147,7 @@ class EKF():
         #print("OdoZ: ", OdoZ)
 
         return 0
-    
+
 if __name__ == '__main__':
     ekf = EKF()
     
