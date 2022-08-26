@@ -107,7 +107,7 @@ class Filter(Thread):
         
     def Set_NFC(X):
         pass
-#        (X[0, 0], X[2, 0]) = Get_Loc_from_Dot(point, position)
+        #(X[0, 0], X[2, 0]) = Get_Loc_from_Dot(point, position)
         
     def run(self): 
 
