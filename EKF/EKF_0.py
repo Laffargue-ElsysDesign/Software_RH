@@ -17,7 +17,7 @@ def sin(a):
     return np.sin(a*np.pi/180)
 
 class EKF():
-    def initialize(self, x, y, z, vx, vy, vz, ax, ay, dt, Sigma_odom, Sigma_acc, Sigma_gyro, err_N_dot, err_N_dot_dot, err_E_dot, err_E_dot_dot, err_theta_dot):
+    def initialize(self, x, y, z, vx, vy, vz, ax, ay, dt, Sigma_odom, Sigma_acc, Sigma_gyro, err_N, err_N_dot, err_N_dot_dot, err_E, err_E_dot, err_E_dot_dot, err_theta, err_theta_dot):
         A = np.array([[1, dt, (dt**2)/2, 0, 0, 0, 0, 0],
                      [0, 1, dt, 0, 0, 0, 0, 0],
                      [0, 0, 1, 0, 0, 0, 0, 0],
@@ -43,13 +43,13 @@ class EKF():
                      [0, 0, 0, 0, Sigma_odom, 0],
                      [0, 0, 0, 0, 0, Sigma_gyro]])
        
-        Q = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
+        Q = np.array([[err_N, 0, 0, 0, 0, 0, 0, 0],
                      [0, err_N_dot, 0, 0, 0, 0, 0, 0],
                      [0, 0, err_N_dot_dot, 0, 0, 0, 0, 0],
-                     [0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, err_E, 0, 0, 0, 0],
                      [0, 0, 0, 0, err_E_dot, 0, 0, 0],
                      [0, 0, 0, 0, 0, err_E_dot_dot, 0, 0],
-                     [0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, err_theta, 0],
                      [0, 0, 0, 0, 0, 0, 0, err_theta_dot]])
         
         P = np.eye(8)*0.405
@@ -58,12 +58,12 @@ class EKF():
     
     def measurement(self, line):
         words = line.split()
-        ax = 0#-int(float(words[1]))*0.01
+        ax = 0#float(words[1])*0.01
         ay = 0#float(words[0])*0.01
-        theta_dotGz = 0#2*np.pi/360*float(words[5])
-        vx = 0#int(words[9])
-        vy = 0#int(words[10])
-        theta_dotOz = 0#int(2*np.pi/360*float(words[11]))
+        theta_dotGz = 0#2*np.pi/360*float(words[4])
+        vx = float(words[2])*0.89
+        vy = float(words[3])*0.89
+        theta_dotOz = float(words[5])*0.63
 
         return np.array([[vx], [vy], [ax], [ay], [theta_dotOz], [theta_dotGz]])
     
@@ -121,12 +121,12 @@ class EKF():
         OdoZ = []
         
         
-        dt = 1
+        dt = 0.1
         counter = 0
-        (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 3*10**(-5), 0.1, 0, 0, 0, 0, 0)
+        (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 3*10**(-5), 0.1, 0, 0, 0, 0, 0, 0, 0, 0)
         print(A, X, R, Q, P)
         #while true()
-        with open('./EKF/North_3m05_11s69.txt') as f:
+        with open('./EKF/Forward.txt') as f:
             lines = f.readlines()
             f.close()
 
@@ -170,21 +170,27 @@ class EKF():
             #print("Theta = ", X[6, 0])
             counter += 1
             print(counter)
-            
-        plt.plot(range(counter), accY)
-        #plt.plot(range(counter), posTheta)
-        print(posX)
-        print("AccX: ", AccX)
-        print("AccY: ", AccY)
-        print("OdoX: ", OdoX)
-        print("OdoY: ", OdoY)
-        print("OdoZ: ", OdoZ)
-        print("GyrX: ", GyrZ)
-        #plt.plot(range(10), posTheta)
-        #print (posX, posY)
-        #print(posX, posY, posTheta)
-        #plt.plot(posY, range(100))
-        #plt.plot(posTheta, range(100))
+        
+        plt.plot(posY, posX)
+        
+        #plt.plot(range(counter), posYhat) # 4
+        #plt.plot(range(counter), vitX) # 6*10**(-3)
+        #plt.plot(range(counter), accX) # 1*10**(-3)
+        #plt.plot(range(counter), posY) # -1.3*10**(-3)
+        #plt.plot(range(counter), vitY) # 2*10**(-4)
+        #plt.plot(range(counter), accY) # 2*10**(-5)
+        #plt.plot(range(counter), posTheta) # 4.33*10**(-6)
+        #plt.plot(range(counter), vitTheta) # 3.73*10**(-5)
+        
+
+        #print(posYhat)
+        #print("AccX: ", AccX)
+        #print("AccY: ", AccY)
+        #print("OdoX: ", OdoX)
+        #print("OdoY: ", OdoY)
+        #print("OdoZ: ", OdoZ)
+        #print("GyrX: ", GyrZ)
+
         return 0
     
 if __name__ == '__main__':
