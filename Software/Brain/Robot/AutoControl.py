@@ -1,18 +1,17 @@
 from threading import Thread
 from Robot.Alerts import alerts
-import Robot.Constants as cst
+import Robot.Permanent.Constants as cst
 from Robot.Navigation import thread_Navigation as tn
 from Robot.Alerts import Mgt
 from time import sleep
-from Robot.Motion.FPGA.dijkstra import Dijkstra
-from Robot.Motion.Overlays.Overlay import overlay
+from Robot.FPGA.dijkstra import Dijkstra
+from Robot.Overlays.Overlay import overlay
 
 
 class Auto_Control(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.mgt = Mgt()
-        self.state = cst.HOME
         self.Navigation = tn
         self.interrupt = False
 
@@ -25,7 +24,7 @@ class Auto_Control(Thread):
         while self.mgt.Check_Stop() and not self.interrupt:
             self.mgt.Is_Waiting()
             sleep(0.1)
-            print("Auto Waiting..")
+            #print("Auto Waiting..")
         self.mgt.Is_Not_Waiting()
         return 1
 
@@ -70,7 +69,7 @@ class Auto_Control(Thread):
                     print("Balise Triggered")
                     self.End_Navigation()
                     #self.Alerts.Balise.MUT.acquire()
-                    self.Start_Navigation(dijkstra.Compute(0, alerts.Get_Balise_Dot()))
+                    self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), alerts.Get_Balise_Dot()))
                     alerts.Reset_Balise_Alert()
                     #self.Alerts.Balise.MUT.release()
                     alerts.Reset_Balise_Alert()

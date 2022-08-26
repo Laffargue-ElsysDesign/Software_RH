@@ -1,5 +1,5 @@
 from tkinter import E
-import Robot.Motion.holo32.holo_uart_management as HUM 
+import Robot.holo32.holo_uart_management as HUM 
 from Robot.ManualControl import thread_manual_control
 from time import sleep, time
 from threading import Thread, Lock

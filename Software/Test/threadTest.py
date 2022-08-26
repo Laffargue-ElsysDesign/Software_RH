@@ -20,7 +20,9 @@ class LookAgain(Thread):
         print(self.A)
 
 if __name__ == '__main__':
-    matrix = np.eye(3)
-    for i in range(3):
-        print(i)
-    print(i)
+    
+    A = 370
+    B = 180
+    C = 1080
+
+    print( A % 360, B - (B // 90)*90, C - (C // 360)*360)

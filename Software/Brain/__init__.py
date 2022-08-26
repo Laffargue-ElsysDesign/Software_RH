@@ -1,21 +1,26 @@
 from signal import signal, SIGINT
 #from Brain.Robot import IHM
 #from pynq import Overlay
+from Robot.EKF import thread_localisation
 from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
-from Robot.Motion.Overlays.Overlay import overlay
-import Robot.Motion.holo32.holo_uart_management as HUM 
+from Robot.Overlays.Overlay import overlay
+import Robot.holo32.holo_uart_management as HUM
+from Robot.Detection import thread_detection
 
 #from Robot.Detection import thread_detection
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
-    #thread_detection.Set_Interrupt()
-    #thread_detection.join()
-    print("Trying to exit")
+    thread_localisation.Interrupt()
+    thread_localisation.join()
+    print("Localisation exited succesfully")
+    thread_detection.Interrupt()
+    thread_detection.join()
+    print("Detection exited succesfully")
     thread_Navigation.Interrupt()
     thread_Navigation.join()
     print("Navigation stopped properly")
@@ -23,7 +28,7 @@ def handler(signal_received, frame):
     thread_auto_control.join()
     print("AutoControl stopped properly")
     thread_manual_control.Interrupt()
-    print("Press i and enter")
+    print("Press enter")
     thread_manual_control.join()
     print("ManualControl stopped properly")
     thread_gestionnaire.Interrupt()
@@ -40,10 +45,10 @@ def handler(signal_received, frame):
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
-
-    if overlay.is_loaded()==False:
-        print("Loading Overlay..")
-        overlay.download()
+    overlay.download()
+    #if overlay.is_loaded()==False:
+    #    print("Loading Overlay..")
+    #    overlay.download()
     
     
     #Start IHM
@@ -54,16 +59,18 @@ if __name__ == '__main__':
 
     ################Start all threads###################
     thread_holo.start()
-    
+    #print("holo thread start")
+    thread_localisation.start()
+    #print("loc thread start")
     thread_Navigation.start()
-
+    #print("nav thread start")
     thread_manual_control.start()
-    
+    #print("manual thread start")
     thread_auto_control.start()
-    
+    #print("auto thread start")
     thread_gestionnaire.start()
-
-    #thread_detection.start()
-
+    #print("gestionnaire thread start")
+    thread_detection.start()
+    #print("detection thread start")
 
     

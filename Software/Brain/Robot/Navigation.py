@@ -1,11 +1,14 @@
+from operator import truediv
 from threading import Thread, Lock
 from time import sleep, time
-
+from Robot.EKF import coordinate
+from Robot.Localisation import Get_Orientation
 from numpy import mgrid
 from Robot.Alerts import Mgt
 import Robot.Localisation as Loc
 from Robot.Alerts import alerts
-import Robot.Motion.holo32.holo_uart_management as HUM
+import numpy as np
+import Robot.holo32.holo_uart_management as HUM
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -15,25 +18,31 @@ def handler(signal_received, frame):
 def Dijkstra(End):
     pass #TBD
 
-def Compute_Angle(point, old_point):
-    return 1, 3 #TBD
+def Compute_Angle(end_angle):
+    angle = coordinate.Get_Angle() - end_angle
 
-def Robot_Rotate(Turn):
-    if Turn:
-        HUM.cmd_robot.Set_Speed(0, 0, 0.3)
+    if angle < -180:
+        angle = -360 - angle
+    elif angle > 180:
+        angle = 360 - angle
+
+    return angle
+    
+
+def Robot_Rotate(Turn_Right):
+    if Turn_Right:
+        HUM.cmd_robot.Set_Speed(0, 0, 0.1)
     else:
-        HUM.cmd_robot.Set_Speed(0, 0, -0.3) 
+        HUM.cmd_robot.Set_Speed(0, 0, -0.1) 
     return 1
 
 def Robot_Stop():
     HUM.cmd_robot.Set_Speed(0, 0, 0)
     return 1
         
-def Correct():
-    pass #TBD
 
-def Robot_Froward():
-    HUM.cmd_robot.Set_Speed(0.3, 0, 0)
+def Robot_Forward():
+    HUM.cmd_robot.Set_Speed(0.2, 0, 0)
     return 1
 
 def Procedure():
@@ -54,41 +63,66 @@ class Navigation(Thread):
 
     def Interrupt(self):
         self.interrupt = True
+        self.mgt.Stop()
     
     def Check_NFC(self, point, old_point):
         output = False
         if alerts.Get_NFC_Alert():
-            tag = alerts.Get_NFC_Tag()
-            if tag == point:
+            Robot_Stop()
+            sleep(0.5)
+            output = False
+            data_valid, tag_point, tag_position = alerts.Get_NFC_Tag()
+            if data_valid and tag_point == point:
                 #print("point reached")
                 output = True
-            elif tag == old_point:
-                #print("still old point")
-                output = False
-            else:
+            elif data_valid:
                 #print("interrupting", point, old_point, tag)
                 self.mgt.Stop()
                 output = True
             alerts.Reset_Tag_Alert()
         return output
 
+    def Orientation(self, point, old_point):
+        angle_wanted = Get_Orientation(old_point, point)
+        angle = Compute_Angle(angle_wanted)
+
+        while ((not np.abs(angle) < 2) and (not self.mgt.Check_Stop())):
+            Turn_Right = False
+            print(angle, np.abs(angle))
+            if angle < 0:
+                Turn_Right = True
+            
+            Robot_Rotate(Turn_Right)
+
+            angle = Compute_Angle(angle_wanted)
+
+        Robot_Stop()
+
+
     def Get_to_Point(self, point, old_point):
         if point == old_point:
             return 
             #End = Check_NFC(self.path, point, old_point)
         else:
-            Turn, time = Compute_Angle(point, old_point)
-            Robot_Rotate(Turn)
-            sleep(time)
-            Robot_Stop()
+
+            self.Orientation(point, old_point)
+
             if self.mgt.Check_Stop():
                 return
+            
+            Robot_Forward()
+            alerts.Reset_Tag_Alert()
+
             while not self.Check_NFC(point, old_point):
-                Robot_Froward()
+                Robot_Forward()
+            
+            Robot_Forward()
+            sleep(0.7)
             Robot_Stop()
+
             if self.mgt.Check_Stop():
                 return
-            #Correct()    
+    
 
     def Wait_Start(self):
         print("End of navigation")
@@ -101,8 +135,8 @@ class Navigation(Thread):
         while not self.interrupt:
             self.Wait_Start()
             print("Start of Navigation")
-            T = time()
-            #print("path:", self.path)
+            #T = time()
+            print("path:", self.path)
             while not self.mgt.Check_Stop() and not self.interrupt:
                 #sleep(1)
                 #if time() > (T + 10):
