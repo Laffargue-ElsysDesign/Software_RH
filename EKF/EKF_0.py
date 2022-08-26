@@ -61,9 +61,9 @@ class EKF():
         ax = 0#-int(float(words[1]))*0.01
         ay = 0#float(words[0])*0.01
         theta_dotGz = 0#2*np.pi/360*float(words[5])
-        vx = int(words[9])
-        vy = int(words[10])
-        theta_dotOz = int(2*np.pi/360*float(words[11]))
+        vx = 0#int(words[9])
+        vy = 0#int(words[10])
+        theta_dotOz = 0#int(2*np.pi/360*float(words[11]))
 
         return np.array([[vx], [vy], [ax], [ay], [theta_dotOz], [theta_dotGz]])
     
@@ -102,8 +102,13 @@ class EKF():
         
     def run(self): 
         posX = []
+        vitX = []
+        accX = []
         posY = []
+        vitY = []
+        accY = []
         posTheta = []
+        vitTheta = []
         posXhat = []
         posYhat = []
         posThetahat = []
@@ -118,7 +123,7 @@ class EKF():
         
         dt = 1
         counter = 0
-        (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
+        (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 3*10**(-5), 0.1, 0, 0, 0, 0, 0)
         print(A, X, R, Q, P)
         #while true()
         with open('./EKF/North_3m05_11s69.txt') as f:
@@ -153,15 +158,20 @@ class EKF():
             #print(K, X, P)
             
             posX.append(X[0, 0])
+            vitX.append(X[1, 0])
+            accX.append(X[2, 0])
             posY.append(X[3, 0])
+            vitY.append(X[4, 0])
+            accY.append(X[5, 0])
             posTheta.append(X[6, 0])
+            vitTheta.append(X[7, 0])
             #print("X = ", X[0, 0])
             #print("Y = ", X[3, 0])
             #print("Theta = ", X[6, 0])
             counter += 1
             print(counter)
             
-        plt.plot(posX, posY)
+        plt.plot(range(counter), accY)
         #plt.plot(range(counter), posTheta)
         print(posX)
         print("AccX: ", AccX)

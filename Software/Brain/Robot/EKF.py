@@ -173,7 +173,7 @@ class Filter(Thread):
 thread_localisation = Filter()
     
 if __name__ == '__main__':
-    ekf = Fliter()
+    ekf = Filter()
     
     ekf.run()
 
