@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 from time import sleep
-from .interface import mode_wanted as MW
+from .interface import mode as MW
 
 auth = Blueprint('auth', __name__)
 

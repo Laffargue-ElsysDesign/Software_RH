@@ -58,12 +58,12 @@ class EKF():
     
     def measurement(self, line):
         words = line.split()
-        ax = 0#float(words[1])*0.01
-        ay = 0#float(words[0])*0.01
-        theta_dotGz = 0#2*np.pi/360*float(words[4])
-        vx = float(words[2])*0.89
-        vy = float(words[3])*0.89
-        theta_dotOz = float(words[5])*0.63
+        ax = float(words[1])*0.01
+        ay = float(words[0])*0.01
+        theta_dotGz =2*np.pi/360*float(words[5])
+        vx = float(words[10])*0.89
+        vy = float(words[9])*0.89
+        theta_dotOz = float(words[11])*0.63
 
         return np.array([[vx], [vy], [ax], [ay], [theta_dotOz], [theta_dotGz]])
     
@@ -126,7 +126,7 @@ class EKF():
         (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 3*10**(-5), 0.1, 0, 0, 0, 0, 0, 0, 0, 0)
         print(A, X, R, Q, P)
         #while true()
-        with open('./EKF/Forward.txt') as f:
+        with open('./EKF/North_3m05_11s69.txt') as f:
             lines = f.readlines()
             f.close()
 
