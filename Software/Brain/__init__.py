@@ -1,6 +1,7 @@
 from signal import signal, SIGINT
+
+###########Imports 
 #from Brain.Robot import IHM
-#from pynq import Overlay
 from Robot.EKF import thread_localisation
 from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
@@ -9,6 +10,12 @@ from Robot.Navigation import thread_Navigation
 from Robot.Overlays.Overlay import overlay
 import Robot.holo32.holo_uart_management as HUM
 from Robot.Detection import thread_detection
+
+import Robot.holo32.lib.uart_driver
+import Robot.FPGA.lib.imu_driver
+import Robot.FPGA.lib.rfid_driver
+import Robot.FPGA.lib.ronde_driver
+import Robot.FPGA.lib.balise_driver
 
 #from Robot.Detection import thread_detection
 

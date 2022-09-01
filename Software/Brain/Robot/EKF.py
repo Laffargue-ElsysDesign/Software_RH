@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from threading import Thread, Lock
-import matplotlib.pyplot as plt
 import numpy as np
 from time import time, sleep
 from Robot.holo32.holo_uart_management import odometry

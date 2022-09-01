@@ -11,11 +11,6 @@ from signal import signal, SIGINT
 #=====PYNQ import=====#
 from pynq import Overlay
 
-#====Custom import====#
-import Robot.holo32.lib.uart_driver
-import Robot.FPGA.lib.imu_driver
-import Robot.FPGA.lib.rfid_driver
-
 class Class_Command:
     def __init__(self):
         self.speed_x = 0

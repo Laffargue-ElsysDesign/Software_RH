@@ -1,25 +1,25 @@
 from threading import Thread
 from Robot.Alerts import alerts, ultrasons
-#from Robot.FPGA.balise import Balises
+from Robot.FPGA.balise import Balises
 #from Robot.FPGA.battery import Battery
-#from Robot.FPGA.ronde import Ronde
-#from Robot.FPGA.ultrasons import Ultrasons
+from Robot.FPGA.ronde import Ronde
+from Robot.FPGA.ultrasons import Ultrasons
 from Robot.FPGA.imu import IMU
 from Robot.FPGA.rfid import RFID
-from Robot.holo32.holo_uart_management import odometry
 from Robot.Overlays.Overlay import overlay
 from Robot.EKF import imu_data
 from time import sleep
+from Robot.Localisation import Get_Dot_from_ID
 
 class Detection_Alert(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.interrupt = False
-        #self.balises = Balises(overlay)
+        self.balises = Balises(overlay)
         #self.battery = Battery(overlay)
-        #self.ronde = Ronde(overlay)
+        self.ronde = Ronde(overlay)
         self.rfid = RFID(overlay)
-        #self.ultrasons = Ultrasons(overlay)
+        self.ultrasons = Ultrasons(overlay)
         
         self.imu = IMU(overlay)
     
@@ -55,14 +55,14 @@ class Detection_Alert(Thread):
             #    alerts.Reset_Battery_Alert()
             
             ##Update for balise
-            #new_balise, dot = self.balises.Check_Balise()
-            #if new_balise:
-            #    if not (dot == alerts.Get_Balise_Dot()):
-            #        alerts.Set_Balise_Alert(dot)
+            new_balise, id = self.balises.Check_Balise()
+            if new_balise:
+                if not (id == alerts.Get_Balise_Dot()):
+                    alerts.Set_Balise_Alert(Get_Dot_from_ID(id))
             
             ##Update for Ronde
-            #if self.ronde.Check():
-            #    alerts.Set_Ronde_Alert()
+            if self.ronde.Check():
+                alerts.Set_Ronde_Alert()
             
             #Update for RFID
             new_rfid = self.rfid.Check_RFID()
