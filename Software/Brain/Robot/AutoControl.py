@@ -54,27 +54,30 @@ class Auto_Control(Thread):
         dijkstra = Dijkstra(overlay)
 
         while not self.interrupt:
+
             #Wait until Auto Mode gets called
             self.Wait_Start()
             print("Start of Auto Control")
+
             #Continue until AutoMode gets shut down
             while not self.mgt.Check_Stop() and not self.interrupt:
-                #print("Auto_Control")
-                #Current_Loc = 0 #TBD
 
-                #If battery Alert, got back home asap
+                #print("Auto_Control")
+
+                #If battery Alert, get back home asap
                 if alerts.Get_Battery_Alert():
-                    print("Battery triggered")
+                    #print("Battery triggered")
                     self.balise_trig = False
                     self.End_Navigation()
-                    #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
                     self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), cst.Room.STAGIAIRE))
                     alerts.Reset_Battery_Alert()
                 
-                #If a new alert is triggeres, gets priority
+                #If a new alert is triggereg
                 elif alerts.Get_Balise_Alert():
-                    print("Balise Triggered")
+                    #print("Balise Triggered")
 
+
+                    #If 
                     if not self.balise_trig:
                         self.Start_Balise_Alert(dijkstra.Compute(alerts.Get_NFC_LastDot(), cst.Room.STAGIAIRE))
                     alerts.Reset_Balise_Alert()
