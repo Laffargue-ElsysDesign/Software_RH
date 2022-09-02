@@ -46,6 +46,9 @@ class Detection_Alert(Thread):
 
     
     def run(self):
+
+        self.ronde.Set_2_hour()
+
         while(not self.interrupt):
             
             ##Update for Battery
