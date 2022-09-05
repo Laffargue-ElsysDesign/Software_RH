@@ -1,5 +1,5 @@
 from Robot.Permanent.Constants import ROOM_NFC_MATCH, DOT_POSITION_TO_X_MATCH, DOT_POSITION_TO_Y_MATCH
-from Robot.Permanent.Map import ARC_MAP
+from Robot.Permanent.Map import ARC_MAP, BALISE_ID_TAG
 
 
 
@@ -16,7 +16,9 @@ def Get_Loc_from_Dot(point, position):
 
 def Get_Orientation(start_point, end_point):
     return (ARC_MAP[start_point, end_point])
-    
+
+def Get_Dot_from_ID(id):
+    return BALISE_ID_TAG[1, id]
 
 if __name__ == '__main__':
     print(get_Bal_from_Dot([4, 12]))

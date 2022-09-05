@@ -11,11 +11,6 @@ from signal import signal, SIGINT
 #=====PYNQ import=====#
 from pynq import Overlay
 
-#====Custom import====#
-import Robot.holo32.lib.uart_driver
-import Robot.FPGA.lib.imu_driver
-import Robot.FPGA.lib.rfid_driver
-
 class Class_Command:
     def __init__(self):
         self.speed_x = 0
@@ -89,6 +84,14 @@ class Class_Odom:
         self.dist_y = 0
         self.ang_z = 0
         self.MUT = Lock()
+        
+    def Read(self):
+        self.MUT.acquire()
+        Sx = self.speed_x
+        Sy = self.speed_y
+        Sz = self.speed_z
+        self.MUT.release()
+        return Sx, Sy, Sz
 
 cmd_robot = Class_Command()
 odometry = Class_Odom()

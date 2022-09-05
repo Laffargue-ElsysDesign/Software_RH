@@ -6,8 +6,8 @@ OFFSET_WRITE_ENABLE = 0x00
 OFFSET_READ_N = 0x04
 OFFSET_READ_NW = 0x08
 OFFSET_READ_NE = 0x0C
-OFFSET_READ_W = 0x10
-OFFSET_READ_E = 0x14
+OFFSET_READ_W = 0x14
+OFFSET_READ_E = 0x10
 
 MASQUE_OBJ = 0x10
 MASQUE_ZONE1 = 0x01
@@ -24,7 +24,7 @@ class UltrasonsDriver(DefaultIP):
     def __init(self, description):
         super().__init(description=description)
         self.reset()
-    bindto = ['elsys-design.com:user:ultrasons:1.0'] #TBD
+    bindto = ['elsys-design.com:user:Ultrasons:1.0'] #TBD
     
     def Enable(self):
         self.write(OFFSET_WRITE_ENABLE, 1)

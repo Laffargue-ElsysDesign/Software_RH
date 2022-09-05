@@ -1,16 +1,28 @@
 from signal import signal, SIGINT
-#from Brain.Robot import IHM
-#from pynq import Overlay
+
+############FPGA drivers imports#########
+import Robot.holo32.lib.uart_driver
+import Robot.FPGA.lib.imu_driver
+import Robot.FPGA.lib.rfid_driver
+import Robot.FPGA.lib.ronde_driver
+import Robot.FPGA.lib.balise_driver
+import Robot.FPGA.lib.dijkstra_driver
+
+###########Threads Imports###############
+#from Robot import IHM
+from Robot.Detection import thread_detection
 from Robot.EKF import thread_localisation
 from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
-from Robot.Overlays.Overlay import overlay
 import Robot.holo32.holo_uart_management as HUM
-from Robot.Detection import thread_detection
 
-#from Robot.Detection import thread_detection
+##########Overlay to program on PL############
+from Robot.Overlays.Overlay import overlay
+
+
+
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):

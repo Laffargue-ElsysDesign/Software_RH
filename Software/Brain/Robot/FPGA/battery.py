@@ -17,7 +17,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Wrappers/Dijkstra_V2/Files/Dijkstra.bit")
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
     battery = Battery(overlay)
     

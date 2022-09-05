@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from threading import Thread, Lock
-import matplotlib.pyplot as plt
 import numpy as np
 from time import time, sleep
 from Robot.holo32.holo_uart_management import odometry
@@ -17,7 +16,7 @@ class Coordinate:
         self.x = 0
         self.y = 0
         self.angle = 0
-
+        
         self.MUT = Lock()
     
     def Write_Loc(self, X, Y, angle):
@@ -35,6 +34,29 @@ class Coordinate:
 
 coordinate = Coordinate()
 
+class IMU_Data():
+    def __init__(self):
+        self.ax = 0
+        self.ay = 0
+        self.theta = 0
+        self.MUT = Lock()
+    
+    def Write(self,ax, ay, theta):
+        self.MUT.acquire()
+        self.ax = ax
+        self.ay = ay
+        self.theta = theta
+        self.MUT.release()
+        
+    def Read(self):
+        self.MUT.acquire()
+        ax = self.ax
+        ay = self.ay
+        theta = self.theta
+        self.MUT.release()
+        return ax, ay, theta
+    
+imu_data = IMU_Data()
 
 def cos(a):
     return np.cos(a*np.pi/180)
@@ -84,11 +106,13 @@ class Filter(Thread):
         return X
     
     def measurement(self):
+        R_vx, R_vy, R_vz = odometry.Read()
+        R_ax, R_ay, R_gz = imu_data.Read()
         
-        vx = odometry.speed_x*0.89
-        vy = odometry.speed_y*0.89
-        vz = odometry.speed_z*0.62
-
+        vx = R_vx*0.89
+        vy = R_vy*0.89
+        vz = R_vz*0.62
+        #print(R_vx, R_vy, R_ax, R_ay, R_gz, R_vz)
         return np.array([[vx], [vy], [vz]])
         
     def compute_X(self, X, Z):
@@ -107,15 +131,12 @@ class Filter(Thread):
         
     def Set_NFC(X):
         pass
-#        (X[0, 0], X[2, 0]) = Get_Loc_from_Dot(point, position)
+        #(X[0, 0], X[2, 0]) = Get_Loc_from_Dot(point, position)
         
-    def run(self): 
-
-        
-        
-        dt = 0.1
+    def run(self):     
+        dt = 0.15
         counter = 0
-        X = self.initialize(0, 0, 0, 0, 0, 0, dt)
+        X = self.initialize(0, 0, 180, 0, 0, 0, dt)
         #print(A, B, C, X)
         
         while not self.interrupt:
@@ -124,7 +145,7 @@ class Filter(Thread):
         #    lines = f.readlines()
         #    f.close()
         #for i in lines:
-            t = time()
+            t=time()
             Z_hat = self.measurement()
             
             #print("Z_hat : ", Z_hat)
@@ -157,7 +178,6 @@ class Filter(Thread):
             #    break
             while time()<t+dt:
                 sleep(0.001)
-            
         #plt.plot(posX, posY)
         #plt.plot(range(counter), posTheta)
         #print("posX : ", posX)

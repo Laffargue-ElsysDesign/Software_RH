@@ -1,27 +1,37 @@
+##########Classic imports#########
 from threading import Thread
-from Robot.Alerts import alerts, ultrasons
-#from Robot.FPGA.balise import Balises
+from time import sleep
+
+#########Sensor imports###########
+from Robot.FPGA.balise import Balises
 #from Robot.FPGA.battery import Battery
-#from Robot.FPGA.ronde import Ronde
-#from Robot.FPGA.ultrasons import Ultrasons
+from Robot.FPGA.ronde import Ronde
+from Robot.FPGA.ultrasons import Ultrasons
 from Robot.FPGA.imu import IMU
 from Robot.FPGA.rfid import RFID
-from Robot.holo32.holo_uart_management import odometry
+
+######Overlay programmed en PL#####
 from Robot.Overlays.Overlay import overlay
-from time import sleep
+
+########Global variables#########
+from Robot.EKF import imu_data
+from Robot.Alerts import alerts, ultrasons
+
+############Function used#############
+from Robot.Localisation import Get_Dot_from_ID
+
 
 class Detection_Alert(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.interrupt = False
-        #self.balises = Balises(overlay)
+        self.balises = Balises(overlay)
         #self.battery = Battery(overlay)
-        #self.ronde = Ronde(overlay)
+        self.ronde = Ronde(overlay)
         self.rfid = RFID(overlay)
-        #self.ultrasons = Ultrasons(overlay)
+        self.ultrasons = Ultrasons(overlay)
         
         self.imu = IMU(overlay)
-        self.data = []
     
     def Interrupt(self):
         self.interrupt = True
@@ -46,6 +56,9 @@ class Detection_Alert(Thread):
 
     
     def run(self):
+
+        self.ronde.Set_2_hour()
+
         while(not self.interrupt):
             
             ##Update for Battery
@@ -55,14 +68,15 @@ class Detection_Alert(Thread):
             #    alerts.Reset_Battery_Alert()
             
             ##Update for balise
-            #new_balise, dot = self.balises.Check_Balise()
-            #if new_balise:
-            #    if not (dot == alerts.Get_Balise_Dot()):
-            #        alerts.Set_Balise_Alert(dot)
+            new_balise, id = self.balises.Check_Balise()
+            if new_balise:
+                print("New balise id:" ,id)
+                if not (id == alerts.Get_Balise_Dot()):
+                    alerts.Set_Balise_Alert(Get_Dot_from_ID(id))
             
             ##Update for Ronde
-            #if self.ronde.Check():
-            #    alerts.Set_Ronde_Alert()
+            if self.ronde.Check():
+                alerts.Set_Ronde_Alert()
             
             #Update for RFID
             new_rfid = self.rfid.Check_RFID()
@@ -79,7 +93,8 @@ class Detection_Alert(Thread):
             #self.Manage_US()
 
             #Update IMU
-            self.data = self.imu.Get_Raw_Data()
+            data = self.imu.Get_Raw_Data()
+            imu_data.Write(data[0], data[1], data[5])
             #print(self.data[0], " ", self.data[1], " ", self.data[2], " ", self.data[3], " ", self.data[4], " ", self.data[5], " ", self.data[6], " ", self.data[7], " ", self.data[8], " ", odometry.speed_x, " ", odometry.speed_y, " ", odometry.speed_z)
             
             sleep(0.1)

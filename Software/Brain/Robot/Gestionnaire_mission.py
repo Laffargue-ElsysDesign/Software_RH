@@ -4,7 +4,6 @@ from Robot.IHM.interface import mode
 from Robot.ManualControl import thread_manual_control as tmc
 from Robot.AutoControl import thread_auto_control as tac
 from time import sleep
-#import holo32.holo_uart_management as HUM
 
 
 def handler(signal_received, frame):

@@ -14,10 +14,16 @@ class Auto_Control(Thread):
         self.mgt = Mgt()
         self.Navigation = tn
         self.interrupt = False
+        self.balise_trig = False
 
     def Interrupt(self):
         self.interrupt = True
         self.mgt.Stop()
+
+    def Start_Balise_Alert(self, path):
+        self.End_Navigation()
+        self.balise_trig = True
+        self.Start_Navigation(path)
 
     def Wait_Start(self):
         print("End of Auto_Control")
@@ -37,8 +43,11 @@ class Auto_Control(Thread):
     
     def Start_Navigation(self, path):
         if path[0] != path[1]:
+            print("path nagation: ", path)
             self.Navigation.Set_Path(path)
             self.Navigation.mgt.Restart()
+            while self.Navigation.mgt.Check_Waiting():
+                sleep(0.1)
         else:
             self.Navigation.Set_Path([path[0]])
         return 0
@@ -48,36 +57,49 @@ class Auto_Control(Thread):
         dijkstra = Dijkstra(overlay)
 
         while not self.interrupt:
+
             #Wait until Auto Mode gets called
             self.Wait_Start()
             print("Start of Auto Control")
+
             #Continue until AutoMode gets shut down
             while not self.mgt.Check_Stop() and not self.interrupt:
-                #print("Auto_Control")
-                #Current_Loc = 0 #TBD
 
-                #If battery Alert, got back home asap
+                #print("Auto_Control")
+
+                #If battery Alert, get back home asap
                 if alerts.Get_Battery_Alert():
-                    print("Battery triggered")
+                    #print("Battery triggered")
+                    self.balise_trig = False
                     self.End_Navigation()
-                    #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
-                    self.Start_Navigation(cst.LOC_HOME)
+                    self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), cst.Room.STAGIAIRE))
                     alerts.Reset_Battery_Alert()
                 
-                #If a new alert is triggeres, gets priority
+                #If a new alert is triggereg
                 elif alerts.Get_Balise_Alert():
                     print("Balise Triggered")
-                    self.End_Navigation()
+
+
+                     
+                    if not self.balise_trig:
+                        print("starting")
+                        self.Start_Balise_Alert(dijkstra.Compute(alerts.Get_NFC_LastDot(), int(alerts.Get_Balise_Dot())))
+                    alerts.Reset_Balise_Alert()
+                    
                     #self.Alerts.Balise.MUT.acquire()
-                    self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), alerts.Get_Balise_Dot()))
-                    alerts.Reset_Balise_Alert()
+                    
+                    #alerts.Reset_Balise_Alert()
                     #self.Alerts.Balise.MUT.release()
-                    alerts.Reset_Balise_Alert()
+
+                elif self.balise_trig:
+                    if self.Navigation.mgt.Check_Waiting():
+                        self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), cst.NFC_Dot.DOT_CHARGE))
+                        self.balise_trig = False
 
                 elif alerts.Get_Ronde_Alert():
                     print("Ronde triggered")
                     if self.Navigation.mgt.Check_Waiting():
-                        self.Start_Navigation(cst.LOC_HOME)
+                        self.Start_Navigation(dijkstra.Compute(alerts.Get_NFC_LastDot(), cst.Room.STAGIAIRE))
                     alerts.Reset_Ronde_Alert()
                     
             if not self.interrupt:

@@ -27,7 +27,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/RFID1/BitStream/bitstream.bit")
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
     rfid = RFID(overlay)
     while(1):

@@ -1,6 +1,6 @@
 from signal import signal, SIGINT
 from pynq import Overlay
-import lib.balise_driver
+#import lib.balise_driver
 from time import sleep
 
 def handler(signal_received, frame):
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     signal(SIGINT, handler)
     
     global overlay
-    overlay = Overlay("../Overlays/IMUV3/BitStream/IMU.bit")
+    overlay = Overlay("../Overlays/US2/BitStream/bitstream.bit")
     overlay.download()
     balises = Balises(overlay)
     while(1):
