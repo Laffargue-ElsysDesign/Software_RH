@@ -50,9 +50,9 @@ class EKF():
     def measurement(self, line):
         words = line.split()
         
-        vx = int(words[10])*0.89
-        vy = int(words[9])*0.89
-        vz = int(words[11])*0.41
+        vx = int(words[1])*0.89
+        vy = int(words[0])*0.89
+        vz = int(words[2])*0.41
 
         return np.array([[vx], [vy], [vz]])
         
@@ -88,7 +88,7 @@ class EKF():
         
         #while true()
         
-        with open('EKF/North_3m05_11s69.txt') as f:
+        with open('EKF/odometryNorthWest.txt') as f:
             lines = f.readlines()
             f.close()
 
@@ -121,6 +121,8 @@ class EKF():
             #    break
             
         plt.plot(posX, posY)
+        plt.xlim([-70, 70])
+        plt.ylim([-70, 70])
         #plt.plot(range(counter), posTheta)
         print("posX : ", posX)
         print("posY : ", posY)
