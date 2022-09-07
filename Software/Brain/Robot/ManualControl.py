@@ -1,6 +1,6 @@
 from threading import Thread
 from Robot.Alerts import alerts, Mgt
-import Robot.holo32.holo_uart_management as HUM
+from Robot.Evitement import raw_command
 from Robot.IHM.interface import mode
 import Robot.Permanent.Constants as cst
 from time import sleep
@@ -132,15 +132,15 @@ class Keyboard_Read(Thread):
                 #print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
-                #HUM.cmd_robot.speed_x=self.speed_x
-                #HUM.cmd_robot.speed_y=self.speed_y
-                #HUM.cmd_robot.speed_z=self.speed_z
-                HUM.cmd_robot.Set_Speed(self.speed_x, self.speed_y, self.speed_z)
+                #raw_command.speed_x=self.speed_x
+                #raw_command.speed_y=self.speed_y
+                #raw_command.speed_z=self.speed_z
+                raw_command.Set(self.speed_x, self.speed_y, self.speed_z)
             
-            #HUM.cmd_robot.speed_x=0
-            #HUM.cmd_robot.speed_y=0
-            #HUM.cmd_robot.speed_z=0
-            HUM.cmd_robot.Set_Speed(0, 0, 0)
+            #raw_command.speed_x=0
+            #raw_command.speed_y=0
+            #raw_command.speed_z=0
+            raw_command.Set(0, 0, 0)
 
 class IHM_Read(Thread):
     def __init__(self):
@@ -213,10 +213,10 @@ class IHM_Read(Thread):
             read_input=mode.command
             mode.command.MUT.release()
             self.Get_Trajectory(read_input)
-            #HUM.cmd_robot.speed_x=self.speed_x
-            #HUM.cmd_robot.speed_y=self.speed_y
-            #HUM.cmd_robot.speed_z=self.speed_z
-            #HUM.cmd_robot.Set_Speed(self.speed_x, self.speed_y, self.speed_z)
+            #raw_command.speed_x=self.speed_x
+            #raw_command.speed_y=self.speed_y
+            #raw_command.speed_z=self.speed_z
+            #raw_command.Set(self.speed_x, self.speed_y, self.speed_z)
 
 thread_manual_control = Keyboard_Read()
 #thread_manual_control = IHM_Read()

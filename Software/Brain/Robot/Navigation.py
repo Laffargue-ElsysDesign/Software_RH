@@ -8,7 +8,7 @@ from Robot.Alerts import Mgt
 import Robot.Localisation as Loc
 from Robot.Alerts import alerts
 import numpy as np
-import Robot.holo32.holo_uart_management as HUM
+from Robot.Evitement import raw_command
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -31,19 +31,19 @@ def Robot_Rotate(Turn_Right):
     
     print("Rotate")
     if Turn_Right:
-        HUM.cmd_robot.Set_Speed(0, 0, 0.1)
+        raw_command.Set(0, 0, 0.1)
     else:
-        HUM.cmd_robot.Set_Speed(0, 0, -0.1) 
+        raw_command.Set(0, 0, -0.1) 
     return 1
 
 def Robot_Stop():
     print("Stop")
-    HUM.cmd_robot.Set_Speed(0, 0, 0)
+    raw_command.Set(0, 0, 0)
     return 1
         
 
 def Robot_Forward():
-    HUM.cmd_robot.Set_Speed(0.2, 0, 0)
+    raw_command.Set(0.2, 0, 0)
     return 1
 
 def Procedure():

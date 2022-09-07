@@ -90,7 +90,7 @@ class Detection_Alert(Thread):
                 print("New Tag: ", point, " ", position)
             
             ##Update for utrasounds
-            #self.Manage_US()
+            self.Manage_US()
 
             #Update IMU
             data = self.imu.Get_Raw_Data()
