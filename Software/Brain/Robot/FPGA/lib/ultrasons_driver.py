@@ -58,57 +58,57 @@ class UltrasonsDriver(DefaultIP):
         return (self.Read_W_Detection(), self.Read_NW_Detection(), self.Read_N_Detection(), self.Read_NE_Detection(), self.Read_E_Detection()) #TBD
 
     def Read_N_Zone(self):
-        if self.read(OFFSET_READ_N) & MASQUE_ZONE1 == 1 : 
+        if (self.read(OFFSET_READ_N) & MASQUE_ZONE1) == 1 : 
             zone = 1
         elif (self.read(OFFSET_READ_N)& MASQUE_ZONE2)>>1  == 1 :
             zone = 2
         elif (self.read(OFFSET_READ_N) & MASQUE_ZONE3)>>2 == 1 :
             zone = 3
-        else 
+        else :
             zone = 0
         return zone
 
     def Read_NW_Zone(self):
-        if self.read(OFFSET_READ_NW) & MASQUE_ZONE1 == 1 : 
+        if (self.read(OFFSET_READ_NW) & MASQUE_ZONE1) == 1 : 
             zone = 1
         elif (self.read(OFFSET_READ_NW) & MASQUE_ZONE2)>>1 == 1 :
             zone = 2
         elif (self.read(OFFSET_READ_NW) & MASQUE_ZONE3)>>2 == 1 :
             zone = 3
-        else 
+        else :
             zone = 0
         return zone
 
     def Read_NE_Zone(self):
-        if self.read(OFFSET_READ_NE) & MASQUE_ZONE1 == 1 : 
+        if (self.read(OFFSET_READ_NE) & MASQUE_ZONE1) == 1 : 
             zone = 1
         elif (self.read(OFFSET_READ_NE) & MASQUE_ZONE2)>>1 == 1 :
             zone = 2
         elif (self.read(OFFSET_READ_NE) & MASQUE_ZONE3)>>2 == 1 :
             zone = 3
-        else 
+        else :
             zone = 0
         return zone
 
     def Read_W_Zone(self):
-        if self.read(OFFSET_READ_W) & MASQUE_ZONE1 == 1 : 
+        if (self.read(OFFSET_READ_W) & MASQUE_ZONE1) == 1 : 
             zone = 1
         elif (self.read(OFFSET_READ_W) & MASQUE_ZONE2)>>1 == 1 :
             zone = 2
         elif (self.read(OFFSET_READ_W) & MASQUE_ZONE3)>>2 == 1 :
             zone = 3
-        else 
+        else :
             zone = 0
         return zone
 
     def Read_E_Zone(self):
-        if self.read(OFFSET_READ_E) & MASQUE_ZONE1 == 1 : 
+        if (self.read(OFFSET_READ_E) & MASQUE_ZONE1) == 1 : 
             zone = 1
-        elif self.read(OFFSET_READ_E) & MASQUE_ZONE2)>>1 == 1 :
+        elif (self.read(OFFSET_READ_E) & MASQUE_ZONE2)>>1 == 1 :
             zone = 2
         elif (self.read(OFFSET_READ_E)>>2 & MASQUE_ZONE3)>>2 == 1 :
             zone = 3
-        else 
+        else :
             zone = 0
         return zone
 
