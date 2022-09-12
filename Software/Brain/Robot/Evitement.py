@@ -40,15 +40,11 @@ class Evitement(Thread):
         self.speed_z = 0
 
         self.W = False
-        self.NW = False
         self.N = False
-        self.NE = False
         self.E = False
 
         self.C_W = 0
-        self.C_NW = 0
         self.C_N = 0
-        self.C_NE = 0
         self.C_E = 0
 
         self.mgt = Mgt()
@@ -79,83 +75,78 @@ class Evitement(Thread):
 
     def Set_Command(self):
         cmd_robot.Set_Speed(self.speed_x, self.speed_y, self.speed_z)
-    
-    def Get_US(self):
 
-        if not ultrasons.Get_W()[0]:
+    def Zones(self):
+        (ALERT_W, Zone_W, DIST_W) = ultrasons.Get_W()
+        (ALERT_NW, Zone_NW, DIST_NW) = ultrasons.Get_NW()
+        (ALERT_N, Zone_N, DIST_N) = ultrasons.Get_N()
+        (ALERT_NE, Zone_NE, DIST_NE) = ultrasons.Get_NE()
+        (ALERT_E, Zone_E, DIST_E) = ultrasons.Get_E()
+        W = min(Zone_W, Zone_NW)
+        N = min(Zone_NW, Zone_N, Zone_NE)
+        E = min(Zone_NE, Zone_E)
+        DIST_W = min(DIST_W, DIST_NW)
+        DIST_N = min(DIST_NW, DIST_N, DIST_NE)
+        DIST_E = min(DIST_E, DIST_NE)
+        
+        return (W, N, E, DIST_W, DIST_N, DIST_E)
+
+
+    def Get_US(self):
+        (W, N, E, DIST_W, DIST_N, DIST_E) = self.Zones()
+
+        if not (W < 3):
             if not self.C_W == 0:
                 self.C_W = self.C_W - 1
             else:
-                self.W = False
+                self.W = 0
         else:
             self.C_W = COUNTER 
-            self.W = True
+            self.W = W
 
-        if not ultrasons.Get_NW()[0]:
-            if not self.C_NW == 0:
-                self.C_NW = self.C_NW - 1
-            else:
-                self.NW = False
-        else:
-            self.C_NW = COUNTER 
-            self.NW = True
-
-        if not ultrasons.Get_N()[0]:
+        if not (N < 3):
             if not self.C_N == 0:
                 self.C_N = self.C_N - 1
             else:
-                self.N = False
+                self.N = 0
         else:
             self.C_N = COUNTER 
-            self.N = True
+            self.N = N
 
-        if not ultrasons.Get_NE()[0]:
-            if not self.C_NE == 0:
-                self.C_NE = self.C_NE - 1
-            else:
-                self.NE = False
-        else:
-            self.C_NE = COUNTER 
-            self.NE = True
-        
-        #(E, V, Z)= ultrasons.Get_E()
-        #print(E, V, Z)
-        if not ultrasons.Get_E()[0]:
-            #print("E detected")
+        if not (E < 3):
             if not self.C_E == 0:
                 self.C_E = self.C_E - 1
             else:
-                self.E = False
+                self.E = 0
         else:
             self.C_E = COUNTER 
-            self.E = True
+            self.E = E
+        
+        return (DIST_W, DIST_N, DIST_E)
    
-   
-    def run(self):
-    
+    def run(self):    
         while not self.interrupt:
             self.Wait_Start()
-            #print("Start of Evitement")
 
             while not self.mgt.Check_Stop() and not self.interrupt:
 
                 self.Get_Raw_Speed()
-                #print("Raw:", self.W, self.NW, self.N, self.NE, self.E)
-                self.Get_US()
 
-                if self.W or self.NW:
-                    if self.speed_y < 0:
-                        self.Stop()
+                (DIST_W, DIST_N, DIST_E) = self.Get_US()
 
-                if self.NW or self.N or self.NE:
-                    if self.speed_x > 0:
+                if (self.W == 1 and self.speed_y < 0) or (self.N == 1 and self.speed_x > 0) or (self.E == 1 and self.speed_y > 0):
                         self.Stop()
+                
+                if self.W == 2 and self.speed_y < 0:
+                        self.speed_y = (DIST_W -15) * self.speed_y / 35
 
-                if self.E or self.NE:
-                    if self.speed_y > 0:
-                        self.Stop()
+                if self.N == 2 and self.speed_x > 0:
+                        self.speed_y = (DIST_N -15) * self.speed_x / 35
+
+                if self.E == 2 and self.speed_y > 0:
+                        self.speed_y = (DIST_E -15) * self.speed_y / 35
                     
-                #print(self.speed_x, self.speed_y, self.speed_z)
+
                 self.Set_Command()
 
                 sleep(0.1)
