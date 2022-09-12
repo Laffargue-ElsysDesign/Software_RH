@@ -39,9 +39,13 @@ class Evitement(Thread):
         self.speed_y = 0
         self.speed_z = 0
 
-        self.W = False
-        self.N = False
-        self.E = False
+        self.W = 0
+        self.N = 0
+        self.E = 0
+
+        self.DIST_E = 0
+        self.DIST_N = 0
+        self.DIST_W = 0
 
         self.C_W = 0
         self.C_N = 0
@@ -100,29 +104,33 @@ class Evitement(Thread):
                 self.C_W = self.C_W - 1
             else:
                 self.W = 0
+                self.DIST_W = DIST_W
         else:
             self.C_W = COUNTER 
             self.W = W
+            self.DIST_W = DIST_W
 
         if not (N < 3):
             if not self.C_N == 0:
                 self.C_N = self.C_N - 1
             else:
                 self.N = 0
+                self.DIST_N = DIST_N
         else:
             self.C_N = COUNTER 
             self.N = N
+            self.DIST_N = DIST_N
 
         if not (E < 3):
             if not self.C_E == 0:
                 self.C_E = self.C_E - 1
             else:
                 self.E = 0
+                self.DIST_E = DIST_E
         else:
             self.C_E = COUNTER 
             self.E = E
-        
-        return (DIST_W, DIST_N, DIST_E)
+            self.DIST_E = DIST_E
    
     def run(self):    
         while not self.interrupt:
@@ -132,19 +140,19 @@ class Evitement(Thread):
 
                 self.Get_Raw_Speed()
 
-                (DIST_W, DIST_N, DIST_E) = self.Get_US()
+                self.Get_US()
 
                 if (self.W == 1 and self.speed_y < 0) or (self.N == 1 and self.speed_x > 0) or (self.E == 1 and self.speed_y > 0):
                         self.Stop()
                 
                 if self.W == 2 and self.speed_y < 0:
-                        self.speed_y = (DIST_W -15) * self.speed_y / 35
+                        self.speed_y = (self.DIST_W -15) * self.speed_y / 35
 
                 if self.N == 2 and self.speed_x > 0:
-                        self.speed_y = (DIST_N -15) * self.speed_x / 35
+                        self.speed_y = (self.DIST_N -15) * self.speed_x / 35
 
                 if self.E == 2 and self.speed_y > 0:
-                        self.speed_y = (DIST_E -15) * self.speed_y / 35
+                        self.speed_y = (self.DIST_E -15) * self.speed_y / 35
                     
 
                 self.Set_Command()
