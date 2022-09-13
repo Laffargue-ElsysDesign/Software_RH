@@ -7,6 +7,7 @@ import Robot.FPGA.lib.rfid_driver
 import Robot.FPGA.lib.ronde_driver
 import Robot.FPGA.lib.balise_driver
 import Robot.FPGA.lib.dijkstra_driver
+import Robot.FPGA.lib.ultrasons_driver
 
 ###########Threads Imports###############
 #from Robot import IHM
@@ -16,7 +17,8 @@ from Robot.ManualControl import thread_manual_control
 from Robot.AutoControl import thread_auto_control
 from Robot.Gestionnaire_mission import thread_gestionnaire
 from Robot.Navigation import thread_Navigation
-import Robot.holo32.holo_uart_management as HUM
+from Robot.Evitement import thread_evitement
+from Robot.holo32.holo_uart_management import thread_holo32
 
 ##########Overlay to program on PL############
 from Robot.Overlays.Overlay import overlay
@@ -27,6 +29,12 @@ from Robot.Overlays.Overlay import overlay
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
     #Handle any cleanup here. All threads are ended properly, one after the other
+    thread_holo32.Interrupt()
+    thread_holo32.join()
+    print("HOLOCOM exited succesfully")
+    thread_evitement.Interrupt()
+    thread_evitement.join()
+    print("Evitement exited succesfully")
     thread_localisation.Interrupt()
     thread_localisation.join()
     print("Localisation exited succesfully")
@@ -57,20 +65,20 @@ def handler(signal_received, frame):
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
-    overlay.download()
-    #if overlay.is_loaded()==False:
-    #    print("Loading Overlay..")
-    #    overlay.download()
+    #overlay.download()
+    if overlay.is_loaded()==False:
+        print("Loading Overlay..")
+        overlay.download()
     
     
     #Start IHM
     #app.run(debug = True)
 
     #Start UART Comunication with robot
-    thread_holo = HUM.Holo_UART(overlay)
+    #thread_holo = HUM.Holo_UART(overlay)
 
     ################Start all threads###################
-    thread_holo.start()
+    thread_holo32.start()
     #print("holo thread start")
     thread_localisation.start()
     #print("loc thread start")
@@ -83,6 +91,9 @@ if __name__ == '__main__':
     thread_gestionnaire.start()
     #print("gestionnaire thread start")
     thread_detection.start()
+    #print("detection thread start")
+    thread_evitement.mgt.Restart()
+    thread_evitement.start()
     #print("detection thread start")
 
     

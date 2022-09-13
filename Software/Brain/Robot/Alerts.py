@@ -33,15 +33,20 @@ class State_NFC():
     def Set_New(self):
         self.MUT.acquire()
         self.new = True
+        self.data_valid = False
+        self.point = 0
+        self.position = 0
         self.MUT.release()
         return 1
     
     def Set_Tag(self, point, position):
         self.MUT.acquire()
+        self.new = True
         self.data_valid = True
         self.point = point
         self.positon = position
         self.last_dot = point
+        print("New dot registered",point, position)
         self.MUT.release()
         return 1
 
