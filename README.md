@@ -8,3 +8,5 @@ Software folder contains the actual files for the behaviour of the robot on the 
 RapportStage contains most of the images used in the report and presentation
 
 Impression_3D contais the machanical structure on the robot
+
+STM32 is the program running on the motor control board, that communicate with UART the commands and responds the odometry values
