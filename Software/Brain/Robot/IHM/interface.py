@@ -1,4 +1,13 @@
+# interface.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from threading import Lock
+
+######### Data imports ############
 import Robot.Permanent.Constants as cst
 
 class Class_Command:  

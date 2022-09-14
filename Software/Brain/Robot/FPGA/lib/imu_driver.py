@@ -1,6 +1,16 @@
-from codecs import raw_unicode_escape_decode
-from pynq import DefaultIP
+# imu_driver.py
+
+#  Created on: July 8 2022
+#      Author: Isabelle Van Leeuwen and Lenny Laffargue
+#
+
+########## Python packages imports ##########
+from signal import signal,SIGINT
 import numpy as np
+
+######## PYNQ import #########
+from pynq import DefaultIP
+
 
 # ========== Parametre global IMU ==========
 G = 9.80665

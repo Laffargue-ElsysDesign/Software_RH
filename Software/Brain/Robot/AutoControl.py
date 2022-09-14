@@ -1,11 +1,25 @@
+# __init__.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+####### Python pakages imports #######
 from threading import Thread
+from time import sleep
+
+############Drivers imports#########
 from Robot.Alerts import alerts
 import Robot.Permanent.Constants as cst
 from Robot.Navigation import thread_Navigation as tn
 from Robot.Alerts import Mgt
-from time import sleep
+
+######### Dijkstra module ##########
 from Robot.FPGA.dijkstra import Dijkstra
+
+######Overlay programmed in PL#####
 from Robot.Overlays.Overlay import overlay
+
 
 
 class Auto_Control(Thread):

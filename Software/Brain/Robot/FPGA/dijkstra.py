@@ -1,5 +1,16 @@
-from pynq import Overlay
+# dijkstra.py
+
+#  Created on: August 3 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from signal import signal,SIGINT
+
+######## PYNQ import #########
+from pynq import Overlay
+
+########## Driver import #########
 #import lib.dijkstra_driver
 
 def handler(signal_received, frame):

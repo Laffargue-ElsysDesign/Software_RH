@@ -1,9 +1,19 @@
+# Gestionnaire_mission.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from threading import Thread
+from time import sleep
+
+############ Data imports ##############
 import Robot.Permanent.Constants as cst
 from Robot.IHM.interface import mode
 from Robot.ManualControl import thread_manual_control as tmc
 from Robot.AutoControl import thread_auto_control as tac
-from time import sleep
+
 
 
 def handler(signal_received, frame):

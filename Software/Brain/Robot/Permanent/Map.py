@@ -1,3 +1,10 @@
+# Map.py
+
+#  Created on: August 23 2022
+#      Author: Lenny Laffargue
+#
+
+######### Python packages imports ############
 import numpy as np
 
 class NFC_Loc():

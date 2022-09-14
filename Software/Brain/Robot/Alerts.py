@@ -1,4 +1,13 @@
+# Alerts.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+####### Python pakages imports #######
 from threading import Lock
+
+######### Data imports ############
 import Robot.Permanent.Constants as cst
 
 class State_NFC():

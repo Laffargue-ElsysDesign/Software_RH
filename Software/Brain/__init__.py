@@ -1,6 +1,13 @@
+# __init__.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+####### Python pakages imports #######
 from signal import signal, SIGINT
 
-############FPGA drivers imports#########
+############Drivers imports#########
 import Robot.holo32.lib.uart_driver
 import Robot.FPGA.lib.imu_driver
 import Robot.FPGA.lib.rfid_driver
@@ -65,7 +72,7 @@ def handler(signal_received, frame):
 
 if __name__ == '__main__':
     signal(SIGINT, handler)
-    #overlay.download()
+
     if overlay.is_loaded()==False:
         print("Loading Overlay..")
         overlay.download()
@@ -73,9 +80,6 @@ if __name__ == '__main__':
     
     #Start IHM
     #app.run(debug = True)
-
-    #Start UART Comunication with robot
-    #thread_holo = HUM.Holo_UART(overlay)
 
     ################Start all threads###################
     thread_holo32.start()

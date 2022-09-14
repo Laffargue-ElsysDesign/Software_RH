@@ -1,4 +1,13 @@
+# Constants.py
+
+#  Created on: August 23 2022
+#      Author: Lenny Laffargue
+#
+
+######### Python packages imports #########
 import numpy as np
+
+######### Data imports ############
 from Robot.Permanent.Map import tags_loc as TL
 
 #Mode

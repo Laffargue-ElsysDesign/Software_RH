@@ -1,5 +1,17 @@
-from pynq import Overlay
+# battery.py
+
+#  Created on: August 3 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from signal import signal,SIGINT
+
+######## PYNQ import #########
+from pynq import Overlay
+
+########## Driver import #########
+#import lib.battery_driver
 
 def handler(signal_received, frame):
     # Handle any cleanup here
