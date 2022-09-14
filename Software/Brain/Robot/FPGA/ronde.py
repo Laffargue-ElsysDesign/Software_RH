@@ -1,7 +1,19 @@
-from pynq import Overlay
+# ronde.py
+
+#  Created on: August 3 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from signal import signal,SIGINT
-#import lib.ronde_driver
 from time import time, sleep
+
+######## PYNQ import #########
+from pynq import Overlay
+
+########## Driver import #########
+#import lib.ronde_driver
+
 
 SECONDS = True
 MINUTES = False

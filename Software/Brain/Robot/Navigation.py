@@ -1,22 +1,27 @@
-from operator import truediv
+# Navigation.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from threading import Thread, Lock
-from time import sleep, time
-from Robot.EKF import coordinate
-from Robot.Localisation import Get_Orientation
-from numpy import mgrid
-from Robot.Alerts import Mgt
-import Robot.Localisation as Loc
-from Robot.Alerts import alerts
+from time import sleep
 import numpy as np
+
+######### Data imports ############
+from Robot.EKF import coordinate
+from Robot.Alerts import alerts, Mgt
 from Robot.Evitement import raw_command
+
+###### Functions imports ######
+from Robot.Localisation import Get_Orientation
+
 
 def handler(signal_received, frame):
     # Handle any cleanup here
     print('SIGINT or CTRL-C detected. Navigation Exiting gracefully')
     exit(0)
-
-def Dijkstra(End):
-    pass #TBD
 
 def Compute_Angle(end_angle):
     angle = end_angle - coordinate.Get_Angle()
@@ -108,9 +113,8 @@ class Navigation(Thread):
     def Get_to_Point(self, point, old_point):
         if point == old_point:
             return 
-            #End = Check_NFC(self.path, point, old_point)
-        else:
 
+        else:
             self.Orientation(point, old_point)
 
             if self.mgt.Check_Stop():
@@ -141,12 +145,10 @@ class Navigation(Thread):
         while not self.interrupt:
             self.Wait_Start()
             print("Start of Navigation")
-            #T = time()
+
             #print("path:", self.path)
             while not self.mgt.Check_Stop() and not self.interrupt:
-                #sleep(1)
-                #if time() > (T + 10):
-                    #self.mgt.Stop()
+
                 old_point = self.path[0]
                 for i in self.path:
                     print("Going to ", i)
@@ -156,12 +158,5 @@ class Navigation(Thread):
                         break
                     old_point = i
                 self.mgt.Stop()
-                #if not cst.Home: #TBD: if not localisation = home at the end of the path then go home.
-                    #Procedure()
-                    #self.MUT.acquire()
-                    #self.path = Dijkstra(cst.Home)
-                    #self.MUT.release()
-                #else:
-                    #self.mgt.Stop()
                     
 thread_Navigation = Navigation()

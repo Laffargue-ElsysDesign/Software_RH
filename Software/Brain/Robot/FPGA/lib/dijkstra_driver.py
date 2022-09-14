@@ -1,5 +1,15 @@
-from pynq import DefaultIP
+# dijkstra_driver.py
+
+#  Created on: July 8 2022
+#      Author: Isabelle Van Leeuwen and Lenny Laffargue
+#
+
+########## Python packages imports ##########
 import time
+
+######## PYNQ import #########
+from pynq import DefaultIP
+
 
 OFFSET_WRITE_REG = 0x00
 OFFSET_READ_STATUS = 0x04

@@ -1,9 +1,20 @@
+# ManualControl.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+####### Python pakages imports #######
+from curses import raw
 from threading import Thread
+from time import sleep
+
+######### Data imports ############
 from Robot.Alerts import alerts, Mgt
 from Robot.Evitement import raw_command
 from Robot.IHM.interface import mode
 import Robot.Permanent.Constants as cst
-from time import sleep
+
 
 #handler pour interrupt correctement 
 def handler(signal_received, frame):
@@ -132,14 +143,8 @@ class Keyboard_Read(Thread):
                 #print("Commandes: |Z Nord|D Est|Q Ouest|S Sud|E Nord-Est|A Nord-Ouest|W Sud-Ouest|X Sud-Est|SPACE Stop|\" Pivot Droite|é Pivot Gauche|")
                 read_input=input()
                 self.Get_Trajectory(read_input)
-                #raw_command.speed_x=self.speed_x
-                #raw_command.speed_y=self.speed_y
-                #raw_command.speed_z=self.speed_z
                 raw_command.Set(self.speed_x, self.speed_y, self.speed_z)
             
-            #raw_command.speed_x=0
-            #raw_command.speed_y=0
-            #raw_command.speed_z=0
             raw_command.Set(0, 0, 0)
 
 class IHM_Read(Thread):
@@ -151,12 +156,12 @@ class IHM_Read(Thread):
         self.Alerts = alerts
         self.mgt = Mgt()
 
-    def set_speed(self, x, y, z):
+    def Set_Speed(self, x, y, z):
         self.speed_x=x
         self.speed_y=y
         self.speed_z=z
 
-    def Get_Trajectory(self, read_input):
+    def Get_Trajectory(self):
         if mode.command == cst.orders.NORTH:
             self.Set_Speed(0.2, 0, 0)
 
@@ -191,9 +196,7 @@ class IHM_Read(Thread):
             self.Set_Speed(0, 0, 0)
 
         else:
-            self.speed_x=0
-            self.speed_y=0
-            self.speed_z=0
+            self.Set_Speed(0, 0, 0)
             print("Input error. Robot will stop. please retry")
         
     def Wait_Start(self):
@@ -206,17 +209,16 @@ class IHM_Read(Thread):
         return
 
     def run(self):
-        while(True):
+        while(not self.interrupt):
             sleep(0.5)
             self.Wait_Start()
             mode.command.MUT.acquire()
             read_input=mode.command
             mode.command.MUT.release()
             self.Get_Trajectory(read_input)
-            #raw_command.speed_x=self.speed_x
-            #raw_command.speed_y=self.speed_y
-            #raw_command.speed_z=self.speed_z
-            #raw_command.Set(self.speed_x, self.speed_y, self.speed_z)
+            raw_command.Set(self.speed_x, self.speed_y, self.speed_z)
+            
+        raw_command.Set(0, 0, 0)
 
 thread_manual_control = Keyboard_Read()
 #thread_manual_control = IHM_Read()

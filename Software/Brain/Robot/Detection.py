@@ -1,3 +1,9 @@
+# Detection.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
 ##########Classic imports#########
 from threading import Thread
 from time import sleep
@@ -10,7 +16,7 @@ from Robot.FPGA.ultrasons import Ultrasons
 from Robot.FPGA.imu import IMU
 from Robot.FPGA.rfid import RFID
 
-######Overlay programmed en PL#####
+######Overlay programmed in PL#####
 from Robot.Overlays.Overlay import overlay
 
 ########Global variables#########

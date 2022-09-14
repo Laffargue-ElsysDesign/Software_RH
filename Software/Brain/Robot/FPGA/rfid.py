@@ -1,7 +1,18 @@
-from signal import signal, SIGINT
-from pynq import Overlay
-#import lib.rfid_driver
+# rfid.py
+
+#  Created on: August 3 2022
+#      Author: Lenny Laffargue
+#
+
+########## Python packages imports ##########
+from signal import signal,SIGINT
 from time import sleep
+
+######## PYNQ import #########
+from pynq import Overlay
+
+########## Driver import #########
+#import lib.rfid_driver
 
 def handler(signal_received, frame):
     # Handle any cleanup here

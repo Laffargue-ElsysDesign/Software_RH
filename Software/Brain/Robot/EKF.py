@@ -1,15 +1,17 @@
-# -*- coding: utf-8 -*-
-from threading import Thread, Lock
-import numpy as np
-from time import time, sleep
-from Robot.holo32.holo_uart_management import odometry
-from Robot.Permanent.Map import tags_loc
-
 """
 Created on Mon Jun 27 08:32:09 2022
 
 @author: laffargue
 """
+
+########## Python packages imports ##########
+from threading import Thread, Lock
+import numpy as np
+from time import time, sleep
+
+######### Data imports ############
+from Robot.holo32.holo_uart_management import odometry
+
         
 class Coordinate:
 

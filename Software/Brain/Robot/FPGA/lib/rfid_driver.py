@@ -1,6 +1,15 @@
+# rfid_driver.py
+
+#  Created on: July 8 2022
+#      Author: Isabelle Van Leeuwen and Lenny Laffargue
+#
+
+########## Python packages imports ##########
+from time import sleep
+
+######## PYNQ import #########
 from pynq import DefaultIP
-from signal import signal, SIGINT
-from time import sleep                   
+                   
 
 OFFSET_RESET = 0x00
 OFFSET_READ_STATE = 0x04   

@@ -1,3 +1,10 @@
+# battery_driver.py
+
+#  Created on: July 8 2022
+#      Author: Isabelle Van Leeuwen and Lenny Laffargue
+#
+
+######## PYNQ import #########
 from pynq import DefaultIP                      
 
 class BatteryDriver(DefaultIP):

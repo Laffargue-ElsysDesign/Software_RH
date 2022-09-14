@@ -1,5 +1,14 @@
-from pynq import DefaultIP, Overlay
+# ultrasons_driver.py
+
+#  Created on: July 8 2022
+#      Author: Isabelle Van Leeuwen and Lenny Laffargue
+#
+
+########## Python packages imports ##########
 from signal import signal,SIGINT
+
+######## PYNQ import #########
+from pynq import DefaultIP, Overlay
 
 OFFSET_WRITE_ENABLE = 0x00
 

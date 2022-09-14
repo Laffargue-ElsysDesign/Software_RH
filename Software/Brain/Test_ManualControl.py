@@ -1,9 +1,17 @@
-from tkinter import E
+# Test_ManualControl.py
+
+#  Created on: June 2 2022
+#      Author: Lenny Laffargue
+#
+
+############# Python packages imports #################
+from signal import signal, SIGINT
+
+############# Threads imports ##################
 import Robot.holo32.holo_uart_management as HUM 
 from Robot.ManualControl import thread_manual_control
-from time import sleep, time
-from threading import Thread, Lock
-from signal import signal, SIGINT
+
+############# PYNQ imports ################
 from pynq import Overlay
 
 

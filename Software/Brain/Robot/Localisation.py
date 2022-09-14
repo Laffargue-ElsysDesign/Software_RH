@@ -1,3 +1,10 @@
+# Localisation.py
+
+#  Created on: July 12 2022
+#      Author: Lenny Laffargue
+#
+
+############ Constants and Map imports ##############
 from Robot.Permanent.Constants import ROOM_NFC_MATCH, DOT_POSITION_TO_X_MATCH, DOT_POSITION_TO_Y_MATCH
 from Robot.Permanent.Map import ARC_MAP, BALISE_ID_TAG
 

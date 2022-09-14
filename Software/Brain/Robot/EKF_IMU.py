@@ -1,15 +1,19 @@
-# -*- coding: utf-8 -*-
-from threading import Thread, Lock
-import matplotlib.pyplot as plt
-import numpy as np
-from time import time, sleep
-from Robot.holo32.holo_uart_management import odometry
-
 """
 Created on Mon Jun 27 08:32:09 2022
 
 @author: laffargue
 """
+
+########## Python packages imports ##########
+from threading import Thread, Lock
+import matplotlib.pyplot as plt
+import numpy as np
+from time import time
+
+######### Data imports ############
+from Robot.holo32.holo_uart_management import odometry
+
+
 
 class Coordinate:
 
@@ -158,8 +162,6 @@ class Filter(Thread):
                       [0, 0, -sin(X[6, 0]), 0, 0, cos(X[6, 0]), - X[5, 0] * sin(X[6, 0]) - X[2, 0] * cos(X[6, 0]), 0],
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 1]])#,
-                      #[cos(theta), 0, 0, sin(theta), 0, 0, - N * sin(theta) - E * cos(theta), 0],
-                      #[-sin(theta), 0, 0, 0, cos(theta), 0, - E * sin(theta) + N * cos(theta), 0]])
 
     def Set_NFC(X):
         pass
@@ -196,12 +198,15 @@ class Filter(Thread):
         (A, X, R, Q, P) = self.initialize(0, 0, 0, 0, 0, 0, 0, 0, dt, 0.1, 3*10**(-5), 0.1, 0, 0, 0, 0, 0)
         print(A, X, R, Q, P)
         while not self.interrupt:
+
         #with open('./EKF/North_3m05_11s69.txt') as f:
         #    lines = f.readlines()
         #    f.close()
+
             (X_hat, P_hat) = self.predict(X, A, P, Q)
             t = time()
             Z_hat = self.measurement()
+
         #for i in lines:
         #    (X_hat, P_hat) = self.predict(X, A, P, Q)
         #    print("X_hat", X_hat)
@@ -222,7 +227,7 @@ class Filter(Thread):
             H = self.compute_H(X)
             #print(Z)
             try:
-                (K, X, P) = self.update(H, P_hat, X_hat, R, Z)
+                (K, X, P) = self.update(H, P_hat, X_hat, R, Z_hat)
             except:
                 error = 1
             if self.NFC_Alert:
@@ -232,6 +237,7 @@ class Filter(Thread):
 
             coordinate.Write_Loc(Y[0, 0], Y[1, 0], Y[2, 0])
             counter += 1        
+
             #print("X", X)
             #print(K, X, P)
             
@@ -263,7 +269,10 @@ class Filter(Thread):
         #print(posX, posY, posTheta)
         #plt.plot(posY, range(100))
         #plt.plot(posTheta, range(100))
+
         return 0
+
+        
 thread_localisation = Filter()    
 if __name__ == '__main__':
     ekf = Filter()

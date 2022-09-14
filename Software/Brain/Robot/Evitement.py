@@ -1,4 +1,9 @@
-import cmd
+# Evitement.py
+
+#  Created on: September 7 2022
+#      Author: Lenny Laffargue
+#
+
 from threading import Thread, Lock
 from time import sleep, time
 from tkinter import E
